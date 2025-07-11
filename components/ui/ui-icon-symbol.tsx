@@ -16,6 +16,7 @@ const MAPPING = {
   'gearshape.fill': 'settings',
   'wallet.pass.fill': 'wallet',
   'ladybug.fill': 'bug-report',
+  'person.wave.2.fill': 'person',
 } as UiIconMapping
 
 /**

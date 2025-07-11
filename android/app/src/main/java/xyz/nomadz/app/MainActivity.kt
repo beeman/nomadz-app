@@ -1,4 +1,4 @@
-package com.beeman.expodemoweb3js
+package xyz.nomadz.app
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

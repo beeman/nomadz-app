@@ -2,10 +2,11 @@ import { Stack, useRouter } from 'expo-router'
 import { AppText } from '@/components/app-text'
 import { AppView } from '@/components/app-view'
 import { Button } from 'react-native-paper'
-import { useAppTheme } from '@/components/app-theme'
+
+import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
 
 export default function NotFoundScreen() {
-  const { spacing } = useAppTheme()
+  const spacing = useAppThemeSpacing()
   const router = useRouter()
 
   return (

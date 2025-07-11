@@ -3,8 +3,8 @@ import { Cluster } from '@/components/cluster/cluster'
 import { ClusterNetwork } from '@/components/cluster/cluster-network'
 
 export class AppConfig {
-  static name = 'nomadz-app'
-  static uri = 'https://example.com'
+  static name = 'Nomadz'
+  static uri = 'https://nomadz.xyz'
   static clusters: Cluster[] = [
     {
       id: 'solana:devnet',

@@ -7,7 +7,7 @@ import React, { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import { ellipsify } from '@/utils/ellipsify'
-import { useAppTheme } from '@/components/app-theme'
+import { useAppThemeColors } from '@/components/use-app-theme-colors'
 
 function useSignMessage({ address }: { address: PublicKey }) {
   const { signMessage } = useWalletUi()
@@ -22,13 +22,13 @@ export function DemoFeatureSignMessage({ address }: { address: PublicKey }) {
   const signMessage = useSignMessage({ address })
   const [message, setMessage] = useState('Hello world')
   const [showSnackbar, setShowSnackbar] = React.useState(false)
-  const { theme } = useAppTheme()
+  const colors = useAppThemeColors()
   return (
     <AppView>
       <AppText variant="headlineMedium">Sign message with connected wallet.</AppText>
       <Snackbar
-        style={{ backgroundColor: theme.colors.background, zIndex: 1000 }}
-        theme={{ colors: { surface: theme.colors.text } }}
+        style={{ backgroundColor: colors.background, zIndex: 1000 }}
+        theme={{ colors: { surface: colors.text } }}
         visible={showSnackbar}
         onDismiss={() => setShowSnackbar(false)}
       >

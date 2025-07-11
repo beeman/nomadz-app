@@ -1,10 +1,11 @@
 import { View, type ViewProps } from 'react-native'
 import React from 'react'
-import { useAppTheme } from '@/components/app-theme'
+
+import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
 
 export type AppViewProps = ViewProps
 
 export function AppView({ style, ...props }: AppViewProps) {
-  const { spacing } = useAppTheme()
+  const spacing = useAppThemeSpacing()
   return <View style={[{ gap: spacing.sm }, style]} {...props} />
 }

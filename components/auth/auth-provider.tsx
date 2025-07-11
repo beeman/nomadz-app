@@ -4,11 +4,17 @@ import { AppConfig } from '@/constants/app-config'
 import { Account, useAuthorization } from '@/components/solana/use-authorization'
 import { useMutation } from '@tanstack/react-query'
 
+export interface AuthUserProfile {
+  name: string
+  avatar: string
+}
+
 export interface AuthState {
   isAuthenticated: boolean
   isLoading: boolean
   signIn: () => Promise<Account>
   signOut: () => Promise<void>
+  user?: AuthUserProfile
 }
 
 const Context = createContext<AuthState>({} as AuthState)
@@ -44,6 +50,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       signOut: async () => await disconnect(),
       isAuthenticated: (accounts?.length ?? 0) > 0,
       isLoading: signInMutation.isPending || isLoading,
+      user: { name: 'beeman', avatar: require('../../assets/images/beeman-avatar.png') },
     }),
     [accounts, disconnect, signInMutation, isLoading],
   )

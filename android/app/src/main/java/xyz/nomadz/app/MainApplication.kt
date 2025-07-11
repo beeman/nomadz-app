@@ -1,4 +1,4 @@
-package com.beeman.expodemoweb3js
+package xyz.nomadz.app
 
 import android.app.Application
 import android.content.res.Configuration

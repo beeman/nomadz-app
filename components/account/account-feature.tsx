@@ -12,11 +12,12 @@ import { useCallback, useState } from 'react'
 import { useGetBalanceInvalidate } from '@/components/account/use-get-balance'
 import { PublicKey } from '@solana/web3.js'
 import { useGetTokenAccountsInvalidate } from '@/components/account/use-get-token-accounts'
-import { useAppTheme } from '../app-theme'
+
+import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
 
 export function AccountFeature() {
   const { account } = useWalletUi()
-  const { spacing } = useAppTheme()
+  const spacing = useAppThemeSpacing()
   const [refreshing, setRefreshing] = useState(false)
   const invalidateBalance = useGetBalanceInvalidate({ address: account?.publicKey as PublicKey })
   const invalidateTokenAccounts = useGetTokenAccountsInvalidate({ address: account?.publicKey as PublicKey })

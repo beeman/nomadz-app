@@ -7,10 +7,11 @@ import React, { useState } from 'react'
 import { useWalletUi } from '../solana/use-wallet-ui'
 import { useRequestAirdrop } from '@/components/account/use-request-airdrop'
 import { useTransferSol } from '@/components/account/use-transfer-sol'
-import { useAppTheme } from '@/components/app-theme'
+
+import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
 
 export function AccountFeatureSend({ address }: { address: PublicKey }) {
-  const { spacing } = useAppTheme()
+  const spacing = useAppThemeSpacing()
   const { account } = useWalletUi()
   const requestAirdrop = useRequestAirdrop({ address: account?.publicKey as PublicKey })
   const transferSol = useTransferSol({ address })

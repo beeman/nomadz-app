@@ -2,6 +2,7 @@
   "expo": {
     "name": "nomadz-app",
     "slug": "nomadz-app",
+    "owner": "nomadz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -17,7 +18,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.beeman.expodemoweb3js"
+      "package": "xyz.nomadz.app"
     },
     "web": {
       "bundler": "metro",
@@ -50,7 +51,6 @@
       "eas": {
         "projectId": "c94f5e96-2411-4010-b470-14068175051d"
       }
-    },
-    "owner": "beeman"
+    }
   }
 }

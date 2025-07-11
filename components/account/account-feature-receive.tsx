@@ -4,10 +4,11 @@ import { PublicKey } from '@solana/web3.js'
 import { AppQrCode } from '@/components/app-qr-code'
 import { Button } from 'react-native-paper'
 import Clipboard from '@react-native-clipboard/clipboard'
-import { useAppTheme } from '@/components/app-theme'
+
+import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
 
 export function AccountFeatureReceive({ address }: { address: PublicKey }) {
-  const { spacing } = useAppTheme()
+  const spacing = useAppThemeSpacing()
   return (
     <AppView style={{ gap: spacing.md }}>
       <AppText variant="titleMedium">Send assets to this address:</AppText>
