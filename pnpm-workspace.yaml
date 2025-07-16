@@ -1,3 +1,6 @@
 nodeLinker: hoisted
 onlyBuiltDependencies:
   - bigint-buffer
+  - bufferutil
+  - unrs-resolver
+  - utf-8-validate

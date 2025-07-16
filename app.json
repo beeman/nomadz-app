@@ -47,10 +47,13 @@
       "typedRoutes": true
     },
     "extra": {
-      "router": {},
       "eas": {
         "projectId": "c94f5e96-2411-4010-b470-14068175051d"
-      }
+      },
+      "passkeyAssociatedDomain": "https://nomadz.xyz",
+      "privyAppId": "cmd4jf3uz017tl20mtfr398jo",
+      "privyClientId": "client-WY6Nkf6hqSxmi7iKUoPckJkRcdD5YS2Qx3vhp6AGkaGng",
+      "router": {}
     }
   }
 }

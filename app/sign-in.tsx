@@ -1,4 +1,3 @@
-import { router } from 'expo-router'
 import { useAuth } from '@/components/auth/auth-provider'
 import { AppText } from '@/components/app-text'
 import { AppView } from '@/components/app-view'
@@ -9,7 +8,7 @@ import { Image } from 'expo-image'
 import { Button } from '@react-navigation/elements'
 
 export default function SignIn() {
-  const { signIn, isLoading } = useAuth()
+  const { isLoading, signIn } = useAuth()
   return (
     <AppView
       style={{
@@ -21,30 +20,16 @@ export default function SignIn() {
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <SafeAreaView
-          style={{
-            flex: 1,
-            justifyContent: 'space-between',
-          }}
-        >
+        <SafeAreaView style={{ flex: 1, justifyContent: 'space-between' }}>
           {/* Dummy view to push the next view to the center. */}
           <View />
           <View style={{ alignItems: 'center', gap: 16 }}>
-            <AppText variant="headlineMedium">{AppConfig.name}</AppText>
-            <Image source={require('../assets/images/icon.png')} style={{ width: 128, height: 128 }} />
+            <Image source={AppConfig.logo} style={{ width: 128, height: 128 }} />
+            <AppText variant="headlineMedium">Welcome to {AppConfig.name}</AppText>
           </View>
-          <View style={{ marginBottom: 16 }}>
-            <Button
-              variant="filled"
-              style={{ marginHorizontal: 16 }}
-              onPress={async () => {
-                await signIn()
-                // Navigate after signing in. You may want to tweak this to ensure sign-in is
-                // successful before navigating.
-                router.replace('/')
-              }}
-            >
-              Connect
+          <View style={{ marginBottom: 32 }}>
+            <Button variant="filled" style={{ marginHorizontal: 16 }} onPress={() => signIn()}>
+              Login
             </Button>
           </View>
         </SafeAreaView>

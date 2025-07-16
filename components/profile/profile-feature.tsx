@@ -6,7 +6,7 @@ import { Button, List } from 'react-native-paper'
 import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
 
 export function ProfileFeature() {
-  const { user } = useAuth()
+  const { user, signOut } = useAuth()
   const spacing = useAppThemeSpacing()
   if (!user) {
     return null
@@ -16,6 +16,9 @@ export function ProfileFeature() {
       <ProfileUiHeader />
       <AppView style={{ padding: spacing.md }}>
         <Button mode="contained-tonal">Edit Profile</Button>
+        <Button onPress={signOut} mode="outlined">
+          Sign Out
+        </Button>
       </AppView>
       <AppView style={{ padding: spacing.md }}>
         <List.Section>

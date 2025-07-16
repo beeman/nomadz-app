@@ -1,8 +1,8 @@
 import { createContext, type PropsWithChildren, use, useMemo } from 'react'
-import { useMobileWallet } from '@/components/solana/use-mobile-wallet'
-import { AppConfig } from '@/constants/app-config'
-import { Account, useAuthorization } from '@/components/solana/use-authorization'
 import { useMutation } from '@tanstack/react-query'
+import { PrivyUser, usePrivy } from '@privy-io/expo'
+import { useLogin } from '@privy-io/expo/ui'
+import { AppConfig } from '@/constants/app-config'
 
 export interface AuthUserProfile {
   name: string
@@ -12,7 +12,7 @@ export interface AuthUserProfile {
 export interface AuthState {
   isAuthenticated: boolean
   isLoading: boolean
-  signIn: () => Promise<Account>
+  signIn: () => Promise<PrivyUser>
   signOut: () => Promise<void>
   user?: AuthUserProfile
 }
@@ -29,31 +29,35 @@ export function useAuth() {
 }
 
 function useSignInMutation() {
-  const { signIn } = useMobileWallet()
-
+  const { login } = useLogin()
   return useMutation({
     mutationFn: async () =>
-      await signIn({
-        uri: AppConfig.uri,
-      }),
+      await login({
+        loginMethods: ['email', 'google', 'twitter'],
+        appearance: { logo: AppConfig.logo },
+      })
+        .then((session) => session.user)
+        .catch((err) => {
+          console.log(JSON.stringify(err.error) as string)
+          throw err
+        }),
   })
 }
 
 export function AuthProvider({ children }: PropsWithChildren) {
-  const { disconnect } = useMobileWallet()
-  const { accounts, isLoading } = useAuthorization()
+  const { user, logout } = usePrivy()
   const signInMutation = useSignInMutation()
 
-  const value: AuthState = useMemo(
-    () => ({
-      signIn: async () => await signInMutation.mutateAsync(),
-      signOut: async () => await disconnect(),
-      isAuthenticated: (accounts?.length ?? 0) > 0,
-      isLoading: signInMutation.isPending || isLoading,
+  const value: AuthState = useMemo(() => {
+    console.log('useAuth memo', JSON.stringify(user, null, 2))
+    return {
+      signIn: async () => signInMutation.mutateAsync(),
+      signOut: async () => await logout(),
+      isAuthenticated: !!user,
+      isLoading: signInMutation.isPending,
       user: { name: 'beeman', avatar: require('../../assets/images/beeman-avatar.png') },
-    }),
-    [accounts, disconnect, signInMutation, isLoading],
-  )
+    }
+  }, [user, signInMutation, logout])
 
   return <Context value={value}>{children}</Context>
 }
