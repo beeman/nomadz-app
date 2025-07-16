@@ -45,7 +45,7 @@ function useSignInMutation() {
 }
 
 export function AuthProvider({ children }: PropsWithChildren) {
-  const { user, logout } = usePrivy()
+  const { isReady, user, logout } = usePrivy()
   const signInMutation = useSignInMutation()
 
   const value: AuthState = useMemo(() => {
@@ -54,10 +54,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
       signIn: async () => signInMutation.mutateAsync(),
       signOut: async () => await logout(),
       isAuthenticated: !!user,
-      isLoading: signInMutation.isPending,
+      isLoading: !isReady || signInMutation.isPending,
       user: { name: 'beeman', avatar: require('../../assets/images/beeman-avatar.png') },
     }
-  }, [user, signInMutation, logout])
+  }, [user, isReady, signInMutation, logout])
 
   return <Context value={value}>{children}</Context>
 }
