@@ -2,7 +2,7 @@
   "expo": {
     "name": "nomadz-app",
     "slug": "nomadz-app",
-    "owner": "nomadz",
+    "owner": "beeman",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -48,7 +48,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "c94f5e96-2411-4010-b470-14068175051d"
+        "projectId": "e436357a-7c39-451b-b65f-30c35942e975"
       },
       "passkeyAssociatedDomain": "https://nomadz.xyz",
       "privyAppId": "cmd4jf3uz017tl20mtfr398jo",
