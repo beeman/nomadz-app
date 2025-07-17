@@ -11,10 +11,10 @@ export default function TabLayout() {
       {/* The index redirects to the account screen */}
       <Tabs.Screen name="index" options={{ tabBarItemStyle: { display: 'none' } }} />
       <Tabs.Screen
-        name="account"
+        name="home"
         options={{
-          title: 'Account',
-          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="wallet.pass.fill" color={color} />,
+          title: 'Home',
+          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
