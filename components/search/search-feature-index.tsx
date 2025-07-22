@@ -1,23 +1,18 @@
 import { AppView } from '@/components/app-view'
-import { AppText } from '@/components/app-text'
 import * as React from 'react'
 import { useSearch } from './search-provider'
 import { Link } from 'expo-router'
 import { Card } from 'react-native-paper'
 
 export function SearchFeatureIndex() {
-  const { items } = useSearch()
+  const { random } = useSearch()
   return (
     <AppView>
-      <AppText variant="titleMedium">Search Index</AppText>
-      <AppText>Search index blocks here.</AppText>
-      {items.map((item, index) => (
+      {random?.map((item, index) => (
         <Link asChild href={`/search/${item.id}`} key={index}>
           <Card>
-            <Card.Content>
-              <AppText variant="titleMedium">Search Index</AppText>
-              <AppText>{item.destination}</AppText>
-            </Card.Content>
+            <Card.Title title={item.name} subtitle={item.region?.countryName ?? 'Unknown'} />
+            <Card.Cover source={{ uri: item.images[0].url?.replace('{size}', '80x80') }} />
           </Card>
         </Link>
       ))}

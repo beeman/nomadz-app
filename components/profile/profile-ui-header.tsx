@@ -23,8 +23,10 @@ export function ProfileUiHeader() {
         paddingBottom: spacing.md,
       }}
     >
-      <Image style={{ height: 128, width: 128, borderRadius: 100 }} source={user.avatar} />
-      <AppText variant="displaySmall">{user?.name}</AppText>
+      <Image style={{ height: 128, width: 128, borderRadius: 100 }} source={user.image} />
+      <AppText variant="displaySmall">
+        {user?.firstName} {user?.lastName}
+      </AppText>
     </View>
   )
 }

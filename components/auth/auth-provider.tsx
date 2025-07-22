@@ -1,12 +1,26 @@
 import { createContext, type PropsWithChildren, use, useMemo } from 'react'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { PrivyUser, usePrivy } from '@privy-io/expo'
 import { useLogin } from '@privy-io/expo/ui'
 import { AppConfig } from '@/constants/app-config'
+import { api } from '@/utils/api'
+import { HttpStatusCode } from 'axios'
 
 export interface AuthUserProfile {
-  name: string
-  avatar: string
+  id: string
+  username: string
+  email: string
+  firstName: string
+  lastName: string
+  residency: string
+  bio?: string
+  phone: string
+  experience?: number
+  luck?: number
+  image?: string
+  twitterUsername: null
+  createdAt: string
+  updatedAt: string
 }
 
 export interface AuthState {
@@ -44,18 +58,45 @@ function useSignInMutation() {
   })
 }
 
+function useGetUserQuery() {
+  const { getAccessToken, user } = usePrivy()
+  return useQuery({
+    queryKey: ['get-user', user],
+    queryFn: () =>
+      getAccessToken()
+        .then(async (privyAccessToken) => await api.post('auth/login/privy', { privyAccessToken }))
+        .then(async (response) => {
+          if (response.status === HttpStatusCode.Created) {
+            // Fetch user profile and billing profile
+            const { id } = response.data
+            const profileResponse = await api.get(`users/${id}?include.userProfile&include.userBillingProfile`)
+
+            if (profileResponse.status === HttpStatusCode.Ok) {
+              const profile = profileResponse.data.userProfile as AuthUserProfile
+              return {
+                ...profile,
+                image: profile.image ?? `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${profile.username}`,
+              } as AuthUserProfile
+            }
+            throw new Error(`Profile Status !== Ok`)
+          }
+          throw new Error(`Response Status !== Created`)
+        }),
+  })
+}
+
 export function AuthProvider({ children }: PropsWithChildren) {
   const { isReady, user, logout } = usePrivy()
   const signInMutation = useSignInMutation()
+  const getUserQuery = useGetUserQuery()
 
   const value: AuthState = useMemo(() => {
-    console.log('useAuth memo', JSON.stringify(user, null, 2))
     return {
       signIn: async () => signInMutation.mutateAsync(),
       signOut: async () => await logout(),
       isAuthenticated: !!user,
       isLoading: !isReady || signInMutation.isPending,
-      user: { name: 'beeman', avatar: require('../../assets/images/beeman-avatar.png') },
+      user: getUserQuery.data,
     }
   }, [user, isReady, signInMutation, logout])
 

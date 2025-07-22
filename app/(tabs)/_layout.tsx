@@ -36,8 +36,8 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color }) =>
-            user?.avatar ? (
-              <Image style={{ height: 28, width: 28, borderRadius: 100 }} source={user.avatar} />
+            user?.image ? (
+              <Image style={{ height: 28, width: 28, borderRadius: 100 }} source={user.image} />
             ) : (
               <UiIconSymbol size={28} name="person.wave.2.fill" color={color} />
             ),
