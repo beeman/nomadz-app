@@ -73,9 +73,13 @@ function useGetUserQuery() {
 
             if (profileResponse.status === HttpStatusCode.Ok) {
               const profile = profileResponse.data.userProfile as AuthUserProfile
+              const image = profile.image
+                ? `${AppConfig.imageBase}${profile.image}`
+                : `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${profile.username}`
+
               return {
                 ...profile,
-                image: profile.image ?? `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${profile.username}`,
+                image,
               } as AuthUserProfile
             }
             throw new Error(`Profile Status !== Ok`)
@@ -98,7 +102,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       isLoading: !isReady || signInMutation.isPending,
       user: getUserQuery.data,
     }
-  }, [user, isReady, signInMutation, logout])
+  }, [user, isReady, signInMutation, getUserQuery.data, logout])
 
   return <Context value={value}>{children}</Context>
 }
