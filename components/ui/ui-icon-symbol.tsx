@@ -13,11 +13,13 @@ export type UiIconSymbolName = keyof typeof MAPPING
  * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
  */
 const MAPPING = {
-  'house.fill': 'home',
+  'bed.double.fill': 'hotel',
   'gearshape.fill': 'settings',
-  'wallet.pass.fill': 'wallet',
+  'house.fill': 'home',
   'ladybug.fill': 'bug-report',
   'person.wave.2.fill': 'person',
+  'wallet.pass.fill': 'wallet',
+  magnifyingglass: 'search',
 } as UiIconMapping
 
 /**

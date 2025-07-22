@@ -2,11 +2,11 @@ import { AppView } from '@/components/app-view'
 import { AppText } from '@/components/app-text'
 import * as React from 'react'
 
-export function DemoFeature() {
+export function SearchFeatureDetails() {
   return (
     <AppView>
-      <AppText variant="titleMedium">Demo page</AppText>
-      <AppText>Start building your features here.</AppText>
+      <AppText variant="titleMedium">Search Details</AppText>
+      <AppText>Search details here.</AppText>
     </AppView>
   )
 }
