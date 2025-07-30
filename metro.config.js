@@ -30,6 +30,15 @@ const resolveRequestWithPackageExports = (context, moduleName, platform) => {
     return ctx.resolveRequest(ctx, moduleName, platform)
   }
 
+  // Package exports in `@noble/hashes` are incorrect, so we need to force the browser version
+  if (moduleName.startsWith('@noble/hashes')) {
+    const ctx = {
+      ...context,
+      unstable_enablePackageExports: false,
+    }
+    return ctx.resolveRequest(ctx, moduleName, platform)
+  }
+
   return context.resolveRequest(context, moduleName, platform)
 }
 

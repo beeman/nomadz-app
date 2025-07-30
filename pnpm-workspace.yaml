@@ -1,4 +1,5 @@
 nodeLinker: hoisted
+packages: []
 onlyBuiltDependencies:
   - bigint-buffer
   - bufferutil
