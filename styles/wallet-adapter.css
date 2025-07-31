@@ -1,0 +1,67 @@
+.wallet-adapter-button {
+  @apply !px-3.5 !py-2 !text-[#BBBBBB] !font-geist transition-colors border-gradient-primary !rounded-2xl before:rounded-2xl !text-xs !bg-transparent w-full flex justify-center text-nowrap !font-medium;
+}
+
+.wallet-adapter-button span {
+  @apply !font-medium !font-geist !text-[#BBBBBB] !text-xs;
+}
+
+.wallet-adapter-dropdown {
+  @apply !bg-transparent w-full;
+}
+
+.wallet-adapter-modal-wrapper {
+  @apply px-6 !pb-12;
+}
+
+.wallet-adapter-modal-wrapper {
+  @apply !bg-[#121212];
+}
+
+.wallet-adapter-modal-button-close {
+  @apply !bg-transparent;
+}
+
+.wallet-adapter-modal-list {
+  @apply space-y-4 !mb-0;
+}
+
+/* Custom title and subtitle */
+.wallet-adapter-modal-title {
+  @apply text-white !pb-[30px] !pt-12;
+}
+
+/* Hide the original h1 text */
+.wallet-adapter-modal-wrapper h1 {
+  font-size: 0 !important;
+  visibility: hidden !important;
+  line-height: 0px;
+}
+
+/* use ::before as custom title */
+.wallet-adapter-modal-title::before {
+  @apply font-primary font-medium;
+  content: "wallet connection";
+  display: block;
+  visibility: visible !important;
+  font-size: 22px !important;
+  line-height: 125% !important;
+}
+
+/* use ::after as custom subtitle */
+.wallet-adapter-modal-title::after {
+  content: "connect a wallet on Solana to continue";
+  @apply block text-sm font-geist mt-1;
+  visibility: visible !important;
+  font-size: 16px !important;
+  line-height: 125% !important;
+  color: #D0D0D0;
+  white-space: nowrap;
+}
+
+.wallet-adapter-button-start-icon {
+  @apply !size-5;
+}
+.wallet-adapter-button-start-icon img {
+  @apply !size-5 rounded-[6px];
+}

@@ -1,0 +1,62 @@
+export const levels = [
+  { name: 'Level 1', experienceThreshold: 0, number: 1 },
+  { name: 'Level 2', experienceThreshold: 100, number: 2 },
+  { name: 'Level 3', experienceThreshold: 225, number: 3 },
+  { name: 'Level 4', experienceThreshold: 375, number: 4 },
+  { name: 'Level 5', experienceThreshold: 550, number: 5 },
+  { name: 'Level 6', experienceThreshold: 750, number: 6 },
+  { name: 'Level 7', experienceThreshold: 975, number: 7 },
+  { name: 'Level 8', experienceThreshold: 1225, number: 8 },
+  { name: 'Level 9', experienceThreshold: 1500, number: 9 },
+  { name: 'Level 10', experienceThreshold: 1800, number: 10 },
+  { name: 'Level 11', experienceThreshold: 2125, number: 11 },
+  { name: 'Level 12', experienceThreshold: 2475, number: 12 },
+  { name: 'Level 13', experienceThreshold: 2850, number: 13 },
+  { name: 'Level 14', experienceThreshold: 3250, number: 14 },
+  { name: 'Level 15', experienceThreshold: 3675, number: 15 },
+  { name: 'Level 16', experienceThreshold: 4125, number: 16 },
+  { name: 'Level 17', experienceThreshold: 4600, number: 17 },
+  { name: 'Level 18', experienceThreshold: 5100, number: 18 },
+  { name: 'Level 19', experienceThreshold: 5625, number: 19 },
+  { name: 'Level 20', experienceThreshold: 6175, number: 20 },
+  { name: 'Level 21', experienceThreshold: 6750, number: 21 },
+  { name: 'Level 22', experienceThreshold: 7350, number: 22 },
+  { name: 'Level 23', experienceThreshold: 7975, number: 23 },
+  { name: 'Level 24', experienceThreshold: 8625, number: 24 },
+  { name: 'Level 25', experienceThreshold: 9300, number: 25 },
+  { name: 'Level 26', experienceThreshold: 10000, number: 26 },
+  { name: 'Level 27', experienceThreshold: 10725, number: 27 },
+  { name: 'Level 28', experienceThreshold: 11475, number: 28 },
+  { name: 'Level 29', experienceThreshold: 12250, number: 29 },
+  { name: 'Level 30', experienceThreshold: 13050, number: 30 },
+  { name: 'Level 31', experienceThreshold: 13875, number: 31 },
+  { name: 'Level 32', experienceThreshold: 14725, number: 32 },
+  { name: 'Level 33', experienceThreshold: 15600, number: 33 },
+  { name: 'Level 34', experienceThreshold: 16500, number: 34 },
+  { name: 'Level 35', experienceThreshold: 17425, number: 35 },
+  { name: 'Level 36', experienceThreshold: 18375, number: 36 },
+  { name: 'Level 37', experienceThreshold: 19350, number: 37 },
+  { name: 'Level 38', experienceThreshold: 20350, number: 38 },
+  { name: 'Level 39', experienceThreshold: 21375, number: 39 },
+  { name: 'Level 40', experienceThreshold: 22425, number: 40 },
+  { name: 'Level 41', experienceThreshold: 23500, number: 41 },
+  { name: 'Level 42', experienceThreshold: 24600, number: 42 },
+  { name: 'Level 43', experienceThreshold: 25725, number: 43 },
+  { name: 'Level 44', experienceThreshold: 26875, number: 44 },
+  { name: 'Level 45', experienceThreshold: 28050, number: 45 },
+  { name: 'Level 46', experienceThreshold: 29250, number: 46 },
+  { name: 'Level 47', experienceThreshold: 30475, number: 47 },
+  { name: 'Level 48', experienceThreshold: 31725, number: 48 },
+  { name: 'Level 49', experienceThreshold: 33000, number: 49 },
+  { name: 'Level 50', experienceThreshold: 34300, number: 50 },
+  { name: 'Level 51', experienceThreshold: 35625, number: 51 },
+];
+
+export const getUserLevel = (experience: number) => {
+  for (let i = levels.length - 1; i >= 0; i--) {
+    if (experience >= levels[i].experienceThreshold) {
+      return levels[i];
+    }
+  }
+  return levels[0]; // Default to Level 0 if no match
+};

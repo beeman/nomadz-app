@@ -1,11 +1,11 @@
+import { useAuth } from '@/components/auth/auth-provider'
+import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { Tabs } from 'expo-router'
 import React from 'react'
-import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
-import { Image } from 'expo-image'
-import { useAuth } from '@/components/auth/auth-provider'
 
 export default function TabLayout() {
   const { user } = useAuth()
+  
   return (
     <Tabs screenOptions={{ headerShown: false }}>
       {/* The index redirects to the account screen */}
@@ -29,18 +29,6 @@ export default function TabLayout() {
         options={{
           title: 'Settings',
           tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="gearshape.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }) =>
-            user?.image ? (
-              <Image style={{ height: 28, width: 28, borderRadius: 100 }} source={user.image} />
-            ) : (
-              <UiIconSymbol size={28} name="person.wave.2.fill" color={color} />
-            ),
         }}
       />
     </Tabs>

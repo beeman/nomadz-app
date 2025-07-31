@@ -1,0 +1,1 @@
+export const DEFAULT_AVATAR_PATH = '/svgs/default-avatar.svg'; 

@@ -1,9 +1,9 @@
-import { FlatList, View } from 'react-native'
-import * as React from 'react'
-import { useSearch } from './search-provider'
-import { Link } from 'expo-router'
-import { Card } from 'react-native-paper'
 import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
+import { Link } from 'expo-router'
+import * as React from 'react'
+import { FlatList, View } from 'react-native'
+import { Card } from 'react-native-paper'
+import { useSearch } from './search-provider'
 
 export function SearchFeatureIndex() {
   const { random: items } = useSearch()
@@ -15,10 +15,13 @@ export function SearchFeatureIndex() {
       data={items}
       ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
       renderItem={({ item }) => (
-        <Link asChild href={`/search/${item.id}`}>
+        <Link asChild href={`/search/${item.hid}`}>
           <Card>
             <Card.Title title={item.name} subtitle={item.region?.countryName ?? 'Unknown'} />
-            <Card.Cover resizeMode="cover" source={{ uri: item.images[0].url?.replace('{size}', '1024x768') }} />
+            <Card.Cover
+              resizeMode="cover"
+              source={{ uri: item?.images?.[0]?.url?.replace('{size}', '1024x768') || '' }}
+            />
           </Card>
         </Link>
       )}
