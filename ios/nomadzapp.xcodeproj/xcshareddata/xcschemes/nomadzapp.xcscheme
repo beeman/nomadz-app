@@ -77,7 +77,7 @@
             ReferencedContainer = "container:nomadzapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-   </profileAction>
+   </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
    </AnalyzeAction>

@@ -9,10 +9,9 @@ interface LocationSectionProps {
 export default function LocationSection({ property }: LocationSectionProps) {
   return (
     <View className="flex flex-1 flex-col space-y-6 box-bordermb-[10px]">
-      <Text className="text-2xl font-medium text-left text-white mb-6">location</Text>
+      <Text className="text-2xl text-left text-white mb-6 font-primary-medium">location</Text>
       <View className="border border-[#313131] box-border rounded-xl bg-[#151515] overflow-hidden">
         <View className="h-[350px]">
-          {/* <View className="flex flex-1 bg-red-500"></View> */}
           <PropertyMap latitude={property.latitude} longitude={property.longitude} />
         </View>
         {!!property.pois.length && (
@@ -28,7 +27,9 @@ export default function LocationSection({ property }: LocationSectionProps) {
                 <View key={index} className="flex flex-row flex-1 gap-3 items-center text-sm">
                   <HouseFilledIcon color="#7D7F88" className="shrink-0" />
                   <View className="flex flex-col flex-1 h-full relative justify-start">
-                    <Text className="flex flex-col font-semibold text-wrap text-white line-clamp-2">{item.name}</Text>
+                    <Text className="flex flex-col font-primary-semibold text-wrap text-white line-clamp-2">
+                      {item.name}
+                    </Text>
                     <Text className="text-[#7D7F88]">{item.distanceInMeters}m</Text>
                   </View>
                 </View>

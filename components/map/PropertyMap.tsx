@@ -1,6 +1,7 @@
-import { GoogleMaps } from 'expo-maps'
+import googleMapStyles from '@/styles/google_map.styles'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import MapView, { Marker } from 'react-native-maps'
 
 interface PropertyMapProps {
   latitude: number
@@ -14,8 +15,32 @@ interface PropertyMapProps {
 export default function PropertyMap({ latitude, longitude }: PropertyMapProps) {
   return (
     <View style={styles.container}>
-      <GoogleMaps.View
+      <MapView
+        provider="google"
         style={styles.map}
+        customMapStyle={googleMapStyles}
+        zoomControlEnabled={true}
+        rotateEnabled={false}
+        scrollEnabled={true}
+        zoomEnabled={true}
+        showsUserLocation={false}
+        showsMyLocationButton={false}
+        toolbarEnabled={false}
+        initialCamera={{ center: { latitude, longitude }, zoom: 14, heading: 0, pitch: 0 }}
+      >
+        <Marker coordinate={{ longitude, latitude }} />
+      </MapView>
+      {/* <GoogleMaps.View
+        style={styles.map}
+        colorScheme={}
+        uiSettings={{
+          zoomControlsEnabled: true,
+          rotationGesturesEnabled: false,
+          scrollGesturesEnabled: true,
+          zoomGesturesEnabled: true,
+          myLocationButtonEnabled: false,
+          mapToolbarEnabled: false,
+        }}
         cameraPosition={{
           coordinates: {
             latitude,
@@ -23,15 +48,7 @@ export default function PropertyMap({ latitude, longitude }: PropertyMapProps) {
           },
         }}
         markers={[{ coordinates: { latitude, longitude } }]}
-        // customMapStyle={googleMapStyles}
-        // zoomControlEnabled={true}
-        // zoomEnabled={true}
-        // scrollEnabled={true}
-        // rotateEnabled={false}
-        // showsUserLocation={false}
-        // showsMyLocationButton={false}
-        // toolbarEnabled={false}
-      />
+      /> */}
     </View>
   )
 }

@@ -15,7 +15,7 @@
     "expo-env.d.ts",
     "babel.config.js",
     "nativewind-env.d.ts"
-  ],
+, "app.config.js"  ],
   "exclude": [
     "node_modules",
     "tmp"

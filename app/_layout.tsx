@@ -2,6 +2,17 @@ import { AppProviders } from '@/components/app-providers'
 import { AppSplashController } from '@/components/app-splash-controller'
 import { useAuth } from '@/components/auth/auth-provider'
 import { useTrackLocations } from '@/hooks/use-track-locations'
+import {
+  Epilogue_100Thin,
+  Epilogue_200ExtraLight,
+  Epilogue_300Light,
+  Epilogue_400Regular,
+  Epilogue_500Medium,
+  Epilogue_600SemiBold,
+  Epilogue_700Bold,
+  Epilogue_800ExtraBold,
+  Epilogue_900Black,
+} from '@expo-google-fonts/epilogue'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
@@ -20,6 +31,15 @@ export default function RootLayout() {
   })
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Epilogue_100Thin,
+    Epilogue_200ExtraLight,
+    Epilogue_300Light,
+    Epilogue_400Regular,
+    Epilogue_500Medium,
+    Epilogue_600SemiBold,
+    Epilogue_700Bold,
+    Epilogue_800ExtraBold,
+    Epilogue_900Black,
   })
 
   const onLayoutRootView = useCallback(async () => {

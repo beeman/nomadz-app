@@ -12,8 +12,7 @@
     "ios": {
       "bundleIdentifier": "xyz.nomadz.app",
       "config": {
-        "usesNonExemptEncryption": false,
-        "googleMapsApiKey": "AIzaSyDMqzecFE82N1YO4a_zQy4I8LWej9dz74Q"
+        "usesNonExemptEncryption": false
       },
       "supportsTablet": true
     },
@@ -21,11 +20,6 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyDMqzecFE82N1YO4a_zQy4I8LWej9dz74Q"
-        }
       },
       "edgeToEdgeEnabled": true,
       "package": "xyz.nomadz.app"
@@ -51,14 +45,7 @@
         }
       ],
       "expo-web-browser",
-      "expo-font",
-      [
-        "expo-maps",
-        {
-          "requestLocationPermission": true,
-          "locationPermission": "Allow $(PRODUCT_NAME) to use your location"
-        }
-      ]
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
