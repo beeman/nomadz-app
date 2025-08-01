@@ -68,9 +68,9 @@ export default function ImportantInformationSection({ property }: ImportantInfor
 
         {/* Report Link */}
         {/* <View>
-          <button className="text-[#FFC7C7] hover:underline text-xs">
+          <Button className="text-[#FFC7C7] hover:underline text-xs">
             Report this listing
-          </button>
+          </Button>
         </View> */}
       </View>
     </View>

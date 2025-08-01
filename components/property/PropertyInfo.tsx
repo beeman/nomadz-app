@@ -1,48 +1,48 @@
-import { useEffect, useState } from 'react';
-import { useAuth, useRates } from '../../hooks';
-import { ApartmentInfo, GuestDetails } from '../../types/booking.types';
-import { formatDateToISOString } from '../../utils/date.utils';
-import { formatPropertyRegion } from '../../utils/location.utils';
-import toastNotifications from '../../utils/toastNotifications.utils';
-import { LoadingIcon, MapPinFilledIcon } from '../icons/Icons';
-import CryptoPayment from '../Payment/CryptoPayment';
-import GuestsModal from '../Payment/GuestsModal';
-import EmptyState from '../stays/EmptyState';
-import { DateRange } from '../ui/DatePicker';
-import Dropdown from '../ui/Dropdown';
-import Modal from '../ui/Modal';
-import DesktopHeader from './DesktopHeader';
-import DesktopImageGrid from './DesktopImageGrid';
-import FacilitiesCard from './FacilitiesCard';
-import FacilitiesCardMobile from './FacilitiesCardMobile';
-import FacilitiesModal from './FacilitiesModal';
-import FiltersSingleRoom from './FiltersSingleRoom';
-import ImageGallery from './ImageGallery';
-import MobileImageGallery from './MobileImageGallery';
-import RoomCard from './RoomCard';
-import StatsBar from './StatsBar';
+import { useEffect, useState } from 'react'
+import { useAuth, useRates } from '../../hooks'
+import { ApartmentInfo, GuestDetails } from '../../types/booking.types'
+import { formatDateToISOString } from '../../utils/date.utils'
+import { formatPropertyRegion } from '../../utils/location.utils'
+import toastNotifications from '../../utils/toastNotifications.utils'
+import { LoadingIcon, MapPinFilledIcon } from '../icons/Icons'
+import CryptoPayment from '../Payment/CryptoPayment'
+import GuestsModal from '../Payment/GuestsModal'
+import EmptyState from '../stays/EmptyState'
+import { DateRange } from '../ui/DatePicker'
+import Dropdown from '../ui/Dropdown'
+import Modal from '../ui/Modal'
+import DesktopHeader from './DesktopHeader'
+import DesktopImageGrid from './DesktopImageGrid'
+import FacilitiesCard from './FacilitiesCard'
+import FacilitiesCardMobile from './FacilitiesCardMobile'
+import FacilitiesModal from './FacilitiesModal'
+import FiltersSingleRoom from './FiltersSingleRoom'
+import ImageGallery from './ImageGallery'
+import MobileImageGallery from './MobileImageGallery'
+import RoomCard from './RoomCard'
+import StatsBar from './StatsBar'
 
 interface PropertyInfoProps {
-  property: ApartmentInfo;
-  initialDates: DateRange;
+  property: ApartmentInfo
+  initialDates: DateRange
   initialGuests: {
-    adults: number;
-    children: number[];
-  };
+    adults: number
+    children: number[]
+  }
   onChange?: (values: {
     guests: {
-      adults: number;
-      children: number[];
-    };
-    checkin: string | null;
-    checkout: string | null;
-  }) => void;
-  isLoading?: boolean;
+      adults: number
+      children: number[]
+    }
+    checkin: string | null
+    checkout: string | null
+  }) => void
+  isLoading?: boolean
 }
 
 interface PropertyInfoFiltersState {
-  breakfast: 'all' | 'with' | 'without';
-  freeCancellation: 'all' | 'with' | 'without';
+  breakfast: 'all' | 'with' | 'without'
+  freeCancellation: 'all' | 'with' | 'without'
 }
 
 export default function PropertyInfo({
@@ -52,24 +52,24 @@ export default function PropertyInfo({
   onChange,
   isLoading = false,
 }: PropertyInfoProps) {
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-  const [isFacilitiesOpen, setIsFacilitiesOpen] = useState(false);
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false);
-  const [guestsDetails, setGuestsDetails] = useState<GuestDetails[]>([]);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false)
+  const [isFacilitiesOpen, setIsFacilitiesOpen] = useState(false)
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
+  const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
+  const [guestsDetails, setGuestsDetails] = useState<GuestDetails[]>([])
   const [filters, setFilters] = useState<PropertyInfoFiltersState>({
     breakfast: 'all',
     freeCancellation: 'all',
-  });
+  })
   const [dropdownOpen, setDropdownOpen] = useState<{ breakfast: boolean; freeCancellation: boolean }>({
     breakfast: false,
     freeCancellation: false,
-  });
-  const amenities = property.amenityGroups.find(group => group.name === 'General')?.amenities;
+  })
+  const amenities = property.amenityGroups.find((group) => group.name === 'General')?.amenities
 
-  const { selectedApartmentRates, isApartmentRatesLoading } = useRates();
-  const [selectedRate, setSelectedRate] = useState<any>(null);
-  const [availableRooms, setAvailableRooms] = useState<any>([]);
+  const { selectedApartmentRates, isApartmentRatesLoading } = useRates()
+  const [selectedRate, setSelectedRate] = useState<any>(null)
+  const [availableRooms, setAvailableRooms] = useState<any>([])
   const [paymentInfo, setPaymentInfo] = useState({
     nights: 0,
     subtotal: 0,
@@ -77,91 +77,88 @@ export default function PropertyInfo({
     total: 0,
     currencyCode: '',
     bookHash: '',
-  });
-  const [visibleCount, setVisibleCount] = useState(3);
+  })
+  const [visibleCount, setVisibleCount] = useState(3)
 
   const handleShowMore = () => {
-    setVisibleCount(prev => Math.min(prev + 3, availableRooms.length));
-  };
+    setVisibleCount((prev) => Math.min(prev + 3, availableRooms.length))
+  }
 
   const handleShowLess = () => {
-    setVisibleCount(3);
-  };
+    setVisibleCount(3)
+  }
 
   useEffect(() => {
     if (selectedApartmentRates) {
       setAvailableRooms(() =>
         property.roomGroups
-          .map(room => {
-            const rates: any[] = selectedApartmentRates?.rates?.filter(
-              (rate: any) => {
-                // Breakfast filter
-                const hasBreakfast = Boolean(rate?.meal_data?.has_breakfast);
-                const breakfastMatch =
-                  filters.breakfast === 'all' ||
-                  (filters.breakfast === 'with' && hasBreakfast) ||
-                  (filters.breakfast === 'without' && !hasBreakfast);
-                // Free cancellation filter
-                const hasFreeCancellation = Boolean(
-                  rate?.payment_options?.payment_types?.some(
-                    (type: any) => type.cancellation_penalties.free_cancellation_before,
-                  ),
-                );
-                const freeCancellationMatch =
-                  filters.freeCancellation === 'all' ||
-                  (filters.freeCancellation === 'with' && hasFreeCancellation) ||
-                  (filters.freeCancellation === 'without' && !hasFreeCancellation);
-                return breakfastMatch && freeCancellationMatch &&
-                  rate?.room_data_trans?.main_name === room.nameStruct.mainName &&
-                  rate?.room_data_trans?.bedding_type === room.nameStruct.beddingType;
-              },
-            );
+          .map((room) => {
+            const rates: any[] = selectedApartmentRates?.rates?.filter((rate: any) => {
+              // Breakfast filter
+              const hasBreakfast = Boolean(rate?.meal_data?.has_breakfast)
+              const breakfastMatch =
+                filters.breakfast === 'all' ||
+                (filters.breakfast === 'with' && hasBreakfast) ||
+                (filters.breakfast === 'without' && !hasBreakfast)
+              // Free cancellation filter
+              const hasFreeCancellation = Boolean(
+                rate?.payment_options?.payment_types?.some(
+                  (type: any) => type.cancellation_penalties.free_cancellation_before,
+                ),
+              )
+              const freeCancellationMatch =
+                filters.freeCancellation === 'all' ||
+                (filters.freeCancellation === 'with' && hasFreeCancellation) ||
+                (filters.freeCancellation === 'without' && !hasFreeCancellation)
+              return (
+                breakfastMatch &&
+                freeCancellationMatch &&
+                rate?.room_data_trans?.main_name === room.nameStruct.mainName &&
+                rate?.room_data_trans?.bedding_type === room.nameStruct.beddingType
+              )
+            })
             rates?.sort(
               (rateA, rateB) =>
                 Number(rateA.payment_options.payment_types?.[0]?.amount || 0) -
                 Number(rateB.payment_options.payment_types?.[0]?.amount || 0),
-            );
-            return { ...room, rates };
+            )
+            return { ...room, rates }
           })
-          .filter(room => room?.rates?.length > 0),
-      );
+          .filter((room) => room?.rates?.length > 0),
+      )
     } else {
-      setAvailableRooms([]);
+      setAvailableRooms([])
     }
-  }, [filters, selectedApartmentRates]);
+  }, [filters, selectedApartmentRates])
 
-  const handleBookNow = (
-    _: any,
-    rate: any = selectedApartmentRates?.rates?.[0],
-    bookHash: string,
-  ) => {
+  const handleBookNow = (_: any, rate: any = selectedApartmentRates?.rates?.[0], bookHash: string) => {
     if (!authenticatedUser) {
-      toastNotifications.info('please, log in to book this property.');
-      return;
+      toastNotifications.info('please, log in to book this property.')
+      return
     }
-    setSelectedRate(rate);
+    setSelectedRate(rate)
     // Calculate payment values based on the selected rate
-    const paymentDetails = rate?.payment_options?.payment_types?.[0];
-    const basePrice = paymentDetails?.show_amount ? Number(paymentDetails.show_amount) : 0;
+    const paymentDetails = rate?.payment_options?.payment_types?.[0]
+    const basePrice = paymentDetails?.show_amount ? Number(paymentDetails.show_amount) : 0
 
     // Use commission amount if available, otherwise calculate it
     const displayPrice = paymentDetails?.show_amount_with_commission
       ? Number(paymentDetails.show_amount_with_commission)
-      : basePrice;
+      : basePrice
 
-    const taxes = paymentDetails?.tax_data?.taxes || [];
+    const taxes = paymentDetails?.tax_data?.taxes || []
     const totalTaxes = taxes.reduce((sum: number, tax: any) => {
       if (tax.currency_code === paymentDetails?.show_currency_code) {
-        return sum + Number(tax.amount);
+        return sum + Number(tax.amount)
       }
-      return sum;
-    }, 0);
+      return sum
+    }, 0)
 
     // For backend communication, use original amounts
-    const totalPrice = basePrice + totalTaxes;
+    const totalPrice = basePrice + totalTaxes
 
     // For display, use commission amount (which already includes taxes if calculated properly)
-    const displayTotalPrice = displayPrice;
+    const displayTotalPrice = displayPrice
 
     setPaymentInfo({
       nights: rate?.daily_prices?.length || 0,
@@ -170,67 +167,65 @@ export default function PropertyInfo({
       total: totalPrice, // Keep original for backend
       currencyCode: paymentDetails?.show_currency_code || '',
       bookHash: rate?.book_hash || '',
-    });
-    setIsGuestsModalOpen(true);
-  };
+    })
+    setIsGuestsModalOpen(true)
+  }
 
   const handleGuestsModalConfirm = (details: GuestDetails[]) => {
-    setGuestsDetails(details);
-    setIsGuestsModalOpen(false);
-    setIsPaymentModalOpen(true);
-  };
+    setGuestsDetails(details)
+    setIsGuestsModalOpen(false)
+    setIsPaymentModalOpen(true)
+  }
 
-  const [dateRange, setDateRange] = useState<DateRange>(initialDates);
-  const [guests, setGuests] = useState(initialGuests);
+  const [dateRange, setDateRange] = useState<DateRange>(initialDates)
+  const [guests, setGuests] = useState(initialGuests)
 
   const handleDateRangeChange = (newDateRange: DateRange) => {
-    setDateRange(newDateRange);
-    notifyChange(newDateRange, guests);
-  };
+    setDateRange(newDateRange)
+    notifyChange(newDateRange, guests)
+  }
 
   const handleGuestsChange = (newGuests: typeof guests) => {
-    setGuests(newGuests);
-    notifyChange(dateRange, newGuests);
-  };
+    setGuests(newGuests)
+    notifyChange(dateRange, newGuests)
+  }
 
   const notifyChange = (dates: DateRange, currentGuests: typeof guests) => {
     if (onChange) {
-      const [start, end] = dates.dates;
+      const [start, end] = dates.dates
       onChange({
         guests: currentGuests,
         checkin: start ? formatDateToISOString(start) : null,
         checkout: end ? formatDateToISOString(end) : null,
-      });
+      })
     }
-  };
+  }
 
-  const { authenticatedUser } = useAuth();
+  const { authenticatedUser } = useAuth()
 
-  const totalReviews = property.reviews?.length || 0;
+  const totalReviews = property.reviews?.length || 0
 
   return (
-    <View className='flex flex-col mb-6 xl:mb-24'>
+    <View className="flex flex-col mb-6 xl:mb-24">
       <DesktopHeader property={property} />
       <DesktopImageGrid property={property} onGalleryOpen={() => setIsGalleryOpen(true)} />
 
       <View>
-        <View className='flex flex-col gap-6 md:gap-12 xl:flex-row-reverse'>
+        <View className="flex flex-col gap-6 md:gap-12 xl:flex-row-reverse">
           <MobileImageGallery property={property} onGalleryOpen={() => setIsGalleryOpen(true)} />
 
           {/* Property Info */}
-          <View className='flex text-white md:space-x-12 max-md:flex-col'>
+          <View className="flex text-white md:space-x-12 max-md:flex-col">
             <View>
               {/* Header */}
-              <Text className='mb-4 text-xl font-medium text-left md:hidden sm:text-2xl'>
-                {property.name}
-              </Text>
-              <View className='flex items-center mb-4 space-x-8 max-md:hidden'>
-                <View className='flex items-center gap-1.5'>
-                  <Text className='text-[#FFBF75]'>★</Text>
+              <Text className="mb-4 text-xl font-medium text-left md:hidden sm:text-2xl">{property.name}</Text>
+              <View className="flex items-center mb-4 space-x-8 max-md:hidden">
+                <View className="flex items-center gap-1.5">
+                  <Text className="text-[#FFBF75]">★</Text>
                   {property.rating ? (
                     <Text>{property.rating}</Text>
                   ) : (
-                    <Text className='text-[#A9A9A9]'>No rating yet</Text>
+                    <Text className="text-[#A9A9A9]">No rating yet</Text>
                   )}
                   {totalReviews > 0 && (
                     <Text>
@@ -241,18 +236,16 @@ export default function PropertyInfo({
                 <View
                   className={`${!property.region?.name && !property.region?.countryCode ? 'text-[#A9A9A9]' : ''} flex items-center gap-1.5`}
                 >
-                  <MapPinFilledIcon className='mb-1 h-4' />
-                  <Text>
-                    {formatPropertyRegion([property.region?.name, property.region?.countryCode])}
-                  </Text>
+                  <MapPinFilledIcon className="mb-1 h-4" />
+                  <Text>{formatPropertyRegion([property.region?.name, property.region?.countryCode])}</Text>
                 </View>
               </View>
 
               <StatsBar property={property} />
 
-              <View className='space-y-4 max-md:hidden'>
+              <View className="space-y-4 max-md:hidden">
                 {/* Description */}
-                <View className='md:mb-10 text-sm 2xl:text-base 3xl:text-lg text-[#A9A9A9] xl:w-3/4'>
+                <View className="md:mb-10 text-sm 2xl:text-base 3xl:text-lg text-[#A9A9A9] xl:w-3/4">
                   {property.descriptionStruct?.[0]?.paragraphs[0]}
                 </View>
 
@@ -261,7 +254,7 @@ export default function PropertyInfo({
                   <FacilitiesCard
                     amenities={amenities || []}
                     onShowAll={() => setIsFacilitiesOpen(true)}
-                    className='w-fit h-min'
+                    className="w-fit h-min"
                   />
                 )}
               </View>
@@ -276,12 +269,8 @@ export default function PropertyInfo({
               isAuthenticated={!!authenticatedUser}
               isLoading={isLoading}
               selectedRate={selectedRate}
-              onBookNow={() =>
-                handleBookNow(undefined, selectedRate, selectedRate?.book_hash || '')
-              }
-              isBookingEnabled={
-                !isLoading && !!selectedRate
-              }
+              onBookNow={() => handleBookNow(undefined, selectedRate, selectedRate?.book_hash || '')}
+              isBookingEnabled={!isLoading && !!selectedRate}
               showBookingDetails={property.roomGroups.length === 1}
             />
           </View>
@@ -291,9 +280,9 @@ export default function PropertyInfo({
         <View className="flex items-stretch self-start gap-5 sm:bg-[#101010] text-white sm:p-4 rounded-2xl sm:border border-[#2A2A2A] shadow-md relative max-md:w-full w-fit max-[470px]:flex-col max-[470px]:justify-start">
           {/* Meal options dropdown */}
           <View className="relative min-w-[200px] max-md:grow">
-            <button
+            <Button
               className="w-full flex flex-col items-start justify-center bg-[#1F1F1F] rounded-xl px-4 py-3 text-left border border-[#272727] focus:outline-none focus:ring-2 focus:ring-[#272727] transition-colors"
-              onClick={() => setDropdownOpen(o => ({ ...o, breakfast: !o.breakfast }))}
+              onClick={() => setDropdownOpen((o) => ({ ...o, breakfast: !o.breakfast }))}
               type="button"
             >
               <Text className="text-sm font-semibold">meal options</Text>
@@ -301,47 +290,62 @@ export default function PropertyInfo({
                 {filters.breakfast === 'all'
                   ? 'all options'
                   : filters.breakfast === 'with'
-                  ? 'has breakfast'
-                  : 'without breakfast'}
+                    ? 'has breakfast'
+                    : 'without breakfast'}
               </Text>
               <Text className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                <svg width="20" height="20" fill="none" viewBox="0 0 20 20"><path d="M6 8l4 4 4-4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                  <path d="M6 8l4 4 4-4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </Text>
-            </button>
-            <Dropdown isOpen={dropdownOpen.breakfast} onClose={() => setDropdownOpen(o => ({ ...o, breakfast: false }))} className="w-full bg-[#232323] rounded-xl border border-[#323232] shadow-lg mt-2">
+            </Button>
+            <Dropdown
+              isOpen={dropdownOpen.breakfast}
+              onClose={() => setDropdownOpen((o) => ({ ...o, breakfast: false }))}
+              className="w-full bg-[#232323] rounded-xl border border-[#323232] shadow-lg mt-2"
+            >
               <ul className="py-2">
                 <li>
-                  <button
+                  <Button
                     className={`w-full text-left px-4 py-2 text-sm ${filters.breakfast === 'all' ? 'text-white font-semibold' : 'text-[#A9A9A9]'} hover:bg-[#292929] rounded-lg`}
-                    onClick={() => { setFilters(f => ({ ...f, breakfast: 'all' })); setDropdownOpen(o => ({ ...o, breakfast: false })); }}
+                    onClick={() => {
+                      setFilters((f) => ({ ...f, breakfast: 'all' }))
+                      setDropdownOpen((o) => ({ ...o, breakfast: false }))
+                    }}
                   >
                     all options
-                  </button>
+                  </Button>
                 </li>
                 <li>
-                  <button
+                  <Button
                     className={`w-full text-left px-4 py-2 text-sm ${filters.breakfast === 'with' ? 'text-white font-semibold' : 'text-[#A9A9A9]'} hover:bg-[#292929] rounded-lg`}
-                    onClick={() => { setFilters(f => ({ ...f, breakfast: 'with' })); setDropdownOpen(o => ({ ...o, breakfast: false })); }}
+                    onClick={() => {
+                      setFilters((f) => ({ ...f, breakfast: 'with' }))
+                      setDropdownOpen((o) => ({ ...o, breakfast: false }))
+                    }}
                   >
                     has breakfast
-                  </button>
+                  </Button>
                 </li>
                 <li>
-                  <button
+                  <Button
                     className={`w-full text-left px-4 py-2 text-sm ${filters.breakfast === 'without' ? 'text-white font-semibold' : 'text-[#A9A9A9]'} hover:bg-[#292929] rounded-lg`}
-                    onClick={() => { setFilters(f => ({ ...f, breakfast: 'without' })); setDropdownOpen(o => ({ ...o, breakfast: false })); }}
+                    onClick={() => {
+                      setFilters((f) => ({ ...f, breakfast: 'without' }))
+                      setDropdownOpen((o) => ({ ...o, breakfast: false }))
+                    }}
                   >
                     without breakfast
-                  </button>
+                  </Button>
                 </li>
               </ul>
             </Dropdown>
           </View>
           {/* Cancelation policy dropdown */}
           <View className="relative min-w-[200px] max-md:grow">
-            <button
+            <Button
               className="w-full flex flex-col items-start justify-center bg-[#1F1F1F] rounded-xl px-4 py-3 text-left border border-[#272727] focus:outline-none focus:ring-2 focus:ring-[#272727] transition-colors"
-              onClick={() => setDropdownOpen(o => ({ ...o, freeCancellation: !o.freeCancellation }))}
+              onClick={() => setDropdownOpen((o) => ({ ...o, freeCancellation: !o.freeCancellation }))}
               type="button"
             >
               <Text className="text-sm font-semibold">cancelation policy</Text>
@@ -349,57 +353,72 @@ export default function PropertyInfo({
                 {filters.freeCancellation === 'all'
                   ? 'all options'
                   : filters.freeCancellation === 'with'
-                  ? 'free cancelation'
-                  : 'no free cancelation'}
+                    ? 'free cancelation'
+                    : 'no free cancelation'}
               </Text>
               <Text className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                <svg width="20" height="20" fill="none" viewBox="0 0 20 20"><path d="M6 8l4 4 4-4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                  <path d="M6 8l4 4 4-4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </Text>
-            </button>
-            <Dropdown isOpen={dropdownOpen.freeCancellation} onClose={() => setDropdownOpen(o => ({ ...o, freeCancellation: false }))} className="w-full bg-[#232323] rounded-xl border border-[#323232] shadow-lg mt-2">
+            </Button>
+            <Dropdown
+              isOpen={dropdownOpen.freeCancellation}
+              onClose={() => setDropdownOpen((o) => ({ ...o, freeCancellation: false }))}
+              className="w-full bg-[#232323] rounded-xl border border-[#323232] shadow-lg mt-2"
+            >
               <ul className="py-2">
                 <li>
-                  <button
+                  <Button
                     className={`w-full text-left px-4 py-2 text-sm ${filters.freeCancellation === 'all' ? 'text-white font-semibold' : 'text-[#A9A9A9]'} hover:bg-[#292929] rounded-lg`}
-                    onClick={() => { setFilters(f => ({ ...f, freeCancellation: 'all' })); setDropdownOpen(o => ({ ...o, freeCancellation: false })); }}
+                    onClick={() => {
+                      setFilters((f) => ({ ...f, freeCancellation: 'all' }))
+                      setDropdownOpen((o) => ({ ...o, freeCancellation: false }))
+                    }}
                   >
                     all options
-                  </button>
+                  </Button>
                 </li>
                 <li>
-                  <button
+                  <Button
                     className={`w-full text-left px-4 py-2 text-sm ${filters.freeCancellation === 'with' ? 'text-white font-semibold' : 'text-[#A9A9A9]'} hover:bg-[#292929] rounded-lg`}
-                    onClick={() => { setFilters(f => ({ ...f, freeCancellation: 'with' })); setDropdownOpen(o => ({ ...o, freeCancellation: false })); }}
+                    onClick={() => {
+                      setFilters((f) => ({ ...f, freeCancellation: 'with' }))
+                      setDropdownOpen((o) => ({ ...o, freeCancellation: false }))
+                    }}
                   >
                     free cancelation
-                  </button>
+                  </Button>
                 </li>
                 <li>
-                  <button
+                  <Button
                     className={`w-full text-left px-4 py-2 text-sm ${filters.freeCancellation === 'without' ? 'text-white font-semibold' : 'text-[#A9A9A9]'} hover:bg-[#292929] rounded-lg`}
-                    onClick={() => { setFilters(f => ({ ...f, freeCancellation: 'without' })); setDropdownOpen(o => ({ ...o, freeCancellation: false })); }}
+                    onClick={() => {
+                      setFilters((f) => ({ ...f, freeCancellation: 'without' }))
+                      setDropdownOpen((o) => ({ ...o, freeCancellation: false }))
+                    }}
                   >
                     no free cancelation
-                  </button>
+                  </Button>
                 </li>
               </ul>
             </Dropdown>
           </View>
         </View>
-        
+
         {/* Room Cards */}
         <>
           {property.roomGroups.length > 1 && (availableRooms.length || isApartmentRatesLoading) && (
-            <View className='max-md:mb-10'>
-              <Text className='mt-8 text-2xl text-white font-secondary'>available rooms</Text>
+            <View className="max-md:mb-10">
+              <Text className="mt-8 text-2xl text-white font-secondary">available rooms</Text>
 
               {isApartmentRatesLoading ? (
-                <View className='flex justify-center items-center mt-6'>
-                  <LoadingIcon className='animate-spin size-12' />
+                <View className="flex justify-center items-center mt-6">
+                  <LoadingIcon className="animate-spin size-12" />
                 </View>
               ) : (
-                <View className='mt-6 space-y-12'>
-                  <View className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
+                <View className="mt-6 space-y-12">
+                  <View className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {availableRooms.slice(0, visibleCount).map((room: any, index: number) => {
                       return (
                         <RoomCard
@@ -416,28 +435,28 @@ export default function PropertyInfo({
                           onBookNow={handleBookNow}
                           isAvailable={!!authenticatedUser}
                         />
-                      );
+                      )
                     })}
                   </View>
 
                   {availableRooms.length > 3 &&
                     (availableRooms.length > visibleCount ? (
-                      <View className='flex justify-center mt-4'>
-                        <button
-                          className='px-6 py-2 text-white bg-[#292929] transition-colors rounded-xl hover:bg-[#313131]'
+                      <View className="flex justify-center mt-4">
+                        <Button
+                          className="px-6 py-2 text-white bg-[#292929] transition-colors rounded-xl hover:bg-[#313131]"
                           onClick={handleShowMore}
                         >
                           load more
-                        </button>
+                        </Button>
                       </View>
                     ) : (
-                      <View className='flex justify-center mt-4'>
-                        <button
-                          className='px-6 py-2 text-white bg-[#292929] transition-colors rounded-xl hover:bg-[#313131]'
+                      <View className="flex justify-center mt-4">
+                        <Button
+                          className="px-6 py-2 text-white bg-[#292929] transition-colors rounded-xl hover:bg-[#313131]"
                           onClick={handleShowLess}
                         >
                           show less
-                        </button>
+                        </Button>
                       </View>
                     ))}
                 </View>
@@ -448,46 +467,38 @@ export default function PropertyInfo({
           {property.roomGroups.length > 1 &&
             (!selectedApartmentRates?.rates?.length || !availableRooms.length || isLoading) && (
               <EmptyState
-                title='no rooms available'
-                description='try selecting other dates.'
+                title="no rooms available"
+                description="try selecting other dates."
                 className={`my-6 md:mt-12 ${isLoading ? 'opacity-0' : ''}`}
               />
             )}
         </>
 
-        <View className='space-y-4 text-white md:hidden'>
+        <View className="space-y-4 text-white md:hidden">
           {/* Description */}
-          <View className='md:mb-10 text-sm 2xl:text-base 3xl:text-lg text-[#A9A9A9]'>
+          <View className="md:mb-10 text-sm 2xl:text-base 3xl:text-lg text-[#A9A9A9]">
             {property.descriptionStruct?.[0]?.paragraphs[0]}
           </View>
 
           {/* Facilities - single room */}
           {property.roomGroups.length === 1 && (
-            <FacilitiesCardMobile
-              amenities={amenities || []}
-              onShowAll={() => setIsFacilitiesOpen(true)}
-            />
+            <FacilitiesCardMobile amenities={amenities || []} onShowAll={() => setIsFacilitiesOpen(true)} />
           )}
         </View>
       </View>
 
       {/* Gallery Modal */}
       <Modal isOpen={isGalleryOpen} onClose={() => setIsGalleryOpen(false)}>
-        <View className='w-[98vw] min-[470px]:w-[90vw] h-[90dvh] bg-[#151515] rounded-xl p-6 relative flex flex-col'>
-          <View className='flex justify-between items-center mb-6'>
-            <Text className='text-xl font-medium text-left text-white sm:text-2xl'>
-              {property.name}
-            </Text>
-            <button
-              onClick={() => setIsGalleryOpen(false)}
-              className='text-white/60 hover:text-white'
-            >
+        <View className="w-[98vw] min-[470px]:w-[90vw] h-[90dvh] bg-[#151515] rounded-xl p-6 relative flex flex-col">
+          <View className="flex justify-between items-center mb-6">
+            <Text className="text-xl font-medium text-left text-white sm:text-2xl">{property.name}</Text>
+            <Button onClick={() => setIsGalleryOpen(false)} className="text-white/60 hover:text-white">
               close
-            </button>
+            </Button>
           </View>
           <ImageGallery
             images={property.images}
-            roomGroups={property.roomGroups.map(room => ({
+            roomGroups={property.roomGroups.map((room) => ({
               ...room,
               nameStruct: {
                 ...room.nameStruct,
@@ -507,7 +518,7 @@ export default function PropertyInfo({
 
       {/* Add Guests Modal */}
       <Modal
-        className='max-h-[95%] overflow-auto bg-transparent'
+        className="max-h-[95%] overflow-auto bg-transparent"
         isOpen={isGuestsModalOpen}
         onClose={() => setIsGuestsModalOpen(false)}
       >
@@ -520,7 +531,7 @@ export default function PropertyInfo({
 
       {/* Add Payment Modal */}
       <Modal
-        className='max-h-[95%] overflow-auto bg-transparent'
+        className="max-h-[95%] overflow-auto bg-transparent"
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
       >
@@ -545,5 +556,5 @@ export default function PropertyInfo({
         />
       </Modal>
     </View>
-  );
+  )
 }

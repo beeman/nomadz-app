@@ -1,84 +1,84 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useSearchParams as useRouterSearchParams } from 'react-router-dom';
-import { SORT_OPTIONS } from '../../constants/booking.constants';
-import { RoutePaths } from '../../enums/RoutePaths';
-import { useEvents, useSearchParams } from '../../hooks';
-import { bookingsService } from '../../services/bookings';
-import { GetApartmentsSort, PropertyCategory } from '../../types/booking.types';
-import { parseQueryParams, resolveUrl } from '../../utils/app.utils';
-import { ArrowsUpDownIcon, ListIcon, MapIcon } from '../icons/Icons';
-import { PriceRange } from '../ui';
-import EventCard from './EventCard';
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate, useSearchParams as useRouterSearchParams } from 'react-router-dom'
+import { SORT_OPTIONS } from '../../constants/booking.constants'
+import { RoutePaths } from '../../enums/RoutePaths'
+import { useEvents, useSearchParams } from '../../hooks'
+import { bookingsService } from '../../services/bookings'
+import { GetApartmentsSort, PropertyCategory } from '../../types/booking.types'
+import { parseQueryParams, resolveUrl } from '../../utils/app.utils'
+import { ArrowsUpDownIcon, ListIcon, MapIcon } from '../icons/Icons'
+import { PriceRange } from '../ui'
+import EventCard from './EventCard'
 
 export default function FilterMenu({ priceDistribution }: { priceDistribution: Record<number, number> }) {
-  const { filterParams, updateFilterParams, getCombinedParams } = useSearchParams();
-  const { selectedEvent } = useEvents();
+  const { filterParams, updateFilterParams, getCombinedParams } = useSearchParams()
+  const { selectedEvent } = useEvents()
 
-  const [isSortOpen, setIsSortOpen] = useState(false);
-  const [parsedParams, setParsedParams] = useState<any>(null);
-  const [propertyCategories, setPropertyCategories] = useState<PropertyCategory[]>([]);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [isSortOpen, setIsSortOpen] = useState(false)
+  const [parsedParams, setParsedParams] = useState<any>(null)
+  const [propertyCategories, setPropertyCategories] = useState<PropertyCategory[]>([])
+  const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchPropertyTypes = async () => {
       try {
-        const categories = await bookingsService.getPropertyTypes();
-        setPropertyCategories(categories);
+        const categories = await bookingsService.getPropertyTypes()
+        setPropertyCategories(categories)
       } catch (error) {
-        console.error('Failed to fetch property types:', error);
+        console.error('Failed to fetch property types:', error)
       }
-    };
+    }
 
-    fetchPropertyTypes();
-  }, []);
+    fetchPropertyTypes()
+  }, [])
 
   const togglePropertyType = (type: string) => {
     if (type === 'all') {
-      const allCategoryNames = propertyCategories.map(cat => cat.name);
-      const areAllSelected = allCategoryNames.every(name => filterParams.categories?.includes(name));
-      
+      const allCategoryNames = propertyCategories.map((cat) => cat.name)
+      const areAllSelected = allCategoryNames.every((name) => filterParams.categories?.includes(name))
+
       updateFilterParams({
-        categories: areAllSelected ? [] : allCategoryNames
-      });
+        categories: areAllSelected ? [] : allCategoryNames,
+      })
     } else {
       updateFilterParams({
         categories: filterParams.categories?.includes(type)
-          ? filterParams.categories.filter(t => t !== type)
-          : [...(filterParams.categories || []), type]
-      });
+          ? filterParams.categories.filter((t) => t !== type)
+          : [...(filterParams.categories || []), type],
+      })
     }
-  };
+  }
 
   const handlePriceRangeChange = (range: { min: number; max: number | null }) => {
     updateFilterParams({
       minPrice: range.min,
-      maxPrice: range.max
-    });
-  };
+      maxPrice: range.max,
+    })
+  }
 
-  const searchParams = new URLSearchParams(location.search);
-  const isMapOpen = searchParams.get('map_open') === 'true';
+  const searchParams = new URLSearchParams(location.search)
+  const isMapOpen = searchParams.get('map_open') === 'true'
 
   const setSortOption = (option: GetApartmentsSort) => {
     updateFilterParams({
-      sort: option
-    });
-    setIsSortOpen(false);
-  };
+      sort: option,
+    })
+    setIsSortOpen(false)
+  }
 
   const toggleMapView = () => {
     if (isMapOpen) {
-      searchParams.delete('map_open');
+      searchParams.delete('map_open')
     } else {
-      searchParams.set('map_open', 'true');
+      searchParams.set('map_open', 'true')
     }
-    navigate({ search: searchParams.toString() });
-  };
+    navigate({ search: searchParams.toString() })
+  }
 
-  const [routerSearchParams] = useRouterSearchParams();
+  const [routerSearchParams] = useRouterSearchParams()
   const handleApply = () => {
-    const parsedParams = parseQueryParams(routerSearchParams.toString());
+    const parsedParams = parseQueryParams(routerSearchParams.toString())
 
     // Navigate to stays page with search params
     const searchUrl = resolveUrl(RoutePaths.STAYS, {
@@ -88,20 +88,20 @@ export default function FilterMenu({ priceDistribution }: { priceDistribution: R
       sort: filterParams.sort,
       minPrice: filterParams.minPrice,
       maxPrice: filterParams.maxPrice,
-    });
+    })
 
-    navigate(searchUrl);
-  };
+    navigate(searchUrl)
+  }
 
   useEffect(() => {
-    setParsedParams(parseQueryParams(routerSearchParams.toString()));
+    setParsedParams(parseQueryParams(routerSearchParams.toString()))
   }, [routerSearchParams])
 
   return (
     <View className="overflow-y-auto no-scrollbar overflow-x-hidden !w-[21vw] min-w-60 bg-[#151515] rounded-2xl p-6 border border-[#292929]">
       {/* Event card */}
       {selectedEvent && selectedEvent.id === parsedParams?.event && (
-        <EventCard event={selectedEvent} className='mb-4' />
+        <EventCard event={selectedEvent} className="mb-4" />
       )}
 
       {/* Property Type */}
@@ -109,37 +109,31 @@ export default function FilterMenu({ priceDistribution }: { priceDistribution: R
         <View className="border-b border-[#292929] pb-6">
           <Text className="mb-4 text-xs text-white">property type</Text>
           <View className="flex flex-wrap gap-1">
-            <button
+            <Button
               onClick={() => {
                 // Clear all selected categories from the filter parameters
                 updateFilterParams({
-                  categories: []
-                });
+                  categories: [],
+                })
               }}
               className={`
                 px-4 py-1.5 rounded-full text-white text-xs border border-[#ffffff80]
-                ${filterParams.categories?.length === 0 
-                  ? 'bg-[#FFFFFF1F]' 
-                  : 'bg-[#1B1B1B]'
-                }
+                ${filterParams.categories?.length === 0 ? 'bg-[#FFFFFF1F]' : 'bg-[#1B1B1B]'}
               `}
             >
               all
-            </button>
-            {propertyCategories.map(category => (
-              <button
+            </Button>
+            {propertyCategories.map((category) => (
+              <Button
                 key={category.name}
                 onClick={() => togglePropertyType(category.name)}
                 className={`
                   px-4 py-1.5 rounded-full text-white text-xs border border-[#ffffff80]
-                  ${filterParams.categories?.includes(category.name) 
-                    ? 'bg-[#FFFFFF1F]' 
-                    : 'bg-[#1B1B1B]'
-                  }
+                  ${filterParams.categories?.includes(category.name) ? 'bg-[#FFFFFF1F]' : 'bg-[#1B1B1B]'}
                 `}
               >
                 {category.name.replace(/_/g, ' ').toLowerCase()}
-              </button>
+              </Button>
             ))}
           </View>
         </View>
@@ -162,7 +156,7 @@ export default function FilterMenu({ priceDistribution }: { priceDistribution: R
       <View className="pt-6 pb-6 text-xs border-b border-[#292929]">
         <View className="flex items-center justify-between">
           <Text className="text-white">free cancellation</Text>
-          <button
+          <Button
             onClick={() => updateFilterParams({ hasFreeCancellation: !filterParams.hasFreeCancellation })}
             className={`
               w-12 h-6 rounded-full transition-colors duration-200
@@ -175,37 +169,32 @@ export default function FilterMenu({ priceDistribution }: { priceDistribution: R
                 ${filterParams.hasFreeCancellation ? 'translate-x-6' : 'translate-x-1'}
               `}
             />
-          </button>
+          </Button>
         </View>
       </View>
 
       {/* Apply Button */}
-      <button 
-        className="w-full py-2 mt-4 font-semibold text-black bg-white rounded-full"
-        onClick={() => handleApply()}
-      >
+      <Button className="w-full py-2 mt-4 font-semibold text-black bg-white rounded-full" onClick={() => handleApply()}>
         apply
-      </button>
+      </Button>
 
       {/* Map/List Toggle Button */}
       <View className="w-full pt-6">
-        <button
+        <Button
           onClick={toggleMapView}
           className="bg-[#D9D9D90D] rounded-full text-white text-xs font-medium flex justify-between w-full"
         >
-          <Text className='mx-6 my-auto'>
-            {isMapOpen ? 'show list' : 'explore on map'}
+          <Text className="mx-6 my-auto">{isMapOpen ? 'show list' : 'explore on map'}</Text>
+          <Text className="bg-[#D9D9D912] rounded-full p-3">
+            {isMapOpen ? <ListIcon className="w-5 h-5" /> : <MapIcon className="w-5 h-5" />}
           </Text>
-          <Text className='bg-[#D9D9D912] rounded-full p-3'>
-            {isMapOpen ? <ListIcon className='w-5 h-5' /> : <MapIcon className='w-5 h-5' />}
-          </Text>
-        </button>
+        </Button>
       </View>
 
       {/* Sort Dropdown */}
-      <View className='mt-6'>
+      <View className="mt-6">
         <View className="relative">
-          <button 
+          <Button
             className="w-full flex items-center py-2 px-4 bg-[#1B1B1B] rounded-full border border-[#ffffff80] text-xs text-white"
             onClick={() => setIsSortOpen(!isSortOpen)}
           >
@@ -213,13 +202,13 @@ export default function FilterMenu({ priceDistribution }: { priceDistribution: R
               <ArrowsUpDownIcon />
               <Text>sort by: {SORT_OPTIONS[filterParams.sort ?? GetApartmentsSort.MostRelevant]}</Text>
             </View>
-          </button>
+          </Button>
 
           {/* Dropdown Menu */}
           {isSortOpen && (
             <View className="absolute z-50 w-full bottom-full mb-2 bg-[#1B1B1B] border border-[#292929] rounded-xl py-2 shadow-lg">
               {Object.entries(SORT_OPTIONS).map(([key, label]) => (
-                <button
+                <Button
                   key={key}
                   className={`
                     w-full px-4 py-2 text-left text-xs hover:bg-[#292929] transition-colors
@@ -228,12 +217,12 @@ export default function FilterMenu({ priceDistribution }: { priceDistribution: R
                   onClick={() => setSortOption(key as GetApartmentsSort)}
                 >
                   {label}
-                </button>
+                </Button>
               ))}
             </View>
           )}
         </View>
       </View>
     </View>
-  );
-} 
+  )
+}

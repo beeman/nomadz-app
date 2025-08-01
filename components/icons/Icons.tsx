@@ -12,9 +12,10 @@ import Svg, {
   Path,
   Rect,
   Stop,
+  SvgProps,
 } from 'react-native-svg'
 
-interface IconProps {
+interface IconProps extends SvgProps {
   className?: string
   color?: string
 }

@@ -1,15 +1,15 @@
-import { HeartFilledIcon, HeartIcon } from '../icons/Icons';
-import { useState, useEffect } from 'react';
-import { debounce } from 'lodash';
-import toastNotifications from '../../utils/toastNotifications.utils';
+import { debounce } from 'lodash'
+import { useEffect, useState } from 'react'
+import toastNotifications from '../../utils/toastNotifications.utils'
+import { HeartFilledIcon, HeartIcon } from '../icons/Icons'
 
 interface SaveApartmentButtonProps {
-  hid: number;
-  isAuthenticated: boolean;
-  events: any[];
-  onToggleSave: (hid: number) => Promise<void>;
-  isLoading?: boolean;
-  className?: string;
+  hid: number
+  isAuthenticated: boolean
+  events: any[]
+  onToggleSave: (hid: number) => Promise<void>
+  isLoading?: boolean
+  className?: string
 }
 
 export default function SaveApartmentButton({
@@ -20,45 +20,43 @@ export default function SaveApartmentButton({
   isLoading = false,
   className = '',
 }: SaveApartmentButtonProps) {
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(false)
 
   useEffect(() => {
-    const event = events.find(event => event.hid === hid);
-    setIsSaved(event?.isSaved || false);
-  }, [events, hid]);
+    const event = events.find((event) => event.hid === hid)
+    setIsSaved(event?.isSaved || false)
+  }, [events, hid])
 
   const handleSaveToggle = debounce(async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
+    e.preventDefault()
+    e.stopPropagation()
+
     try {
-      setIsSaved(!isSaved);
-      await onToggleSave(hid);
+      setIsSaved(!isSaved)
+      await onToggleSave(hid)
     } catch (error) {
-      setIsSaved(isSaved);
-      toastNotifications.error('Failed to update property');
+      setIsSaved(isSaved)
+      toastNotifications.error('Failed to update property')
     }
-  }, 300);
+  }, 300)
 
   useEffect(() => {
     return () => {
-      handleSaveToggle.cancel();
-    };
-  }, []);
+      handleSaveToggle.cancel()
+    }
+  }, [])
 
-  if (!isAuthenticated) return null;
+  if (!isAuthenticated) return null
 
   return (
-    <button 
+    <Button
       onClick={handleSaveToggle}
       disabled={isLoading}
       className={`absolute p-1 transition-colors rounded-full z-10 cursor-pointer ${
-        isSaved 
-          ? 'bg-white hover:bg-white/90' 
-          : 'bg-black/70 hover:bg-black/50'
+        isSaved ? 'bg-white hover:bg-white/90' : 'bg-black/70 hover:bg-black/50'
       } ${className}`}
     >
-      {isSaved ? <HeartFilledIcon className='size-full' /> : <HeartIcon className='text-white size-full' />}
-    </button>
-  );
+      {isSaved ? <HeartFilledIcon className="size-full" /> : <HeartIcon className="text-white size-full" />}
+    </Button>
+  )
 }

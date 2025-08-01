@@ -180,8 +180,8 @@ export default function LocationInput({
   const showPlaceholder = !isOpen && !value;
 
   return (
-    <div className={`relative text-white rounded-full ${className}`}>
-      <div
+    <View className={`relative text-white rounded-full ${className}`}>
+      <View
         className={`flex items-center pl-4 py-2 border cursor-pointer w-full !min-w-48 relative z-10 ${
           (isOpen && suggestions.length) || isLoading ? 'rounded-t-3xl border-transparent' : 'border-[#555555] rounded-3xl'
         } ${innerClassName} ${(isOpen || value) ? activeBackgroundColor : backgroundColor}`}
@@ -189,7 +189,7 @@ export default function LocationInput({
       >
         <MapPinIcon className="w-5 h-5 mr-3 text-[#A9A9A9] shrink-0" />
         
-        <div className={`relative flex-grow`}>
+        <View className={`relative flex-grow`}>
           <input
             ref={inputRef}
             type="text"
@@ -197,17 +197,17 @@ export default function LocationInput({
             value={value}
             onChange={(e) => handleInputChange(e.target.value)}
           />
-        </div>
+        </View>
           
         {showPlaceholder && (
-          <div className="flex absolute inset-0 left-12 items-center pointer-events-none font-secondary">
-            <p className="text-sm text-[#E6E6E6] font-medium max-md:hidden">search destination</Text>
-            <p className="text-sm text-[#E6E6E6] font-medium md:hidden">search destination</Text>
-          </div>
+          <View className="flex absolute inset-0 left-12 items-center pointer-events-none font-secondary">
+            </Text className="text-sm text-[#E6E6E6] font-medium max-md:hidden">search destination</Text>
+            </Text className="text-sm text-[#E6E6E6] font-medium md:hidden">search destination</Text>
+          </View>
         )}
 
         {value && (
-          <button
+          <Button
             onClick={(e) => {
               e.stopPropagation();
               onChange('');
@@ -220,9 +220,9 @@ export default function LocationInput({
             className="p-1.5 ml-0.5 mr-1 rounded-full right-4 hover:bg-black/40"
           >
             <XMarkIcon className="w-2.5 h-2.5 text-white" />
-          </button>
+          </Button>
         )}
-      </div>
+      </View>
 
       {/* Search Suggestions Dropdown */}
       <Dropdown 
@@ -231,31 +231,31 @@ export default function LocationInput({
         className="w-full bg-[#303030] rounded-b-lg shadow-lg max-h-[364px] overflow-y-auto !mt-0"
       >
         {isLoading && (
-          <div className="flex justify-center items-center px-4 py-6">
+          <View className="flex justify-center items-center px-4 py-6">
             <LoadingIcon className='animate-spin size-6' />
-          </div>
+          </View>
         )}
         {!isLoading && suggestions.length === 0 && (
-          <div className="flex justify-center items-center px-4 py-6 text-[#A9A9A9] text-sm">
+          <View className="flex justify-center items-center px-4 py-6 text-[#A9A9A9] text-sm">
             No locations found
-          </div>
+          </View>
         )}
         {!isLoading && suggestions.map((suggestion) => (
-          <div
+          <View
             key={`${suggestion.searchEntityType}-${suggestion.id}`}
             className="flex items-center px-4 py-2 space-x-3 cursor-pointer hover:bg-[#444444]"
             onClick={() => handleSuggestionSelect(suggestion)}
           >
-            <div className='!w-4'>
+            <View className='!w-4'>
               {getIcon(suggestion)}
-            </div>
-            <div className="flex flex-col truncate">
-              <span className="text-sm">{suggestion.name}</span>
-              <span className="text-xs text-gray-400">{getSubtitle(suggestion)}</span>
-            </div>
-          </div>
+            </View>
+            <View className="flex flex-col truncate">
+              <Text className="text-sm">{suggestion.name}</Text>
+              <Text className="text-xs text-gray-400">{getSubtitle(suggestion)}</Text>
+            </View>
+          </View>
         ))}
       </Dropdown>
-    </div>
+    </View>
   );
 } 

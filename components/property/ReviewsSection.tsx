@@ -1,4 +1,5 @@
 import { ThumbDownIcon, ThumbUpIcon } from '@/components/icons/Icons'
+import ReviewModal from '@/components/property/ReviewModal'
 import { Image, Text, View } from 'react-native'
 
 interface ReviewsSectionProps {
@@ -23,8 +24,8 @@ export default function ReviewsSection({ property }: ReviewsSectionProps) {
             <Text className="text-xl text-[#A9A9A9] font-primary mb-0.5">({totalReviews})</Text>
           </View>
           <View className="flex flex-col gap-5">
-            {reviews.slice(0, 3).map((review: any) => (
-              <View key={review.id} className="p-8 bg-[#151515] rounded-xl h-fit">
+            {reviews.slice(0, 3).map((review: any, index: number) => (
+              <View key={index} className="p-8 bg-[#151515] rounded-xl h-fit">
                 {/* Review Header */}
                 <View className="flex flex-row items-center gap-3 mb-4">
                   <Image
@@ -73,7 +74,7 @@ export default function ReviewsSection({ property }: ReviewsSectionProps) {
                       </Text>
                     </View>
                   )}
-                  {/* <ReviewModal /> */}
+                  <ReviewModal property={property} />
                 </View>
               </View>
             ))}

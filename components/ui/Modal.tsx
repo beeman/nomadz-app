@@ -1,46 +1,27 @@
-import { useEffect, FC } from 'react';
+import { FC } from 'react'
+import { Modal as ReactNativeModal, View } from 'react-native'
 
 interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-  className?: string;
-  overlayClassName?: string;
+  isOpen: boolean
+  onClose: () => void
+  children: React.ReactNode
+  className?: string
+  overlayClassName?: string
 }
 
-const Modal: FC<ModalProps> = ({ 
-  isOpen, 
-  onClose, 
-  children, 
-  className = '',
-  overlayClassName = ''
-}: ModalProps) => {
-  // Prevent background scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    }
-
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
-
-  if (!isOpen) return null;
-
+const Modal: FC<ModalProps> = ({ isOpen, onClose, children, className = '', overlayClassName = '' }: ModalProps) => {
   return (
-    <div 
-      className={`fixed inset-0 z-50 flex items-center justify-center h-screen bg-black/50 backdrop-blur-sm ${overlayClassName}`}
-      onClick={onClose}
-    >
-      <div 
-        className={`relative ${className}`} 
-        onClick={(e) => e.stopPropagation()}
+    <ReactNativeModal visible={isOpen} transparent>
+      <View
+        className={`fixed inset-0 z-50 flex items-center justify-center h-screen bg-black/50 backdrop-blur-sm ${overlayClassName}`}
+        onTouchStart={onClose}
       >
-        {children}
-      </div>
-    </div>
-  );
-};
+        <View className={`relative ${className}`} onTouchStart={(e) => e.stopPropagation()}>
+          {children}
+        </View>
+      </View>
+    </ReactNativeModal>
+  )
+}
 
-export default Modal;
+export default Modal
