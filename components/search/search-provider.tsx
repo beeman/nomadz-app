@@ -27,6 +27,34 @@ export interface Result {
   reviewsNumber: number
 }
 
+export interface SearchSuggestion {
+  center?: {
+    longitude: number
+    latitude: number
+  }
+  iata?: string
+  id: number | string
+  countryName?: string
+  countryCode?: string
+  name: string
+  listings?: number
+  searchEntityType: 'region' | 'apartment'
+  firstSearchInputOccurence: number
+  searchInputMatchScore: number
+  region?: {
+    id: number
+    countryCode: string
+    iata: string | null
+    name: string
+    type: string
+    type_v2: string
+  }
+  hid?: number
+  category?: string
+  address?: string
+  hotelChain?: string
+}
+
 export interface SearchFilters {
   categories: string[]
   sort: 'most_relevant' | 'price_lowest' | 'price_highest' | 'distance' | 'best_reviews'
@@ -50,11 +78,14 @@ export interface SearchParams {
   maxPrice?: number
   hasFreeCancellation?: boolean
   categories?: string[]
+  nameIncludes?: string
+  selectedDestination?: string // Store the actual destination name for display
 }
 
 export interface SearchProviderContext {
   random?: Result[]
   searchResults?: Result[]
+  searchSuggestions?: SearchSuggestion[]
   isSearchModalOpen: boolean
   openSearchModal: () => void
   closeSearchModal: () => void
@@ -64,8 +95,11 @@ export interface SearchProviderContext {
   updateSearchParams: (params: Partial<SearchParams>) => void
   performSearch: () => void
   clearSearch: () => void
+  clearDestination: () => void
+  fetchSearchSuggestions: (searchTerm: string) => Promise<void>
   isLoading: boolean
   searchError?: string
+  isSearchSuggestionsLoading: boolean
 }
 
 const SearchContext = React.createContext<SearchProviderContext>({} as SearchProviderContext)
@@ -101,13 +135,26 @@ function useSearchRandomProperties() {
   })
 }
 
+function useSearchSuggestions() {
+  return useMutation({
+    mutationFn: async (searchTerm: string) => {
+      if (!searchTerm || searchTerm.trim().length === 0) {
+        return []
+      }
+
+      const response = await api.get(`/bookings/search/suggestions?includes=${encodeURIComponent(searchTerm.trim())}&limit=15`)
+      console.log('Search suggestions response:', response.data)
+      return response.data
+    }
+  })
+}
+
 function useSearchProperties() {
   return useMutation({
     mutationFn: async (params: SearchParams) => {
       const queryParams = new URLSearchParams()
       
       // Required parameters
-      if (params.regionId) queryParams.append('regionId', params.regionId.toString())
       if (params.checkin) queryParams.append('checkin', params.checkin)
       if (params.checkout) queryParams.append('checkout', params.checkout)
       
@@ -119,6 +166,13 @@ function useSearchProperties() {
             queryParams.append(`guests[0][children][${index}]`, childAge.toString())
           })
         }
+      }
+      
+      // Search parameters - only send one type
+      if (params.regionId) {
+        queryParams.append('regionId', params.regionId.toString())
+      } else if (params.nameIncludes) {
+        queryParams.append('nameIncludes', params.nameIncludes)
       }
       
       // Optional parameters
@@ -160,10 +214,12 @@ export function SearchProvider(props: { children: ReactNode }) {
   const [filters, setFilters] = useState<SearchFilters>(defaultFilters)
   const [searchParams, setSearchParams] = useState<SearchParams>(defaultSearchParams)
   const [searchResults, setSearchResults] = useState<Result[]>()
+  const [searchSuggestions, setSearchSuggestions] = useState<SearchSuggestion[]>()
   const [searchError, setSearchError] = useState<string>()
 
   const randomQuery = useSearchRandomProperties()
   const searchMutation = useSearchProperties()
+  const searchSuggestionsMutation = useSearchSuggestions()
 
   const openSearchModal = useCallback(() => {
     setIsSearchModalOpen(true)
@@ -180,6 +236,16 @@ export function SearchProvider(props: { children: ReactNode }) {
   const updateSearchParams = useCallback((newParams: Partial<SearchParams>) => {
     setSearchParams(prev => ({ ...prev, ...newParams }))
   }, [])
+
+  const fetchSearchSuggestions = useCallback(async (searchTerm: string) => {
+    try {
+      const suggestions = await searchSuggestionsMutation.mutateAsync(searchTerm)
+      setSearchSuggestions(suggestions)
+    } catch (error) {
+      console.error('Error fetching search suggestions:', error)
+      setSearchSuggestions([])
+    }
+  }, [searchSuggestionsMutation])
 
   const performSearch = useCallback(() => {
     const combinedParams = {
@@ -210,9 +276,17 @@ export function SearchProvider(props: { children: ReactNode }) {
     setSearchError(undefined)
   }, [])
 
+  const clearDestination = useCallback(() => {
+    setSearchParams(defaultSearchParams)
+    setFilters(defaultFilters)
+    setSearchResults(undefined)
+    setSearchError(undefined)
+  }, [])
+
   const value: SearchProviderContext = {
     random: (randomQuery.data ?? []) as Result[],
     searchResults,
+    searchSuggestions,
     isSearchModalOpen,
     openSearchModal,
     closeSearchModal,
@@ -222,8 +296,11 @@ export function SearchProvider(props: { children: ReactNode }) {
     updateSearchParams,
     performSearch,
     clearSearch,
+    clearDestination,
+    fetchSearchSuggestions,
     isLoading: randomQuery.isLoading || searchMutation.isPending,
     searchError,
+    isSearchSuggestionsLoading: searchSuggestionsMutation.isPending,
   }
   
   return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>

@@ -5,12 +5,13 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import { useSearch } from './search-provider'
 
 export function SearchBar() {
-  const { openSearchModal, searchParams } = useSearch()
+  const { openSearchModal, searchParams, clearDestination } = useSearch()
   const spacing = useAppThemeSpacing()
 
   const getDestinationText = () => {
-    if (searchParams.regionId) {
-      return 'Kyiv, Ukraine' // Hardcoded for now
+    if (searchParams.selectedDestination) {
+      // Show the actual selected destination name
+      return searchParams.selectedDestination
     }
     return "what's your destination?"
   }
@@ -43,6 +44,20 @@ export function SearchBar() {
         <Text style={{ color: '#A0A0A0', fontSize: 16, flex: 1 }}>
           {getDestinationText()}
         </Text>
+        {(searchParams.regionId || searchParams.nameIncludes) && (
+          <TouchableOpacity
+            onPress={(e) => {
+              e.stopPropagation()
+              clearDestination()
+            }}
+            style={{
+              padding: spacing.xs,
+              borderRadius: 12,
+            }}
+          >
+            <Ionicons name="close" size={16} color="#FFFFFF" />
+          </TouchableOpacity>
+        )}
       </TouchableOpacity>
     </View>
   )

@@ -2,6 +2,7 @@ import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
 import { Ionicons } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { Modal, ScrollView, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { DestinationInput } from './destination-input'
 import { useSearch } from './search-provider'
 
 const SORT_OPTIONS = [
@@ -31,6 +32,7 @@ export function SearchModal() {
   
   const spacing = useAppThemeSpacing()
   const [expandedSection, setExpandedSection] = useState<string | null>(null)
+  const [destinationValue, setDestinationValue] = useState('')
 
   const toggleSection = (section: string) => {
     setExpandedSection(expandedSection === section ? null : section)
@@ -52,6 +54,35 @@ export function SearchModal() {
       return filters.categories.length === 0
     }
     return filters.categories.includes(type)
+  }
+
+  const handleDestinationChange = (input: string, id?: number) => {
+    setDestinationValue(input)
+    if (id) {
+      // Region selected - clear nameIncludes and set regionId
+      updateSearchParams({ 
+        regionId: id, 
+        nameIncludes: undefined,
+        selectedDestination: input // Store the region name
+      })
+    } else {
+      // Hotel or custom input - clear regionId and set nameIncludes
+      updateSearchParams({ 
+        regionId: undefined, 
+        nameIncludes: input,
+        selectedDestination: input // Store the hotel name or custom input
+      })
+    }
+  }
+
+  const handleNameSearchChange = (name: string) => {
+    // Only set nameIncludes if no regionId is selected
+    if (!searchParams.regionId) {
+      updateSearchParams({ 
+        nameIncludes: name,
+        selectedDestination: name // Store the custom input
+      })
+    }
   }
 
   return (
@@ -82,21 +113,11 @@ export function SearchModal() {
 
         <ScrollView style={{ flex: 1, padding: spacing.lg }}>
           {/* Destination Search */}
-          <TouchableOpacity style={{
-            backgroundColor: '#1B1B1B',
-            borderRadius: 12,
-            padding: spacing.md,
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: spacing.md,
-            borderWidth: 1,
-            borderColor: '#292929',
-          }}>
-            <Ionicons name="location" size={20} color="#FFFFFF" style={{ marginRight: spacing.sm }} />
-            <Text style={{ color: '#FFFFFF', fontSize: 16, flex: 1 }}>
-              search destination
-            </Text>
-          </TouchableOpacity>
+          <DestinationInput
+            value={destinationValue}
+            onChange={handleDestinationChange}
+            onNameSearchChange={handleNameSearchChange}
+          />
 
           {/* Check-in/Check-out */}
           <View style={{ flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.md }}>
@@ -367,80 +388,10 @@ export function SearchModal() {
               borderRadius: 12,
               paddingVertical: spacing.md,
               alignItems: 'center',
-              marginBottom: spacing.sm,
             }}
           >
             <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' }}>
               continue
-            </Text>
-          </TouchableOpacity>
-          
-          {/* Test Search Button */}
-          <TouchableOpacity
-            onPress={() => {
-              // Set default search parameters for testing
-              updateSearchParams({
-                regionId: 1565,
-                checkin: '2025-08-06',
-                checkout: '2025-08-08',
-                guests: {
-                  adults: 1,
-                  children: []
-                }
-              })
-              updateFilters({
-                sort: 'most_relevant',
-                minPrice: 0,
-                maxPrice: 0,
-                hasFreeCancellation: false,
-                categories: []
-              })
-              performSearch()
-            }}
-            style={{
-              backgroundColor: '#FF6B6B',
-              borderRadius: 12,
-              paddingVertical: spacing.sm,
-              alignItems: 'center',
-              marginBottom: spacing.sm,
-            }}
-          >
-            <Text style={{ color: '#FFFFFF', fontSize: 14 }}>
-              Test Search (Kyiv)
-            </Text>
-          </TouchableOpacity>
-          
-          {/* Test Search Button with Children */}
-          <TouchableOpacity
-            onPress={() => {
-              // Set search parameters with children for testing
-              updateSearchParams({
-                regionId: 1565,
-                checkin: '2025-08-06',
-                checkout: '2025-08-08',
-                guests: {
-                  adults: 3,
-                  children: [12, 12, 1, 1]
-                }
-              })
-              updateFilters({
-                sort: 'most_relevant',
-                minPrice: 0,
-                maxPrice: 0,
-                hasFreeCancellation: false,
-                categories: []
-              })
-              performSearch()
-            }}
-            style={{
-              backgroundColor: '#4ECDC4',
-              borderRadius: 12,
-              paddingVertical: spacing.sm,
-              alignItems: 'center',
-            }}
-          >
-            <Text style={{ color: '#FFFFFF', fontSize: 14 }}>
-              Test Search (with children)
             </Text>
           </TouchableOpacity>
         </View>
