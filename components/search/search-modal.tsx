@@ -2,6 +2,7 @@ import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
 import { Ionicons } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { Modal, ScrollView, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { DatePickerComponent, DateRange } from './date-picker'
 import { DestinationInput } from './destination-input'
 import { useSearch } from './search-provider'
 
@@ -85,6 +86,14 @@ export function SearchModal() {
     }
   }
 
+  const handleDateRangeChange = (dateRange: DateRange) => {
+    updateSearchParams({
+      checkin: dateRange.checkin || undefined,
+      checkout: dateRange.checkout || undefined,
+      dateRange: dateRange,
+    })
+  }
+
   return (
     <Modal
       visible={isSearchModalOpen}
@@ -119,44 +128,15 @@ export function SearchModal() {
             onNameSearchChange={handleNameSearchChange}
           />
 
-          {/* Check-in/Check-out */}
-          <View style={{ flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.md }}>
-            <TouchableOpacity style={{
-              flex: 1,
-              backgroundColor: '#1B1B1B',
-              borderRadius: 12,
-              padding: spacing.md,
-              alignItems: 'center',
-              borderWidth: 1,
-              borderColor: '#292929',
-            }}>
-              <Ionicons name="calendar" size={20} color="#FFFFFF" />
-              <Text style={{ color: '#FFFFFF', fontSize: 14, marginTop: spacing.xs }}>
-                check in
-              </Text>
-              <Text style={{ color: '#A0A0A0', fontSize: 12 }}>
-                add date
-              </Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={{
-              flex: 1,
-              backgroundColor: '#1B1B1B',
-              borderRadius: 12,
-              padding: spacing.md,
-              alignItems: 'center',
-              borderWidth: 1,
-              borderColor: '#292929',
-            }}>
-              <Ionicons name="calendar" size={20} color="#FFFFFF" />
-              <Text style={{ color: '#FFFFFF', fontSize: 14, marginTop: spacing.xs }}>
-                check out
-              </Text>
-              <Text style={{ color: '#A0A0A0', fontSize: 12 }}>
-                add date
-              </Text>
-            </TouchableOpacity>
-          </View>
+          {/* Date Picker */}
+          <DatePickerComponent
+            value={{
+              checkin: searchParams.checkin || null,
+              checkout: searchParams.checkout || null,
+              range: searchParams.dateRange?.range || 'exact',
+            }}
+            onChange={handleDateRangeChange}
+          />
 
           {/* Guests */}
           <TouchableOpacity style={{

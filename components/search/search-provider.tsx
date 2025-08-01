@@ -80,6 +80,11 @@ export interface SearchParams {
   categories?: string[]
   nameIncludes?: string
   selectedDestination?: string // Store the actual destination name for display
+  dateRange?: {
+    checkin: string | null
+    checkout: string | null
+    range: string
+  }
 }
 
 export interface SearchProviderContext {
@@ -113,9 +118,6 @@ const defaultFilters: SearchFilters = {
 }
 
 const defaultSearchParams: SearchParams = {
-  regionId: 1565, // Hardcoded Kyiv region
-  checkin: '2025-08-06',
-  checkout: '2025-08-08',
   guests: {
     adults: 1,
     children: []
@@ -263,13 +265,13 @@ export function SearchProvider(props: { children: ReactNode }) {
       onSuccess: (data) => {
         setSearchResults(data)
         setSearchError(undefined)
-        closeSearchModal()
+        setIsSearchModalOpen(false)
       },
       onError: (error: any) => {
         setSearchError(error.message || 'Search failed')
       }
     })
-  }, [searchParams, filters, searchMutation, closeSearchModal])
+  }, [searchParams, filters, searchMutation])
 
   const clearSearch = useCallback(() => {
     setSearchResults(undefined)
