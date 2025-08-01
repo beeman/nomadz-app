@@ -35,9 +35,56 @@ export function SearchModal() {
   const spacing = useAppThemeSpacing()
   const [expandedSection, setExpandedSection] = useState<string | null>(null)
   const [destinationValue, setDestinationValue] = useState('')
+  const [validationErrors, setValidationErrors] = useState<string[]>([])
 
   const toggleSection = (section: string) => {
     setExpandedSection(expandedSection === section ? null : section)
+  }
+
+  const validateRequiredFields = () => {
+    const errors: string[] = []
+    
+    // Check destination
+    if (!searchParams.selectedDestination && !searchParams.regionId && !searchParams.nameIncludes) {
+      errors.push('destination')
+    }
+    
+    // Check dates
+    if (!searchParams.checkin || !searchParams.checkout) {
+      errors.push('dates')
+    }
+    
+    // Check guests (should always have at least 1 adult, but let's validate)
+    if (!searchParams.guests.adults || searchParams.guests.adults < 1) {
+      errors.push('guests')
+    }
+    
+    return errors
+  }
+
+  const handlePerformSearch = () => {
+    const errors = validateRequiredFields()
+    setValidationErrors(errors)
+    
+    if (errors.length > 0) {
+      // Open the first missing section
+      if (errors.includes('destination')) {
+        setExpandedSection('destination')
+      } else if (errors.includes('dates')) {
+        setExpandedSection('dates')
+      } else if (errors.includes('guests')) {
+        setExpandedSection('guests')
+      }
+      return
+    }
+    
+    // Clear errors and perform search
+    setValidationErrors([])
+    performSearch()
+  }
+
+  const isFormValid = () => {
+    return validateRequiredFields().length === 0
   }
 
   const togglePropertyType = (type: string) => {
@@ -123,27 +170,48 @@ export function SearchModal() {
 
         <ScrollView style={{ flex: 1, padding: spacing.lg }}>
           {/* Destination Search */}
-          <DestinationInput
-            value={destinationValue}
-            onChange={handleDestinationChange}
-            onNameSearchChange={handleNameSearchChange}
-          />
+          <View style={{ marginBottom: spacing.md }}>
+            <DestinationInput
+              value={destinationValue}
+              onChange={handleDestinationChange}
+              onNameSearchChange={handleNameSearchChange}
+            />
+            {validationErrors.includes('destination') && (
+              <Text style={{ color: '#FF4444', fontSize: 12, marginTop: spacing.xs }}>
+                Please select a destination
+              </Text>
+            )}
+          </View>
 
           {/* Date Picker */}
-          <DatePickerComponent
-            value={{
-              checkin: searchParams.checkin || null,
-              checkout: searchParams.checkout || null,
-              range: searchParams.dateRange?.range || 'exact',
-            }}
-            onChange={handleDateRangeChange}
-          />
+          <View style={{ marginBottom: spacing.md }}>
+            <DatePickerComponent
+              value={{
+                checkin: searchParams.checkin || null,
+                checkout: searchParams.checkout || null,
+                range: searchParams.dateRange?.range || 'exact',
+              }}
+              onChange={handleDateRangeChange}
+            />
+            {validationErrors.includes('dates') && (
+              <Text style={{ color: '#FF4444', fontSize: 12, marginTop: spacing.xs }}>
+                Please select check-in and check-out dates
+              </Text>
+            )}
+          </View>
 
           {/* Guests */}
-          <GuestsInput
-            guests={searchParams.guests}
-            onGuestsChange={(guests) => updateSearchParams({ guests })}
-          />
+          <View style={{ marginBottom: spacing.md }}>
+            <GuestsInput
+              guests={searchParams.guests}
+              onGuestsChange={(guests) => updateSearchParams({ guests })}
+            />
+            {validationErrors.includes('guests') && (
+              <Text style={{ color: '#FF4444', fontSize: 12, marginTop: spacing.xs }}>
+                Please select at least 1 adult guest
+              </Text>
+            )}
+          </View>
 
           {/* Property Type */}
           <View style={{ marginBottom: spacing.md }}>
@@ -355,16 +423,20 @@ export function SearchModal() {
         {/* Continue Button */}
         <View style={{ padding: spacing.lg, borderTopWidth: 1, borderTopColor: '#292929' }}>
           <TouchableOpacity
-            onPress={performSearch}
+            onPress={handlePerformSearch}
             style={{
-              backgroundColor: '#404040',
+              backgroundColor: isFormValid() ? '#FFFFFF' : '#404040',
               borderRadius: 12,
               paddingVertical: spacing.md,
               alignItems: 'center',
             }}
           >
-            <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' }}>
-              continue
+            <Text style={{ 
+              color: isFormValid() ? '#000000' : '#FFFFFF', 
+              fontSize: 16, 
+              fontWeight: 'bold' 
+            }}>
+              {isFormValid() ? 'search' : 'continue'}
             </Text>
           </TouchableOpacity>
         </View>
