@@ -306,9 +306,18 @@ export function SearchProvider(props: { children: ReactNode }) {
     searchMutation.mutate(combinedParams, {
       onSuccess: (data) => {
         if (data && data.length > 0) {
-          setSearchResults(prev => [...(prev || []), ...data])
-          setCurrentPage(nextPage)
-          setHasMore(data.length === 24)
+          // Filter out duplicates based on id
+          const existingIds = new Set((searchResults || []).map((item: Result) => item.id))
+          const newItems = data.filter((item: Result) => !existingIds.has(item.id))
+          
+          if (newItems.length > 0) {
+            setSearchResults(prev => [...(prev || []), ...newItems])
+            setCurrentPage(nextPage)
+            setHasMore(data.length === 24)
+          } else {
+            // If all items are duplicates, try next page
+            setHasMore(false)
+          }
         } else {
           setHasMore(false)
         }
@@ -319,7 +328,7 @@ export function SearchProvider(props: { children: ReactNode }) {
         setIsLoadMoreLoading(false)
       }
     })
-  }, [searchParams, filters, searchMutation, hasMore, isLoadMoreLoading, currentPage])
+  }, [searchParams, filters, searchMutation, hasMore, isLoadMoreLoading, currentPage, searchResults])
 
   const clearSearch = useCallback(() => {
     setSearchResults(undefined)
