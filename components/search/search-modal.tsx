@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Modal, ScrollView, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { DatePickerComponent, DateRange } from './date-picker'
 import { DestinationInput } from './destination-input'
+import { GuestsInput } from './guests-input'
 import { useSearch } from './search-provider'
 
 const SORT_OPTIONS = [
@@ -139,18 +140,10 @@ export function SearchModal() {
           />
 
           {/* Guests */}
-          <TouchableOpacity style={{
-            backgroundColor: '#1B1B1B',
-            borderRadius: 12,
-            padding: spacing.md,
-            marginBottom: spacing.md,
-            borderWidth: 1,
-            borderColor: '#292929',
-          }}>
-            <Text style={{ color: '#FFFFFF', fontSize: 16 }}>
-              guests: {searchParams.guests.adults}
-            </Text>
-          </TouchableOpacity>
+          <GuestsInput
+            guests={searchParams.guests}
+            onGuestsChange={(guests) => updateSearchParams({ guests })}
+          />
 
           {/* Property Type */}
           <View style={{ marginBottom: spacing.md }}>

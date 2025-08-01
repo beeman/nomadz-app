@@ -70,6 +70,7 @@ export interface SearchParams {
   guests: {
     adults: number
     children: number[]
+    infants: number
   }
   sort?: string
   limit?: number
@@ -120,7 +121,8 @@ const defaultFilters: SearchFilters = {
 const defaultSearchParams: SearchParams = {
   guests: {
     adults: 1,
-    children: []
+    children: [],
+    infants: 0
   }
 }
 
