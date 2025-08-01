@@ -1,8 +1,7 @@
 import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
-import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
-import { Card } from 'react-native-paper'
+import { ApartmentCard } from './apartment-card'
 import { useSearch } from './search-provider'
 
 export function SearchResults() {
@@ -14,36 +13,7 @@ export function SearchResults() {
   }
 
   const renderItem = ({ item }: { item: any }) => (
-    <Card style={{
-      backgroundColor: '#1B1B1B',
-      marginBottom: spacing.md,
-      borderWidth: 1,
-      borderColor: '#292929',
-    }}>
-      <Card.Cover source={{ uri: item.images?.[0]?.url?.replace('{size}', '1024x768') }}  />
-      <Card.Content style={{ padding: spacing.md }}>
-        <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold', marginBottom: spacing.xs }}>
-          {item.name}
-        </Text>
-        <Text style={{ color: '#A0A0A0', fontSize: 14, marginBottom: spacing.xs }}>
-          {item.address}
-        </Text>
-        {
-          !!item.rating &&
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: spacing.sm }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: spacing.md }}>
-                <Ionicons name="star" size={16} color="#FFD700" />
-                <Text style={{ color: '#FFFFFF', fontSize: 14, marginLeft: spacing.xs }}>
-                {item.rating}
-                </Text>
-              </View>
-              <Text style={{ color: '#A0A0A0', fontSize: 12 }}>
-                ({item.reviewsNumber} reviews)
-              </Text>
-          </View>
-        }
-      </Card.Content>
-    </Card>
+    <ApartmentCard apartment={item} />
   )
 
   const renderFooter = () => {
