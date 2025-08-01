@@ -100,12 +100,15 @@ export interface SearchProviderContext {
   searchParams: SearchParams
   updateSearchParams: (params: Partial<SearchParams>) => void
   performSearch: () => void
+  loadMore: () => void
   clearSearch: () => void
   clearDestination: () => void
   fetchSearchSuggestions: (searchTerm: string) => Promise<void>
   isLoading: boolean
   searchError?: string
   isSearchSuggestionsLoading: boolean
+  hasMore: boolean
+  isLoadMoreLoading: boolean
 }
 
 const SearchContext = React.createContext<SearchProviderContext>({} as SearchProviderContext)
@@ -220,6 +223,9 @@ export function SearchProvider(props: { children: ReactNode }) {
   const [searchResults, setSearchResults] = useState<Result[]>()
   const [searchSuggestions, setSearchSuggestions] = useState<SearchSuggestion[]>()
   const [searchError, setSearchError] = useState<string>()
+  const [currentPage, setCurrentPage] = useState(1)
+  const [hasMore, setHasMore] = useState(false)
+  const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false)
 
   const randomQuery = useSearchRandomProperties()
   const searchMutation = useSearchProperties()
@@ -263,17 +269,57 @@ export function SearchProvider(props: { children: ReactNode }) {
       page: 1
     }
 
+    setCurrentPage(1)
+    setHasMore(false)
+    setIsLoadMoreLoading(false)
+
     searchMutation.mutate(combinedParams, {
       onSuccess: (data) => {
         setSearchResults(data)
         setSearchError(undefined)
         setIsSearchModalOpen(false)
+        setHasMore(data && data.length === 24)
       },
       onError: (error: any) => {
         setSearchError(error.message || 'Search failed')
       }
     })
   }, [searchParams, filters, searchMutation])
+
+  const loadMore = useCallback(() => {
+    if (!hasMore || isLoadMoreLoading) return
+
+    const nextPage = currentPage + 1
+    const combinedParams = {
+      ...searchParams,
+      sort: filters.sort,
+      minPrice: filters.minPrice,
+      maxPrice: filters.maxPrice,
+      hasFreeCancellation: filters.hasFreeCancellation,
+      categories: filters.categories,
+      limit: 24,
+      page: nextPage
+    }
+
+    setIsLoadMoreLoading(true)
+
+    searchMutation.mutate(combinedParams, {
+      onSuccess: (data) => {
+        if (data && data.length > 0) {
+          setSearchResults(prev => [...(prev || []), ...data])
+          setCurrentPage(nextPage)
+          setHasMore(data.length === 24)
+        } else {
+          setHasMore(false)
+        }
+        setIsLoadMoreLoading(false)
+      },
+      onError: (error: any) => {
+        setSearchError(error.message || 'Load more failed')
+        setIsLoadMoreLoading(false)
+      }
+    })
+  }, [searchParams, filters, searchMutation, hasMore, isLoadMoreLoading, currentPage])
 
   const clearSearch = useCallback(() => {
     setSearchResults(undefined)
@@ -299,12 +345,15 @@ export function SearchProvider(props: { children: ReactNode }) {
     searchParams,
     updateSearchParams,
     performSearch,
+    loadMore,
     clearSearch,
     clearDestination,
     fetchSearchSuggestions,
     isLoading: randomQuery.isLoading || searchMutation.isPending,
     searchError,
     isSearchSuggestionsLoading: searchSuggestionsMutation.isPending,
+    hasMore,
+    isLoadMoreLoading,
   }
   
   return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>
