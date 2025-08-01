@@ -36,14 +36,14 @@ export const UserInlineIcon: FC<IconProps> = ({ color, className }) => (
   <Svg width="14" height="19" viewBox="0 0 14 19" fill="none" className={className}>
     <Path
       d="M6.9956 8.56774C6.90762 8.55916 6.80205 8.55916 6.70528 8.56774C4.61144 8.49909 2.94868 6.8257 2.94868 4.76613C2.94868 2.66366 4.69062 0.955933 6.85484 0.955933C9.01026 0.955933 10.761 2.66366 10.761 4.76613C10.7522 6.8257 9.08944 8.49909 6.9956 8.56774Z"
-      stroke="currentColor"
+      stroke={color}
       strokeWidth="1.375"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <Path
       d="M2.59677 11.7343C0.467742 13.1245 0.467742 15.3901 2.59677 16.7717C5.01613 18.3507 8.98387 18.3507 11.4032 16.7717C13.5323 15.3815 13.5323 13.116 11.4032 11.7343C8.99267 10.1639 5.02493 10.1639 2.59677 11.7343Z"
-      stroke="currentColor"
+      stroke={color}
       strokeWidth="1.375"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -140,12 +140,12 @@ export const MapPinIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="23" height="23" viewBox="0 0 23 23" fill="none" {...props}>
       <Path
         d="M11.8095 13.0904C13.4022 13.0904 14.6933 11.7993 14.6933 10.2066C14.6933 8.61398 13.4022 7.32288 11.8095 7.32288C10.2169 7.32288 8.92578 8.61398 8.92578 10.2066C8.92578 11.7993 10.2169 13.0904 11.8095 13.0904Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.38643"
       />
       <Path
         d="M4.06422 8.52442C5.88506 0.520123 17.7436 0.529366 19.5552 8.53367C20.6181 13.229 17.6974 17.2035 15.1371 19.662C13.2793 21.4552 10.3401 21.4552 8.47305 19.662C5.92203 17.2035 3.00129 13.2198 4.06422 8.52442Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.38643"
       />
     </Svg>
@@ -157,7 +157,7 @@ export const CalendarDatesIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="23" height="23" viewBox="0 0 23 23" fill="none" {...props}>
       <Path
         d="M7.87939 2.52582V5.29867"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.38643"
         strokeMiterlimit="10"
         strokeLinecap="round"
@@ -165,7 +165,7 @@ export const CalendarDatesIcon: FC<IconProps> = ({ color, ...props }) => {
       />
       <Path
         d="M15.2739 2.52582V5.29867"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.38643"
         strokeMiterlimit="10"
         strokeLinecap="round"
@@ -173,7 +173,7 @@ export const CalendarDatesIcon: FC<IconProps> = ({ color, ...props }) => {
       />
       <Path
         d="M3.72021 9.07898H19.433"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.38643"
         strokeMiterlimit="10"
         strokeLinecap="round"
@@ -181,50 +181,38 @@ export const CalendarDatesIcon: FC<IconProps> = ({ color, ...props }) => {
       />
       <Path
         d="M19.8954 8.53365V16.3901C19.8954 19.1629 18.509 21.0115 15.274 21.0115H7.87972C4.64473 21.0115 3.2583 19.1629 3.2583 16.3901V8.53365C3.2583 5.7608 4.64473 3.91223 7.87972 3.91223H15.274C18.509 3.91223 19.8954 5.7608 19.8954 8.53365Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.38643"
         strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <Path
-        d="M14.9917 13.3399H15"
-        stroke="currentColor"
-        strokeWidth="1.84857"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M14.9917 16.1128H15"
-        stroke="currentColor"
-        strokeWidth="1.84857"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Path d="M14.9917 13.3399H15" stroke={color} strokeWidth="1.84857" strokeLinecap="round" strokeLinejoin="round" />
+      <Path d="M14.9917 16.1128H15" stroke={color} strokeWidth="1.84857" strokeLinecap="round" strokeLinejoin="round" />
       <Path
         d="M11.5728 13.3399H11.5811"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.84857"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M11.5728 16.1128H11.5811"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.84857"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M8.15189 13.3399H8.16019"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.84857"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M8.15189 16.1128H8.16019"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.84857"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -249,28 +237,28 @@ export const UsersIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
       <Path
         d="M9.63452 10.6856C9.53867 10.6761 9.42365 10.6761 9.31821 10.6856C7.03694 10.609 5.22534 8.73985 5.22534 6.43941C5.22534 4.09104 7.12321 2.18359 9.48116 2.18359C11.8295 2.18359 13.737 4.09104 13.737 6.43941C13.7274 8.73985 11.9158 10.609 9.63452 10.6856Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.43778"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M16.5836 4.10059C18.4431 4.10059 19.9384 5.60546 19.9384 7.45539C19.9384 9.26699 18.5006 10.7431 16.7082 10.8102C16.6315 10.8006 16.5453 10.8006 16.459 10.8102"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.43778"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M4.84225 14.2228C2.52264 15.7756 2.52264 18.3061 4.84225 19.8493C7.47817 21.613 11.8011 21.613 14.437 19.8493C16.7566 18.2965 16.7566 15.766 14.437 14.2228C11.8107 12.4687 7.48775 12.4687 4.84225 14.2228Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.43778"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M18.4336 19.4371C19.1237 19.2934 19.7755 19.0154 20.3123 18.6032C21.8076 17.4818 21.8076 15.6318 20.3123 14.5104C19.7851 14.1078 19.1429 13.8394 18.4623 13.686"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.43778"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -295,14 +283,14 @@ export const PentagonIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="22" height="21" viewBox="0 0 22 21" fill="none" {...props}>
       <Path
         d="M9.42606 3.18714L3.61708 7.83933C2.96326 8.35904 2.54414 9.45716 2.68664 10.2786L3.80149 16.9509C4.00267 18.1412 5.14266 19.1052 6.34972 19.1052H15.738C16.9366 19.1052 18.085 18.1329 18.2862 16.9509L19.4011 10.2786C19.5352 9.45716 19.1161 8.35904 18.4706 7.83933L12.6616 3.19553C11.7647 2.47464 10.3146 2.47464 9.42606 3.18714Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M11.044 13.8162C12.2014 13.8162 13.1396 12.878 13.1396 11.7206C13.1396 10.5632 12.2014 9.625 11.044 9.625C9.88668 9.625 8.94846 10.5632 8.94846 11.7206C8.94846 12.878 9.88668 13.8162 11.044 13.8162Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -316,28 +304,28 @@ export const SquaresIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="22" height="21" viewBox="0 0 22 21" fill="none" {...props}>
       <Path
         d="M19.4265 7.74459V3.939C19.4265 2.75709 18.89 2.2793 17.5573 2.2793H14.1708C12.838 2.2793 12.3015 2.75709 12.3015 3.939V7.73621C12.3015 8.9265 12.838 9.39592 14.1708 9.39592H17.5573C18.89 9.4043 19.4265 8.9265 19.4265 7.74459Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M19.4265 17.1747V13.7882C19.4265 12.4554 18.89 11.9189 17.5573 11.9189H14.1708C12.838 11.9189 12.3015 12.4554 12.3015 13.7882V17.1747C12.3015 18.5075 12.838 19.0439 14.1708 19.0439H17.5573C18.89 19.0439 19.4265 18.5075 19.4265 17.1747Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M9.78693 7.74459V3.939C9.78693 2.75709 9.25046 2.2793 7.91766 2.2793H4.53119C3.1984 2.2793 2.66193 2.75709 2.66193 3.939V7.73621C2.66193 8.9265 3.1984 9.39592 4.53119 9.39592H7.91766C9.25046 9.4043 9.78693 8.9265 9.78693 7.74459Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M9.78693 17.1747V13.7882C9.78693 12.4554 9.25046 11.9189 7.91766 11.9189H4.53119C3.1984 11.9189 2.66193 12.4554 2.66193 13.7882V17.1747C2.66193 18.5075 3.1984 19.0439 4.53119 19.0439H7.91766C9.25046 19.0439 9.78693 18.5075 9.78693 17.1747Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -351,14 +339,14 @@ export const LeaderboardIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="22" height="21" viewBox="0 0 22 21" fill="none" {...props}>
       <Path
         d="M8.52958 18.8233H13.559C17.7502 18.8233 19.4266 17.1468 19.4266 12.9557V7.92624C19.4266 3.73506 17.7502 2.05859 13.559 2.05859H8.52958C4.3384 2.05859 2.66193 3.73506 2.66193 7.92624V12.9557C2.66193 17.1468 4.3384 18.8233 8.52958 18.8233Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M7.12985 12.5279L9.12485 9.93778C9.40985 9.56896 9.93794 9.5019 10.3068 9.7869L11.8407 10.994C12.2096 11.279 12.7376 11.2119 13.0226 10.8515L14.959 8.35352"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -383,28 +371,28 @@ export const BookmarkSquareIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="22" height="22" viewBox="0 0 22 22" fill="none" {...props}>
       <Path
         d="M8.52958 19.3814H13.559C17.7502 19.3814 19.4266 17.7049 19.4266 13.5138V8.48435C19.4266 4.29317 17.7502 2.6167 13.559 2.6167H8.52958C4.3384 2.6167 2.66193 4.29317 2.66193 8.48435V13.5138C2.66193 17.7049 4.3384 19.3814 8.52958 19.3814Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M15.2356 2.98584V11.3514C15.2356 13.0028 14.0537 13.6482 12.6035 12.7764L11.497 12.1142C11.2456 11.9633 10.8432 11.9633 10.5917 12.1142L9.48527 12.7764C8.03512 13.6398 6.85321 13.0028 6.85321 11.3514V2.98584"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M8.52958 19.3814H13.559C17.7502 19.3814 19.4266 17.7049 19.4266 13.5138V8.48435C19.4266 4.29317 17.7502 2.6167 13.559 2.6167H8.52958C4.3384 2.6167 2.66193 4.29317 2.66193 8.48435V13.5138C2.66193 17.7049 4.3384 19.3814 8.52958 19.3814Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M15.2356 2.98584V11.3514C15.2356 13.0028 14.0537 13.6482 12.6035 12.7764L11.497 12.1142C11.2456 11.9633 10.8432 11.9633 10.5917 12.1142L9.48527 12.7764C8.03512 13.6398 6.85321 13.0028 6.85321 11.3514V2.98584"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -418,7 +406,7 @@ export const CogIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="22" height="21" viewBox="0 0 22 21" fill="none" {...props}>
       <Path
         d="M11.0439 13.2937C12.4328 13.2937 13.5586 12.1679 13.5586 10.779C13.5586 9.39019 12.4328 8.26431 11.0439 8.26431C9.65511 8.26431 8.52924 9.39019 8.52924 10.779C8.52924 12.1679 9.65511 13.2937 11.0439 13.2937Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeMiterlimit="10"
         strokeLinecap="round"
@@ -426,7 +414,7 @@ export const CogIcon: FC<IconProps> = ({ color, ...props }) => {
       />
       <Path
         d="M2.66174 11.5166V10.0413C2.66174 9.16958 3.37424 8.4487 4.25439 8.4487C5.7716 8.4487 6.39189 7.37576 5.6291 6.05973C5.19321 5.30532 5.45307 4.32458 6.21586 3.8887L7.66601 3.05885C8.32822 2.66488 9.18322 2.89958 9.57719 3.56179L9.66939 3.72105C10.4238 5.03708 11.6644 5.03708 12.4272 3.72105L12.5194 3.56179C12.9134 2.89958 13.7684 2.66488 14.4306 3.05885L15.8807 3.8887C16.6435 4.32458 16.9034 5.30532 16.4675 6.05973C15.7047 7.37576 16.325 8.4487 17.8422 8.4487C18.714 8.4487 19.4348 9.1612 19.4348 10.0413V11.5166C19.4348 12.3884 18.7223 13.1093 17.8422 13.1093C16.325 13.1093 15.7047 14.1822 16.4675 15.4983C16.9034 16.2611 16.6435 17.2334 15.8807 17.6693L14.4306 18.4991C13.7684 18.8931 12.9134 18.6584 12.5194 17.9962L12.4272 17.8369C11.6728 16.5209 10.4322 16.5209 9.66939 17.8369L9.57719 17.9962C9.18322 18.6584 8.32822 18.8931 7.66601 18.4991L6.21586 17.6693C5.45307 17.2334 5.19321 16.2527 5.6291 15.4983C6.39189 14.1822 5.7716 13.1093 4.25439 13.1093C3.37424 13.1093 2.66174 12.3884 2.66174 11.5166Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeMiterlimit="10"
         strokeLinecap="round"
@@ -441,21 +429,21 @@ export const ArrowLeftStartOnRectangleIcon: FC<IconProps> = ({ color, ...props }
     <Svg width="18" height="18" viewBox="0 0 18 18" fill="none" {...props}>
       <Path
         d="M6.36533 5.24985C6.62518 2.23221 8.17591 1 11.5708 1H11.6797C15.4267 1 16.9271 2.50044 16.9271 6.24735V11.7126C16.9271 15.4596 15.4267 16.96 11.6797 16.96H11.5708C8.20106 16.96 6.65033 15.7446 6.37371 12.7772"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M11.4781 8.97119H1.93896"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M3.80824 6.16357L1.00015 8.97166L3.80824 11.7798"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25735"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -469,7 +457,7 @@ export const PencilSquare: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" {...props}>
       <Path
         d="M12 5H9C7.11438 5 6.17157 5 5.58579 5.58579C5 6.17157 5 7.11438 5 9V15C5 16.8856 5 17.8284 5.58579 18.4142C6.17157 19 7.11438 19 9 19H15C16.8856 19 17.8284 19 18.4142 18.4142C19 17.8284 19 16.8856 19 15V12M9.31899 12.6911L15.2486 6.82803C15.7216 6.36041 16.4744 6.33462 16.9782 6.76876C17.5331 7.24688 17.5723 8.09299 17.064 8.62034L11.2329 14.6702L9 15L9.31899 12.6911Z"
-        stroke="currentColor"
+        stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -850,7 +838,7 @@ export const ChevronDownIcon: FC<IconProps> = ({ color, ...props }) => {
   return (
     <Svg width="14" height="8" viewBox="0 0 14 8" fill="none" {...props}>
       <G opacity="0.6">
-        <Path d="M2 1.5L7 6.5L12 1.5" stroke="currentColor" strokeWidth="1.66667" strokeLinecap="square" />
+        <Path d="M2 1.5L7 6.5L12 1.5" stroke={color} strokeWidth="1.66667" strokeLinecap="square" />
       </G>
     </Svg>
   )
@@ -901,7 +889,7 @@ export const HeartIcon: FC<IconProps> = ({ color, ...props }) => {
       <G opacity="0.9">
         <Path
           d="M7.0738 11.4854C6.8907 11.55 6.58912 11.55 6.40601 11.4854C4.84424 10.9522 1.35449 8.72805 1.35449 4.95826C1.35449 3.29417 2.69546 1.94781 4.34878 1.94781C5.32893 1.94781 6.19598 2.42173 6.73991 3.15415C7.28384 2.42173 8.15627 1.94781 9.13103 1.94781C10.7844 1.94781 12.1253 3.29417 12.1253 4.95826C12.1253 8.72805 8.63558 10.9522 7.0738 11.4854Z"
-          stroke="currentColor"
+          stroke={color}
           strokeWidth="1.07006"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -949,7 +937,7 @@ export const RatingStarIcon: FC<IconProps> = ({ color, ...props }) => {
 
 export const ChevronRightIcon: FC<IconProps> = ({ color, ...props }) => {
   return (
-    <Svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" {...props}>
+    <Svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke={color} {...props}>
       <Path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
     </Svg>
   )
@@ -957,7 +945,7 @@ export const ChevronRightIcon: FC<IconProps> = ({ color, ...props }) => {
 
 export const ChevronLeftIcon: FC<IconProps> = ({ color, ...props }) => {
   return (
-    <Svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" {...props}>
+    <Svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke={color} {...props}>
       <Path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
     </Svg>
   )
@@ -973,7 +961,7 @@ export const TriangleDownIcon: FC<IconProps> = ({ color, ...props }) => {
 
 export const ShareIcon: FC<IconProps> = ({ color, ...props }) => {
   return (
-    <Svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6" {...props}>
+    <Svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke={color} className="size-6" {...props}>
       <Path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -1025,14 +1013,14 @@ export const XMarkIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="14" height="15" viewBox="0 0 14 15" fill="none" {...props}>
       <Path
         d="M0.8125 1.3125L13.1875 13.6875"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.375"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M0.8125 13.6875L13.1875 1.3125"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.375"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -1152,7 +1140,7 @@ export const MapIcon: FC<IconProps> = ({ color, ...props }) => {
 
 export const ListIcon: FC<IconProps> = ({ color, ...props }) => {
   return (
-    <Svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6" {...props}>
+    <Svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke={color} className="size-6" {...props}>
       <Path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -1192,13 +1180,13 @@ export const InfoCircleIcon: FC<IconProps> = ({ color, ...props }) => (
   <Svg className="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none" {...props}>
     <Path
       d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-      stroke="currentColor"
+      stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <Path d="M12 16V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    <Path d="M12 8H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <Path d="M12 16V12" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <Path d="M12 8H12.01" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </Svg>
 )
 
@@ -1250,7 +1238,7 @@ export const HouseIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="25" height="28" viewBox="0 0 25 28" fill="none" {...props}>
       <Path
         d="M9.12772 25.9127V13.7513H16.4246V25.9127M1.83087 10.1028L12.7761 1.58984L23.7214 10.1028V23.4804C23.7214 24.1255 23.4652 24.7441 23.009 25.2003C22.5529 25.6564 21.9342 25.9127 21.2891 25.9127H4.26315C3.61807 25.9127 2.99941 25.6564 2.54327 25.2003C2.08713 24.7441 1.83087 24.1255 1.83087 23.4804V10.1028Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="2.43228"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -1290,7 +1278,7 @@ export const ThumbUpIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="14" height="15" viewBox="0 0 14 15" fill="none" {...props}>
       <Path
         d="M8.59126 5.8244L12.51 5.8244C14.3136 5.8244 11.9691 13.5415 10.6774 13.5415L1.80793 13.5415C1.43094 13.5415 1.12533 13.2411 1.12533 12.8705L1.12532 6.22277C1.12532 5.9772 1.26177 5.75122 1.48107 5.63365C2.94139 4.85059 4.65513 4.20863 5.50256 2.709L6.40978 1.10369C6.51866 0.911004 6.72525 0.791504 6.94948 0.791504C9.20192 0.791504 8.53369 4.07094 8.22757 5.37496C8.17361 5.6049 8.35122 5.8244 8.59126 5.8244Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.0625"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -1304,7 +1292,7 @@ export const ThumbDownIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="14" height="15" viewBox="0 0 14 15" fill="none" {...props}>
       <Path
         d="M8.59126 9.00861H12.51C14.3136 9.00861 11.9691 1.2915 10.6774 1.2915L1.80793 1.2915C1.43094 1.2915 1.12533 1.59193 1.12533 1.96256L1.12533 8.61024C1.12533 8.85581 1.26177 9.08179 1.48107 9.19936C2.94139 9.98242 4.65513 10.6244 5.50256 12.124L6.40978 13.7293C6.51866 13.922 6.72525 14.0415 6.94949 14.0415C9.20192 14.0415 8.5337 10.7621 8.22757 9.45805C8.17361 9.22811 8.35123 9.00861 8.59126 9.00861Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.0625"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -1401,7 +1389,7 @@ export const SolanaOutlineIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="28" height="26" viewBox="0 0 28 26" fill="none" {...props}>
       <Path
         d="M26.949 19.5297L22.6313 24.1593C22.5379 24.2598 22.4249 24.3401 22.2991 24.395C22.1733 24.4499 22.0376 24.4784 21.9004 24.4785H1.43281C1.33519 24.4784 1.23971 24.4499 1.15805 24.3964C1.07639 24.3429 1.0121 24.2668 0.973054 24.1773C0.934008 24.0878 0.921898 23.9889 0.938208 23.8927C0.954519 23.7965 0.998539 23.707 1.06488 23.6354L5.37769 19.0059C5.47108 18.9053 5.58417 18.8251 5.70994 18.7701C5.8357 18.7152 5.97144 18.6868 6.10867 18.6867H26.5762C26.6747 18.6846 26.7716 18.7118 26.8547 18.7647C26.9378 18.8176 27.0036 18.8939 27.0433 18.984C27.0833 19.0742 27.0955 19.1741 27.0786 19.2712C27.0618 19.3683 27.0168 19.4582 26.949 19.5297ZM22.6313 10.2048C22.5376 10.1047 22.4244 10.0248 22.2987 9.9699C22.1731 9.91503 22.0375 9.88635 21.9004 9.88564H1.43281C1.33519 9.88569 1.23971 9.9142 1.15805 9.96771C1.07639 10.0212 1.0121 10.0973 0.973054 10.1868C0.934008 10.2763 0.921898 10.3752 0.938208 10.4714C0.954519 10.5677 0.998539 10.6571 1.06488 10.7287L5.37769 15.3607C5.47142 15.4608 5.5846 15.5407 5.71028 15.5956C5.83596 15.6505 5.97154 15.6792 6.10867 15.6799H26.5762C26.6737 15.6794 26.7687 15.6505 26.8501 15.5968C26.9315 15.5432 26.9953 15.467 27.0341 15.3776C27.0728 15.2882 27.0847 15.1895 27.0682 15.0935C27.0518 14.9975 27.008 14.9083 26.9417 14.8368L22.6313 10.2048ZM1.43281 6.87884H21.9004C22.0376 6.87871 22.1733 6.85028 22.2991 6.79536C22.4249 6.74046 22.5379 6.6602 22.6313 6.55964L26.949 1.93009C27.0168 1.85858 27.0618 1.76862 27.0786 1.67152C27.0955 1.57442 27.0833 1.47453 27.0433 1.38441C27.0036 1.29429 26.9378 1.21797 26.8547 1.16505C26.7716 1.11214 26.6747 1.08499 26.5762 1.08702H6.10867C5.97144 1.08717 5.8357 1.11558 5.70994 1.1705C5.58417 1.22542 5.47108 1.30566 5.37769 1.40622L1.06488 6.03577C0.998539 6.10738 0.954519 6.1968 0.938208 6.29305C0.921898 6.3893 0.934008 6.4882 0.973054 6.57767C1.0121 6.66714 1.07639 6.74329 1.15805 6.79677C1.23971 6.85028 1.33519 6.87879 1.43281 6.87884Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.82435"
       />
     </Svg>
@@ -1413,19 +1401,19 @@ export const ChatTextIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="19" height="16" viewBox="0 0 19 16" fill="none" {...props}>
       <Path
         d="M3.79443 8.10449C3.79443 5.34307 6.03301 3.10449 8.79443 3.10449H9.62541C9.81665 3.10449 9.91227 3.10449 9.99313 3.10682C12.9729 3.19254 15.3683 5.58799 15.4541 8.56774C15.4564 8.6486 15.4564 8.74422 15.4564 8.93547V11.2863C15.4564 11.8154 15.4564 12.08 15.3776 12.2913C15.2509 12.631 14.9829 12.899 14.6432 13.0257C14.4319 13.1045 14.1673 13.1045 13.6382 13.1045H8.79443C6.03301 13.1045 3.79443 10.8659 3.79443 8.10449V8.10449Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25"
       />
       <Path
         d="M7.43896 7.47949L11.8122 7.47949"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M9.62549 9.97949H11.8121"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.25"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -1436,10 +1424,10 @@ export const ChatTextIcon: FC<IconProps> = ({ color, ...props }) => {
 
 export const UserOutlineIcon: FC<IconProps> = ({ color, className }) => (
   <Svg width="14" height="17" viewBox="0 0 14 17" fill="none" className={className}>
-    <Circle cx="7" cy="4.64878" r="3.42857" stroke="currentColor" strokeWidth="1.5" />
+    <Circle cx="7" cy="4.64878" r="3.42857" stroke={color} strokeWidth="1.5" />
     <Path
       d="M1 13.1641C1 12.4266 1.46359 11.7688 2.15808 11.5208V11.5208C5.28918 10.4025 8.71082 10.4025 11.8419 11.5208V11.5208C12.5364 11.7688 13 12.4266 13 13.1641V14.2917C13 15.3095 12.0985 16.0913 11.091 15.9474L10.755 15.8994C8.26432 15.5435 5.73568 15.5435 3.24497 15.8994L2.90904 15.9474C1.90146 16.0913 1 15.3095 1 14.2917V13.1641Z"
-      stroke="currentColor"
+      stroke={color}
       strokeWidth="1.5"
     />
   </Svg>
@@ -1448,11 +1436,11 @@ export const UserOutlineIcon: FC<IconProps> = ({ color, className }) => (
 export const ClockIcon: FC<IconProps> = ({ color, ...props }) => {
   return (
     <Svg width="16" height="18" viewBox="0 0 16 18" fill="none" {...props}>
-      <Ellipse cx="8" cy="10.363" rx="7" ry="6.85714" stroke="currentColor" />
-      <Path d="M6.44434 1.22021H9.55545" stroke="currentColor" strokeLinecap="round" />
-      <Path d="M8 1.22021L8 3.50593" stroke="currentColor" strokeLinecap="round" />
-      <Path d="M8 10.3631L10.3333 8.07739" stroke="currentColor" strokeLinecap="round" />
-      <Path d="M13.0557 5.02963L13.4446 4.64868" stroke="currentColor" strokeLinecap="round" />
+      <Ellipse cx="8" cy="10.363" rx="7" ry="6.85714" stroke={color} />
+      <Path d="M6.44434 1.22021H9.55545" stroke={color} strokeLinecap="round" />
+      <Path d="M8 1.22021L8 3.50593" stroke={color} strokeLinecap="round" />
+      <Path d="M8 10.3631L10.3333 8.07739" stroke={color} strokeLinecap="round" />
+      <Path d="M13.0557 5.02963L13.4446 4.64868" stroke={color} strokeLinecap="round" />
     </Svg>
   )
 }
@@ -1462,11 +1450,11 @@ export const ReceiptIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="20" height="20" viewBox="0 0 20 20" fill="none" {...props}>
       <Path
         d="M15 2.50001V2.50001C16.3807 2.50001 17.5 3.61929 17.5 5.00001L17.5 6.78572C17.5 6.98521 17.5 7.08495 17.4719 7.16514C17.4217 7.30876 17.3088 7.42169 17.1651 7.47194C17.085 7.5 16.9852 7.5 16.7857 7.5L12.5 7.5M15 2.50001V2.50001C13.6193 2.50001 12.5 3.61929 12.5 5.00001L12.5 7.5M15 2.50001L6.5 2.50001C4.61438 2.50001 3.67157 2.50001 3.08579 3.08579C2.5 3.67158 2.5 4.61439 2.5 6.50001L2.5 17.5L5 16.6667L7.5 17.5L10 16.6667L12.5 17.5L12.5 7.5"
-        stroke="currentColor"
+        stroke={color}
       />
-      <Path d="M5.8335 5.8335L9.16683 5.8335" stroke="currentColor" strokeLinecap="round" />
-      <Path d="M6.6665 9.1665H5.83317" stroke="currentColor" strokeLinecap="round" />
-      <Path d="M5.8335 12.5L8.3335 12.5" stroke="currentColor" strokeLinecap="round" />
+      <Path d="M5.8335 5.8335L9.16683 5.8335" stroke={color} strokeLinecap="round" />
+      <Path d="M6.6665 9.1665H5.83317" stroke={color} strokeLinecap="round" />
+      <Path d="M5.8335 12.5L8.3335 12.5" stroke={color} strokeLinecap="round" />
     </Svg>
   )
 }
@@ -1518,30 +1506,18 @@ export const GlobeIcon: FC<IconProps> = ({ color, ...props }) => {
         fillRule="evenodd"
         clipRule="evenodd"
         d="M28 54C42.4235 54 54 42.5396 54 28.1161C54 13.6926 42.4235 2 28 2C13.5765 2 2 13.6926 2 28.1161C2 42.5396 13.5765 54 28 54Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="3.51764"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <Path
-        d="M5.25 18.6324H50.75"
-        stroke="currentColor"
-        strokeWidth="3.51764"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M5.25 38.1324H50.75"
-        stroke="currentColor"
-        strokeWidth="3.51764"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <Path d="M5.25 18.6324H50.75" stroke={color} strokeWidth="3.51764" strokeLinecap="round" strokeLinejoin="round" />
+      <Path d="M5.25 38.1324H50.75" stroke={color} strokeWidth="3.51764" strokeLinecap="round" strokeLinejoin="round" />
       <Path
         fillRule="evenodd"
         clipRule="evenodd"
         d="M28 53.5478C35.149 53.5478 40.8869 42.2867 40.8869 28.114C40.8869 13.9414 35.149 2.45215 28 2.45215C20.851 2.45215 15.113 13.9414 15.113 28.114C15.113 42.2867 20.851 53.5478 28 53.5478Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="3.51764"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -1773,7 +1749,7 @@ export const CloseIcon: FC<IconProps> = ({ color, ...props }) => (
   <Svg width="13" height="13" viewBox="0 0 13 13" fill="none" {...props}>
     <Path
       d="M11.5 1.5L1.5 11.5M1.5 1.5L11.5 11.5"
-      stroke="currentColor"
+      stroke={color}
       strokeWidth="1.83333"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -1784,7 +1760,7 @@ export const CloseIcon: FC<IconProps> = ({ color, ...props }) => (
 export const SpinnerIcon: FC<IconProps> = ({ color, ...props }) => {
   return (
     <Svg className="w-5 h-5 text-white animate-spin" fill="none" viewBox="0 0 24 24" {...props}>
-      <Circle opacity={25} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <Circle opacity={25} cx="12" cy="12" r="10" stroke={color} strokeWidth="4" />
       <Path
         opacity={75}
         fill={color}
@@ -1807,7 +1783,7 @@ export const PencilUnderlineIcon: FC<IconProps> = ({ color, ...props }) => (
   <Svg width="12" height="11" viewBox="0 0 12 11" fill="none" {...props}>
     <Path
       d="M6 10.0001H10.5M8.25 1.75011C8.44891 1.5512 8.7187 1.43945 9 1.43945C9.13929 1.43945 9.27721 1.46689 9.4059 1.52019C9.53458 1.57349 9.65151 1.65162 9.75 1.75011C9.84849 1.8486 9.92662 1.96553 9.97992 2.09422C10.0332 2.2229 10.0607 2.36083 10.0607 2.50011C10.0607 2.6394 10.0332 2.77733 9.97992 2.90601C9.92662 3.0347 9.84849 3.15162 9.75 3.25011L3.5 9.50011L1.5 10.0001L2 8.00011L8.25 1.75011Z"
-      stroke="currentColor"
+      stroke={color}
       strokeWidth="1.33333"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -1819,7 +1795,7 @@ export const CopyIcon: FC<IconProps> = ({ color, ...props }) => (
   <Svg width="12" height="13" viewBox="0 0 12 13" fill="none" {...props}>
     <Path
       d="M2.5 8H2C1.73478 8 1.48043 7.89464 1.29289 7.70711C1.10536 7.51957 1 7.26522 1 7V2.5C1 2.23478 1.10536 1.98043 1.29289 1.79289C1.48043 1.60536 1.73478 1.5 2 1.5H6.5C6.76522 1.5 7.01957 1.60536 7.20711 1.79289C7.39464 1.98043 7.5 2.23478 7.5 2.5V3M5.5 5H10C10.5523 5 11 5.44772 11 6V10.5C11 11.0523 10.5523 11.5 10 11.5H5.5C4.94772 11.5 4.5 11.0523 4.5 10.5V6C4.5 5.44772 4.94772 5 5.5 5Z"
-      stroke="currentColor"
+      stroke={color}
       strokeLinecap="round"
       strokeLinejoin="round"
     />
@@ -1830,7 +1806,7 @@ export const CopyIcon2: FC<IconProps> = ({ color, ...props }) => (
   <Svg width="14" height="17" viewBox="0 0 14 17" fill="none" {...props}>
     <Path
       d="M1.16602 9.39062L1.16602 4.54167C1.16602 2.79276 2.58378 1.375 4.33268 1.375L9.18164 1.375M5.91602 15.625L11.2598 15.625C12.2435 15.625 13.041 14.8275 13.041 13.8437L13.041 6.125C13.041 5.14124 12.2435 4.34375 11.2598 4.34375L5.91602 4.34375C4.93226 4.34375 4.13477 5.14124 4.13477 6.125L4.13477 13.8437C4.13476 14.8275 4.93226 15.625 5.91602 15.625Z"
-      stroke="currentColor"
+      stroke={color}
       strokeWidth="1.58333"
       strokeLinecap="round"
     />
@@ -1967,25 +1943,25 @@ export const LevelIcon: FC<IconProps> = ({ color, ...props }) => {
 export const CupIcon: FC<IconProps> = ({ color, ...props }) => {
   return (
     <Svg width="18" height="16" viewBox="0 0 18 16" fill="none" {...props}>
-      <Path d="M9.00195 10.9966V15.1632" stroke="currentColor" strokeWidth="1.66667" strokeLinecap="round" />
-      <Path d="M6.50391 15.1631H11.5039" stroke="currentColor" strokeWidth="1.66667" strokeLinecap="round" />
+      <Path d="M9.00195 10.9966V15.1632" stroke={color} strokeWidth="1.66667" strokeLinecap="round" />
+      <Path d="M6.50391 15.1631H11.5039" stroke={color} strokeWidth="1.66667" strokeLinecap="round" />
       <Path
         fillRule="evenodd"
         clipRule="evenodd"
         d="M9.00204 10.9961C11.1449 10.9961 12.9306 10.2553 13.2878 8.03309L13.9089 1.91358C13.9588 1.42259 13.5734 0.996094 13.0799 0.996094H4.92424C4.43073 0.996094 4.04533 1.42259 4.09516 1.91358L4.71632 8.03309C5.07346 10.2553 6.85918 10.9961 9.00204 10.9961Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.66667"
         strokeLinecap="round"
       />
       <Path
         d="M14.0033 3.49561H16.0487C16.2998 3.49561 16.5033 3.69911 16.5033 3.95015V5.16227C16.5033 7.00319 15.0108 8.49561 13.1699 8.49561"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.66667"
         strokeLinecap="round"
       />
       <Path
         d="M4.00293 3.49561H1.95747C1.70644 3.49561 1.50293 3.69911 1.50293 3.95015V5.16227C1.50293 7.00319 2.99531 8.49561 4.83626 8.49561"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.66667"
         strokeLinecap="round"
       />
@@ -1999,7 +1975,7 @@ export const UploadCloudIcon: FC<IconProps> = ({ color, ...props }) => {
       <Path
         d="M38.2021 4.62451C38.6024 4.62451 38.9316 4.94316 38.9316 5.34131C38.9316 5.73942 38.6024 6.05811 38.2021 6.05811C34.8985 6.0582 31.9252 8.15351 30.8604 11.187L30.7637 11.4829C30.6566 11.8372 30.2969 12.0441 29.9365 11.98L29.9316 11.9868L29.8574 11.9653C29.473 11.8531 29.2501 11.4555 29.3662 11.0737L29.4785 10.728C30.7167 7.18591 34.1469 4.62461 38.2021 4.62451Z"
         fill={color}
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="0.245846"
       />
       <Path
@@ -2009,19 +1985,19 @@ export const UploadCloudIcon: FC<IconProps> = ({ color, ...props }) => {
       <Path
         d="M28.4189 18.5381C36.8433 18.5383 43.7011 25.2494 43.7012 33.5039C43.7012 41.7584 36.8433 48.4695 28.4189 48.4697C19.9945 48.4697 13.1357 41.7586 13.1357 33.5039C13.1358 25.2493 19.9944 18.5381 28.4189 18.5381ZM28.4189 19.9717C20.7942 19.9717 14.5948 26.0449 14.5947 33.5039C14.5947 40.963 20.7943 47.0361 28.4189 47.0361C36.0434 47.0359 42.2422 40.9628 42.2422 33.5039C42.2422 26.045 36.0434 19.9719 28.4189 19.9717Z"
         fill={color}
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="0.245846"
       />
       <Path
         d="M28.6963 27.6206C29.0066 27.6208 29.2626 27.8681 29.2627 28.1782V39.48C29.2625 39.7903 29.0065 40.0374 28.6963 40.0376C28.3859 40.0376 28.1291 39.7901 28.1289 39.48V28.1782L28.1406 28.0649C28.194 27.8099 28.4247 27.6206 28.6963 27.6206Z"
         fill={color}
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="0.245846"
       />
       <Path
         d="M28.2959 27.7837C28.5168 27.5674 28.8746 27.5674 29.0957 27.7837L32.6475 31.2612L32.7197 31.3491C32.866 31.566 32.8424 31.8614 32.6475 32.0522L32.6465 32.0513C32.5632 32.133 32.4613 32.1845 32.3545 32.2046L32.2471 32.2144C32.1392 32.2143 32.0308 32.1834 31.9365 32.1226L31.8477 32.0522L28.6953 28.9663L25.5439 32.0522L25.543 32.0513C25.3495 32.2406 25.0526 32.2648 24.833 32.1226L24.7441 32.0522C24.5215 31.8342 24.5215 31.4793 24.7441 31.2612L28.2959 27.7837Z"
         fill={color}
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="0.245846"
       />
     </Svg>
@@ -2126,7 +2102,7 @@ export const HomeIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="20" height="23" viewBox="0 0 20 23" fill="none" {...props}>
       <Path
         d="M7.125 21.0834V11.5001H12.875V21.0834M1.375 8.62508L10 1.91675L18.625 8.62508V19.1667C18.625 19.6751 18.4231 20.1626 18.0636 20.522C17.7042 20.8815 17.2167 21.0834 16.7083 21.0834H3.29167C2.78334 21.0834 2.29582 20.8815 1.93638 20.522C1.57693 20.1626 1.375 19.6751 1.375 19.1667V8.62508Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.91667"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -2151,7 +2127,7 @@ export const QuestionMarkCircleIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="22" height="23" viewBox="0 0 22 23" fill="none" {...props}>
       <Path
         d="M8.09 8.25C8.3251 7.58167 8.78915 7.01811 9.39995 6.65913C10.0108 6.30016 10.7289 6.16894 11.4272 6.28871C12.1255 6.40849 12.7588 6.77152 13.2151 7.31353C13.6713 7.85553 13.9211 8.54152 13.92 9.25C13.92 11.25 10.92 12.25 10.92 12.25M11 16.25H11.01M21 11.25C21 16.7728 16.5228 21.25 11 21.25C5.47715 21.25 1 16.7728 1 11.25C1 5.72715 5.47715 1.25 11 1.25C16.5228 1.25 21 5.72715 21 11.25Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -2248,7 +2224,7 @@ export const MessagesIcon: FC<IconProps> = ({ color, ...props }) => {
     <Svg width="16" height="17" viewBox="0 0 16 17" fill="none" {...props}>
       <Path
         d="M15.125 10.875C15.125 11.2949 14.9582 11.6977 14.6613 11.9946C14.3643 12.2915 13.9616 12.4583 13.5417 12.4583H4.04167L0.875 15.625V2.95833C0.875 2.53841 1.04181 2.13568 1.33875 1.83875C1.63568 1.54181 2.03841 1.375 2.45833 1.375H13.5417C13.9616 1.375 14.3643 1.54181 14.6613 1.83875C14.9582 2.13568 15.125 2.53841 15.125 2.95833V10.875Z"
-        stroke="currentColor"
+        stroke={color}
         strokeWidth="1.58333"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -2263,28 +2239,28 @@ export const LockClosedIcon: FC<IconProps> = ({ color, ...props }) => {
       <G opacity="0.5">
         <Path
           d="M13.8571 8.32135H3.14286C1.95939 8.32135 1 9.47262 1 10.8928V18.6071C1 20.0272 1.95939 21.1785 3.14286 21.1785H13.8571C15.0406 21.1785 16 20.0272 16 18.6071V10.8928C16 9.47262 15.0406 8.32135 13.8571 8.32135Z"
-          stroke="currentColor"
+          stroke={color}
           strokeWidth="1.638"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <Path
           d="M4.21289 7.24992V4.49482C4.21289 3.52055 4.66442 2.58619 5.46815 1.89728C6.27187 1.20838 7.36196 0.82135 8.49861 0.82135C9.63525 0.82135 10.7253 1.20838 11.5291 1.89728C12.3328 2.58619 12.7843 3.52055 12.7843 4.49482V7.24992"
-          stroke="currentColor"
+          stroke={color}
           strokeWidth="1.638"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <Path
           d="M8.5 12.6274C9.08028 12.6274 9.55063 13.098 9.55078 13.6782C9.55078 14.2586 9.08037 14.729 8.5 14.729C7.91976 14.7289 7.44922 14.2585 7.44922 13.6782C7.44937 13.0981 7.91985 12.6276 8.5 12.6274Z"
-          stroke="currentColor"
+          stroke={color}
           strokeWidth="2.184"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <Path
           d="M8.5 14.7499V16.8928"
-          stroke="currentColor"
+          stroke={color}
           strokeWidth="2.184"
           strokeLinecap="round"
           strokeLinejoin="round"

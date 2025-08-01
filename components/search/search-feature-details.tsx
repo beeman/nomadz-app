@@ -1,5 +1,6 @@
 import ImportantInformationSection from '@/components/property/ImportantInformationSection'
 import LocationSection from '@/components/property/LocationSection'
+import ReviewsSection from '@/components/property/ReviewsSection'
 import { RootStackParamList, Routes } from '@/navigation/navigation.config'
 import { api } from '@/utils/api'
 import { RouteProp, useRoute } from '@react-navigation/native'
@@ -158,10 +159,7 @@ export function SearchFeatureDetails() {
   //         />
   //       </View>
   //       <ReviewsSection property={selectedApartment} />
-  //       <View className="grid gap-6 xl:grid-cols-2 xl:gap-16">
-  //         <LocationSection property={selectedApartment} />
-  //         <ImportantInformationSection property={selectedApartment} />
-  //       </View>
+  //
   //     </View>
   //   </DefaultLayout>
   // )
@@ -170,8 +168,11 @@ export function SearchFeatureDetails() {
     selectedApartment && (
       <ScrollView nestedScrollEnabled className="flex flex-col bg-[#000000] box-border px-[10px]">
         <View className="flex flex-col gap-6 box-border mb-[10px]">
-          <LocationSection property={selectedApartment} />
-          <ImportantInformationSection property={selectedApartment} />
+          <ReviewsSection property={selectedApartment} />
+          <View className="flex flex-col gap-6 box-border">
+            <LocationSection property={selectedApartment} />
+            <ImportantInformationSection property={selectedApartment} />
+          </View>
         </View>
       </ScrollView>
     )
