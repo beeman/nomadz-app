@@ -42,26 +42,6 @@ export function SearchResults() {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Header */}
-      <View style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: spacing.lg,
-        paddingVertical: spacing.md,
-        borderBottomWidth: 1,
-        borderBottomColor: '#292929',
-      }}>
-        <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: 'bold' }}>
-          {searchResults.length} results found
-        </Text>
-        <TouchableOpacity onPress={clearSearch}>
-          <Text style={{ color: '#A0A0A0', fontSize: 14 }}>
-            Clear Search
-          </Text>
-        </TouchableOpacity>
-      </View>
-
       {/* Results List */}
       <FlatList
         data={searchResults}
