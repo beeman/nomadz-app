@@ -122,18 +122,22 @@ export function DatePickerComponent({ value, onChange }: DatePickerProps) {
             backgroundColor: '#1B1B1B',
             borderRadius: 12,
             padding: spacing.md,
+            flexDirection: 'row',
+            justifyContent: 'center',
             alignItems: 'center',
             borderWidth: 1,
             borderColor: '#292929',
           }}
         >
-          <Ionicons name="calendar" size={20} color="#FFFFFF" />
-          <Text style={{ color: '#FFFFFF', fontSize: 14, marginTop: spacing.xs }}>
-            check in
-          </Text>
-          <Text style={{ color: '#A0A0A0', fontSize: 12 }}>
-            {formatDateForDisplay(tempDates.startDate)}
-          </Text>
+          <Ionicons name="calendar" size={20} color="#FFFFFF" style={{ marginRight: spacing.sm }} />
+          <View>
+            <Text style={{ color: '#FFFFFF', fontSize: 14 }}>
+              check in
+            </Text>
+            <Text style={{ color: '#A0A0A0', fontSize: 12 }}>
+              {formatDateForDisplay(tempDates.startDate)}
+            </Text>
+          </View>
         </TouchableOpacity>
         
         <TouchableOpacity
@@ -143,18 +147,22 @@ export function DatePickerComponent({ value, onChange }: DatePickerProps) {
             backgroundColor: '#1B1B1B',
             borderRadius: 12,
             padding: spacing.md,
+            flexDirection: 'row',
+            justifyContent: 'center',
             alignItems: 'center',
             borderWidth: 1,
             borderColor: '#292929',
           }}
         >
-          <Ionicons name="calendar" size={20} color="#FFFFFF" />
-          <Text style={{ color: '#FFFFFF', fontSize: 14, marginTop: spacing.xs }}>
-            check out
-          </Text>
-          <Text style={{ color: '#A0A0A0', fontSize: 12 }}>
-            {formatDateForDisplay(tempDates.endDate)}
-          </Text>
+          <Ionicons name="calendar" size={20} color="#FFFFFF" style={{ marginRight: spacing.sm }} />
+          <View>
+            <Text style={{ color: '#FFFFFF', fontSize: 14 }}>
+              check out
+            </Text>
+            <Text style={{ color: '#A0A0A0', fontSize: 12 }}>
+              {formatDateForDisplay(tempDates.endDate)}
+            </Text>
+          </View>
         </TouchableOpacity>
       </View>
 
