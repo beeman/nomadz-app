@@ -253,12 +253,16 @@ export function SearchModal() {
                       paddingVertical: spacing.xs,
                       borderRadius: 20,
                       borderWidth: 1,
-                      borderColor: '#FFFFFF80',
-                      backgroundColor: isPropertyTypeSelected(type) ? '#FFFFFF1F' : '#1B1B1B',
+                      borderColor: isPropertyTypeSelected(type) ? '#FFF' : '#FFFFFF80',
+                      backgroundColor: isPropertyTypeSelected(type) ? '#FFFFFF30' : '#1B1B1B',
                       marginBottom: spacing.xs,
                     }}
                   >
-                    <Text style={{ color: '#FFFFFF', fontSize: 12 }}>
+                    <Text style={{ 
+                      color: isPropertyTypeSelected(type) ? '#FFF' : '#FFFFFF', 
+                      fontSize: 12,
+                      fontWeight: isPropertyTypeSelected(type) ? '600' : '400',
+                    }}>
                       {type}
                     </Text>
                   </TouchableOpacity>
