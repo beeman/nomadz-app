@@ -39,7 +39,7 @@ export function ApartmentCard({ apartment, onPress, showRegion = false }: Apartm
         borderColor: '#292929',
       }}>
         <Card.Cover 
-          source={{ uri: apartment.images?.[0]?.url?.replace('{size}', '1024x768') }} 
+          source={{ uri: apartment.images?.[0]?.url?.replace('{size}', '640x640') }} 
         />
         <Card.Content style={{ padding: spacing.md }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: spacing.xs }}>
