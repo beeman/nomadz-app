@@ -1,10 +1,11 @@
 import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
 import { Ionicons } from '@expo/vector-icons'
-import React, { useState } from 'react'
-import { Modal, ScrollView, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useState } from 'react'
+import { Modal, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native'
 import { DatePickerComponent, DateRange } from './date-picker'
 import { DestinationInput } from './destination-input'
 import { GuestsInput } from './guests-input'
+import PriceRange from './price-range'
 import { useSearch } from './search-provider'
 
 const SORT_OPTIONS = [
@@ -141,6 +142,13 @@ export function SearchModal() {
       dateRange: dateRange,
     })
   }
+
+  const handlePriceRangeChange = useCallback((range: { min: number; max: number | null }) => {
+    updateFilters({ 
+      minPrice: range.min, 
+      maxPrice: range.max || 0 
+    })
+  }, [updateFilters])
 
   return (
     <Modal
@@ -281,50 +289,11 @@ export function SearchModal() {
             </TouchableOpacity>
             
             {expandedSection === 'priceRange' && (
-              <View style={{ flexDirection: 'row', gap: spacing.sm }}>
-                <View style={{ flex: 1 }}>
-                  <Text style={{ color: '#FFFFFF', fontSize: 12, marginBottom: spacing.xs }}>
-                    min
-                  </Text>
-                  <TextInput
-                    style={{
-                      backgroundColor: '#1B1B1B',
-                      borderRadius: 8,
-                      padding: spacing.sm,
-                      color: '#FFFFFF',
-                      borderWidth: 1,
-                      borderColor: '#FFFFFF',
-                      fontSize: 14,
-                    }}
-                    value={filters.minPrice.toString()}
-                    onChangeText={(text) => updateFilters({ minPrice: parseInt(text) || 0 })}
-                    keyboardType="numeric"
-                    placeholder="0"
-                    placeholderTextColor="#A0A0A0"
-                  />
-                </View>
-                
-                <View style={{ flex: 1 }}>
-                  <Text style={{ color: '#FFFFFF', fontSize: 12, marginBottom: spacing.xs }}>
-                    max
-                  </Text>
-                  <TextInput
-                    style={{
-                      backgroundColor: '#1B1B1B',
-                      borderRadius: 8,
-                      padding: spacing.sm,
-                      color: '#FFFFFF',
-                      borderWidth: 1,
-                      borderColor: '#FFFFFF',
-                      fontSize: 14,
-                    }}
-                    value={filters.maxPrice.toString()}
-                    onChangeText={(text) => updateFilters({ maxPrice: parseInt(text) || 0 })}
-                    keyboardType="numeric"
-                    placeholder="350+"
-                    placeholderTextColor="#A0A0A0"
-                  />
-                </View>
+              <View style={{ backgroundColor: '#1B1B1B', borderRadius: 8, overflow: 'hidden' }}>
+                <PriceRange
+                  initialRange={{ min: filters.minPrice, max: filters.maxPrice }}
+                  onChange={handlePriceRangeChange}
+                />
               </View>
             )}
           </View>
