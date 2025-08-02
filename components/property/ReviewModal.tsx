@@ -72,8 +72,8 @@ export default function ReviewModal({ property }: { property: ApartmentInfo }) {
       <View onTouchStart={() => setIsOpen(true)} className="inline-flex flex-row self-start">
         <Text className="text-[#8B5CF6] border-b border-[#8B5CF6] text-sm font-primary pb-[0.5px]">Read more</Text>
       </View>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <View className="flex flex-col max-w-full w-full max-h-[90dvh] bg-black rounded-2xl overflow-hidden border border-[#313131]">
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} className="mx-6">
+        <View className="flex flex-col w-full max-h-[90dvh] bg-black rounded-2xl overflow-hidden border border-[#313131]">
           {/* Modal Header */}
           <View className="relative flex flex-row items-center justify-between p-6 w-full">
             <Text className="inline-flex flex-1 text-xl font-primary-medium text-center text-white">

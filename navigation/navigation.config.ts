@@ -6,5 +6,5 @@ export enum Routes {
 export type RootStackParamList = {
   Profile: { userId: string }
   Home: undefined
-  [Routes.ApartmentDetails]: { id: string }
+  [Routes.ApartmentDetails]: { id: string; checkin: string; checkout: string; guests: any }
 }

@@ -1,6 +1,7 @@
+import Carousel from '@/components/ui/Carousel/Carousel'
 import { groupBy, startCase } from 'lodash'
 import { useState } from 'react'
-import Carousel from '../Carousel/Carousel'
+import { FlatList, Image, ScrollView, Text, View } from 'react-native'
 
 interface ImageGalleryProps {
   images: {
@@ -69,38 +70,46 @@ export default function ImageGallery({ images, roomGroups }: ImageGalleryProps) 
   console.log('allImages', allImages[1])
 
   return (
-    <View className="flex max-xl:flex-col text-white max-h-full xl:max-h-[80dvh] overflow-hidden max-xl:space-y-8">
-      <View className="relative overflow-auto max-xl:max-h-2/3 xl:flex-1 max-sm:shrink-0">
+    <ScrollView className="flex flex-col max-h-[600px]">
+      <View className="relative overflow-auto w-full aspect-[3/2]">
         <Carousel
           items={imageElements}
-          className="flex flex-col justify-center h-full"
-          contentClassName="overflow-hidden"
+          showNavigation={true}
+          hideArrows={true}
+          hideDotsArrows={false}
+          className="relative flex flex-row w-full h-full"
+          carouselContainerClassName="rounded-lg overflow-hidden"
+          dotGroupClass="z-10 border-red-500 absolute top-full mt-5 w-full"
         />
       </View>
+      {/* Room selection column */}
 
-      {/* Room Selection Column */}
-      <View className="px-4 xl:overflow-y-auto xl:w-1/3 no-scrollbar max-sm:overflow-y-auto">
-        <View className="grid grid-cols-2 sm:flex gap-x-3 xl:gap-x-[34px] xl:gap-y-3.5 xl:flex-1 max-xl:overflow-x-auto xl:grid xl:grid-cols-2 no-scrollbar max-sm:gap-2">
-          {allImages.map((room, index) => (
-            <Button
-              key={index}
-              onClick={() => setSelectedRoomIndex(index)}
-              className={`rounded-lg bg-[#151515] sm:max-xl:min-w-40 h-fit`}
-            >
-              <View>
-                {!!room.images?.[0] && (
-                  <View className="aspect-[3/2] overflow-hidden rounded">
-                    <Image src={getImageUrl(room.images[0])} alt="" className="object-cover w-full h-full" />
-                  </View>
-                )}
-                <Text className="mt-1 text-sm text-left sm:mt-3 line-clamp-1 max-sm:text-xs">
-                  {formatRoomName(room.name)}
-                </Text>
-              </View>
-            </Button>
-          ))}
-        </View>
-      </View>
-    </View>
+      <FlatList
+        numColumns={2}
+        data={allImages}
+        scrollEnabled={false}
+        className="mt-20"
+        columnWrapperStyle={{ gap: 8 }}
+        ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+        renderItem={({ item, index }) => (
+          <View
+            key={index}
+            onTouchStart={() => setSelectedRoomIndex(index)}
+            className={`flex flex-col flex-1 rounded-lg bg-[#151515]`}
+          >
+            <View className="flex flex-col gap-2">
+              {!!item.images?.[0] && (
+                <View className="aspect-[3/2] rounded-xl overflow-hidden">
+                  <Image src={getImageUrl(item.images[0])} alt="" className="object-cover w-full h-full" />
+                </View>
+              )}
+              <Text className="mt-1 text-left line-clamp-1 text-sm font-primary-medium text-white">
+                {formatRoomName(item.name)}
+              </Text>
+            </View>
+          </View>
+        )}
+      />
+    </ScrollView>
   )
 }

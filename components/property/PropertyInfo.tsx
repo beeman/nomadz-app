@@ -1,26 +1,13 @@
+import { useAuth } from '@/components/auth/auth-provider'
+import ImageGallery from '@/components/property/ImageGallery'
+import MobileImageGallery from '@/components/property/MobileImageGallery'
+import { DateRange } from '@/components/ui/DatePicker'
+import Modal from '@/components/ui/Modal'
+import { ApartmentInfo, GuestDetails } from '@/types/booking.types'
+import { formatDateToISOString } from '@/utils/date.utils'
+import toastNotifications from '@/utils/toastNotifications.utils'
 import { useEffect, useState } from 'react'
-import { useAuth, useRates } from '../../hooks'
-import { ApartmentInfo, GuestDetails } from '../../types/booking.types'
-import { formatDateToISOString } from '../../utils/date.utils'
-import { formatPropertyRegion } from '../../utils/location.utils'
-import toastNotifications from '../../utils/toastNotifications.utils'
-import { LoadingIcon, MapPinFilledIcon } from '../icons/Icons'
-import CryptoPayment from '../Payment/CryptoPayment'
-import GuestsModal from '../Payment/GuestsModal'
-import EmptyState from '../stays/EmptyState'
-import { DateRange } from '../ui/DatePicker'
-import Dropdown from '../ui/Dropdown'
-import Modal from '../ui/Modal'
-import DesktopHeader from './DesktopHeader'
-import DesktopImageGrid from './DesktopImageGrid'
-import FacilitiesCard from './FacilitiesCard'
-import FacilitiesCardMobile from './FacilitiesCardMobile'
-import FacilitiesModal from './FacilitiesModal'
-import FiltersSingleRoom from './FiltersSingleRoom'
-import ImageGallery from './ImageGallery'
-import MobileImageGallery from './MobileImageGallery'
-import RoomCard from './RoomCard'
-import StatsBar from './StatsBar'
+import { Text, View } from 'react-native'
 
 interface PropertyInfoProps {
   property: ApartmentInfo
@@ -67,7 +54,10 @@ export default function PropertyInfo({
   })
   const amenities = property.amenityGroups.find((group) => group.name === 'General')?.amenities
 
-  const { selectedApartmentRates, isApartmentRatesLoading } = useRates()
+  const [{ selectedApartmentRates, isApartmentRatesLoading }] = useState<any>({
+    selectedApartmentRates: [],
+    isApartmentRatesLoading: false,
+  })
   const [selectedRate, setSelectedRate] = useState<any>(null)
   const [availableRooms, setAvailableRooms] = useState<any>([])
   const [paymentInfo, setPaymentInfo] = useState({
@@ -132,7 +122,7 @@ export default function PropertyInfo({
   }, [filters, selectedApartmentRates])
 
   const handleBookNow = (_: any, rate: any = selectedApartmentRates?.rates?.[0], bookHash: string) => {
-    if (!authenticatedUser) {
+    if (!user) {
       toastNotifications.info('please, log in to book this property.')
       return
     }
@@ -201,24 +191,21 @@ export default function PropertyInfo({
     }
   }
 
-  const { authenticatedUser } = useAuth()
+  const { user } = useAuth()
 
   const totalReviews = property.reviews?.length || 0
 
   return (
-    <View className="flex flex-col mb-6 xl:mb-24">
-      <DesktopHeader property={property} />
-      <DesktopImageGrid property={property} onGalleryOpen={() => setIsGalleryOpen(true)} />
-
+    <View className="flex flex-col mb-6">
       <View>
-        <View className="flex flex-col gap-6 md:gap-12 xl:flex-row-reverse">
+        <View className="flex flex-col gap-6">
           <MobileImageGallery property={property} onGalleryOpen={() => setIsGalleryOpen(true)} />
 
           {/* Property Info */}
-          <View className="flex text-white md:space-x-12 max-md:flex-col">
-            <View>
-              {/* Header */}
-              <Text className="mb-4 text-xl font-medium text-left md:hidden sm:text-2xl">{property.name}</Text>
+          {/* <View className="flex text-white md:space-x-12 max-md:flex-col">
+            <View> */}
+          {/* Header */}
+          {/* <Text className="mb-4 text-xl font-medium text-left md:hidden sm:text-2xl">{property.name}</Text>
               <View className="flex items-center mb-4 space-x-8 max-md:hidden">
                 <View className="flex items-center gap-1.5">
                   <Text className="text-[#FFBF75]">★</Text>
@@ -241,27 +228,27 @@ export default function PropertyInfo({
                 </View>
               </View>
 
-              <StatsBar property={property} />
+              <StatsBar property={property} /> */}
 
-              <View className="space-y-4 max-md:hidden">
-                {/* Description */}
-                <View className="md:mb-10 text-sm 2xl:text-base 3xl:text-lg text-[#A9A9A9] xl:w-3/4">
+          {/* <View className="space-y-4 max-md:hidden"> */}
+          {/* Description */}
+          {/* <View className="md:mb-10 text-sm 2xl:text-base 3xl:text-lg text-[#A9A9A9] xl:w-3/4">
                   {property.descriptionStruct?.[0]?.paragraphs[0]}
-                </View>
+                </View> */}
 
-                {/* Facilities - single room */}
-                {property.roomGroups.length === 1 && (
+          {/* Facilities - single room */}
+          {/* {property.roomGroups.length === 1 && (
                   <FacilitiesCard
                     amenities={amenities || []}
                     onShowAll={() => setIsFacilitiesOpen(true)}
                     className="w-fit h-min"
                   />
-                )}
-              </View>
-            </View>
+                )} */}
+          {/* </View>
+            </View> */}
 
-            {/* Price Details */}
-            <FiltersSingleRoom
+          {/* Price Details */}
+          {/* <FiltersSingleRoom
               dateRange={dateRange}
               guests={guests}
               onDateRangeChange={handleDateRangeChange}
@@ -273,13 +260,13 @@ export default function PropertyInfo({
               isBookingEnabled={!isLoading && !!selectedRate}
               showBookingDetails={property.roomGroups.length === 1}
             />
-          </View>
+          </View> */}
         </View>
 
         {/* Room filters */}
-        <View className="flex items-stretch self-start gap-5 sm:bg-[#101010] text-white sm:p-4 rounded-2xl sm:border border-[#2A2A2A] shadow-md relative max-md:w-full w-fit max-[470px]:flex-col max-[470px]:justify-start">
-          {/* Meal options dropdown */}
-          <View className="relative min-w-[200px] max-md:grow">
+        {/* <View className="flex items-stretch self-start gap-5 sm:bg-[#101010] text-white sm:p-4 rounded-2xl sm:border border-[#2A2A2A] shadow-md relative max-md:w-full w-fit max-[470px]:flex-col max-[470px]:justify-start"> */}
+        {/* Meal options dropdown */}
+        {/* <View className="relative min-w-[200px] max-md:grow">
             <Button
               className="w-full flex flex-col items-start justify-center bg-[#1F1F1F] rounded-xl px-4 py-3 text-left border border-[#272727] focus:outline-none focus:ring-2 focus:ring-[#272727] transition-colors"
               onClick={() => setDropdownOpen((o) => ({ ...o, breakfast: !o.breakfast }))}
@@ -340,9 +327,9 @@ export default function PropertyInfo({
                 </li>
               </ul>
             </Dropdown>
-          </View>
-          {/* Cancelation policy dropdown */}
-          <View className="relative min-w-[200px] max-md:grow">
+          </View> */}
+        {/* Cancelation policy dropdown */}
+        {/* <View className="relative min-w-[200px] max-md:grow">
             <Button
               className="w-full flex flex-col items-start justify-center bg-[#1F1F1F] rounded-xl px-4 py-3 text-left border border-[#272727] focus:outline-none focus:ring-2 focus:ring-[#272727] transition-colors"
               onClick={() => setDropdownOpen((o) => ({ ...o, freeCancellation: !o.freeCancellation }))}
@@ -403,11 +390,11 @@ export default function PropertyInfo({
                 </li>
               </ul>
             </Dropdown>
-          </View>
-        </View>
+          </View> */}
+        {/* </View> */}
 
         {/* Room Cards */}
-        <>
+        {/* <>
           {property.roomGroups.length > 1 && (availableRooms.length || isApartmentRatesLoading) && (
             <View className="max-md:mb-10">
               <Text className="mt-8 text-2xl text-white font-secondary">available rooms</Text>
@@ -472,29 +459,31 @@ export default function PropertyInfo({
                 className={`my-6 md:mt-12 ${isLoading ? 'opacity-0' : ''}`}
               />
             )}
-        </>
+        </> */}
 
-        <View className="space-y-4 text-white md:hidden">
-          {/* Description */}
-          <View className="md:mb-10 text-sm 2xl:text-base 3xl:text-lg text-[#A9A9A9]">
+        {/* <View className="space-y-4 text-white md:hidden"> */}
+        {/* Description */}
+        {/* <View className="md:mb-10 text-sm 2xl:text-base 3xl:text-lg text-[#A9A9A9]">
             {property.descriptionStruct?.[0]?.paragraphs[0]}
-          </View>
+          </View> */}
 
-          {/* Facilities - single room */}
-          {property.roomGroups.length === 1 && (
+        {/* Facilities - single room */}
+        {/* {property.roomGroups.length === 1 && (
             <FacilitiesCardMobile amenities={amenities || []} onShowAll={() => setIsFacilitiesOpen(true)} />
           )}
-        </View>
+        </View> */}
       </View>
 
       {/* Gallery Modal */}
-      <Modal isOpen={isGalleryOpen} onClose={() => setIsGalleryOpen(false)}>
-        <View className="w-[98vw] min-[470px]:w-[90vw] h-[90dvh] bg-[#151515] rounded-xl p-6 relative flex flex-col">
-          <View className="flex justify-between items-center mb-6">
-            <Text className="text-xl font-medium text-left text-white sm:text-2xl">{property.name}</Text>
-            <Button onClick={() => setIsGalleryOpen(false)} className="text-white/60 hover:text-white">
-              close
-            </Button>
+      <Modal isOpen={isGalleryOpen} onClose={() => setIsGalleryOpen(false)} className="px-6 w-full">
+        <View className="w-full bg-[#151515] rounded-xl p-6 relative flex flex-col">
+          <View className="flex flex-row justify-between items-center mb-6 gap-5">
+            <View className="flex flex-row flex-1">
+              <Text className="text-xl font-primary-medium text-left text-white">{property.name}</Text>
+            </View>
+            <View onTouchStart={() => setIsGalleryOpen(false)}>
+              <Text className="text-white/60 text-lg font-primary-medium">close</Text>
+            </View>
           </View>
           <ImageGallery
             images={property.images}
@@ -502,7 +491,7 @@ export default function PropertyInfo({
               ...room,
               nameStruct: {
                 ...room.nameStruct,
-                mainName: room.nameStruct?.mainName ?? '',
+                mainName: room.nameStruct?.mainName || '',
               },
             }))}
           />
@@ -510,14 +499,14 @@ export default function PropertyInfo({
       </Modal>
 
       {/* Facilities Modal */}
-      <FacilitiesModal
+      {/* <FacilitiesModal
         isOpen={isFacilitiesOpen}
         onClose={() => setIsFacilitiesOpen(false)}
         amenities={amenities || []}
-      />
+      /> */}
 
       {/* Add Guests Modal */}
-      <Modal
+      {/* <Modal
         className="max-h-[95%] overflow-auto bg-transparent"
         isOpen={isGuestsModalOpen}
         onClose={() => setIsGuestsModalOpen(false)}
@@ -527,10 +516,10 @@ export default function PropertyInfo({
           onCancel={() => setIsGuestsModalOpen(false)}
           onConfirm={handleGuestsModalConfirm}
         />
-      </Modal>
+      </Modal> */}
 
       {/* Add Payment Modal */}
-      <Modal
+      {/* <Modal
         className="max-h-[95%] overflow-auto bg-transparent"
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
@@ -554,7 +543,7 @@ export default function PropertyInfo({
           onCancel={() => setIsPaymentModalOpen(false)}
           selectedRate={selectedRate}
         />
-      </Modal>
+      </Modal> */}
     </View>
   )
 }

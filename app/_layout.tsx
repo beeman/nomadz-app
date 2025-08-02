@@ -13,12 +13,24 @@ import {
   Epilogue_800ExtraBold,
   Epilogue_900Black,
 } from '@expo-google-fonts/epilogue'
+import {
+  Geist_100Thin,
+  Geist_200ExtraLight,
+  Geist_300Light,
+  Geist_400Regular,
+  Geist_500Medium,
+  Geist_600SemiBold,
+  Geist_700Bold,
+  Geist_800ExtraBold,
+  Geist_900Black,
+} from '@expo-google-fonts/geist'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import 'react-native-reanimated'
 
 SplashScreen.preventAutoHideAsync()
@@ -29,6 +41,7 @@ export default function RootLayout() {
   useTrackLocations((pathname, params) => {
     console.log(`Track ${pathname}`, { params })
   })
+
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     Epilogue_100Thin,
@@ -40,6 +53,15 @@ export default function RootLayout() {
     Epilogue_700Bold,
     Epilogue_800ExtraBold,
     Epilogue_900Black,
+    Geist_100Thin,
+    Geist_200ExtraLight,
+    Geist_300Light,
+    Geist_400Regular,
+    Geist_500Medium,
+    Geist_600SemiBold,
+    Geist_700Bold,
+    Geist_800ExtraBold,
+    Geist_900Black,
   })
 
   const onLayoutRootView = useCallback(async () => {
@@ -61,13 +83,15 @@ export default function RootLayout() {
   }
 
   return (
-    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <AppProviders>
-        <AppSplashController />
-        <RootNavigator />
-        <StatusBar style="auto" />
-      </AppProviders>
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+        <AppProviders>
+          <AppSplashController />
+          <RootNavigator />
+          <StatusBar style="auto" />
+        </AppProviders>
+      </View>
+    </GestureHandlerRootView>
   )
 }
 
