@@ -25,6 +25,7 @@ export interface Result {
   images: { url: string; categorySlug: string }[]
   rating: number
   reviewsNumber: number
+  rates?: any[] // Add rates for price calculation
 }
 
 export interface SearchSuggestion {
