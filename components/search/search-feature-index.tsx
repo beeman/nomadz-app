@@ -12,7 +12,7 @@ export function SearchFeatureIndex() {
   const spacing = useAppThemeSpacing()
 
   const renderRandomItem = ({ item }: { item: any }) => (
-    <ApartmentCard apartment={item} />
+    <ApartmentCard apartment={item} showRegion={true} />
   )
 
   // Only show loading screen for initial load, not for load more

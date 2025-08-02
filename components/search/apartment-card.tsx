@@ -1,4 +1,5 @@
 import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
+import { formatPropertyRegion } from '@/utils/format-property-region'
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
@@ -8,10 +9,15 @@ import { Result } from './search-provider'
 interface ApartmentCardProps {
   apartment: Result
   onPress?: () => void
+  showRegion?: boolean // If true, shows city, country. If false, shows address
 }
 
-export function ApartmentCard({ apartment, onPress }: ApartmentCardProps) {
+export function ApartmentCard({ apartment, onPress, showRegion = false }: ApartmentCardProps) {
   const spacing = useAppThemeSpacing()
+
+  const locationText = showRegion 
+    ? formatPropertyRegion([apartment.region?.name, apartment.region?.countryName])
+    : apartment.address
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
@@ -29,7 +35,7 @@ export function ApartmentCard({ apartment, onPress }: ApartmentCardProps) {
             {apartment.name}
           </Text>
           <Text style={{ color: '#A0A0A0', fontSize: 14, marginBottom: spacing.xs }}>
-            {apartment.address}
+            {locationText}
           </Text>
           {!!apartment.rating && (
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: spacing.sm }}>
