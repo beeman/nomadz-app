@@ -31,14 +31,14 @@ const StepForm: FC<StepFormProps> = ({
   skipButtonText = "I'll do it later"
 }) => {
   return (
-    <View className={`mt-24 space-y-24 sm:!min-w-[330px] ${className || ''}`}>
-      <View className="space-y-4">
+    <View className={`mt-24 gap-y-24 sm:!min-w-[330px] ${className || ''}`}>
+      <View className="gap-y-4">
         </Text className="px-2 text-xl text-center text-white sm:text-2xl">{title}</Text>
         {children}
       </View>
       <View className="flex flex-col items-center gap-3">
 
-        <View className="flex space-x-4">
+        <View className="flex gap-x-4">
           {
             nextStepExists &&
             <Button

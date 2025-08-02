@@ -1,14 +1,11 @@
+import { DoubleBedIcon, SingleBedIcon } from '@/components/icons/Icons'
+import FacilitiesCard from '@/components/property/FacilitiesCard'
+import Button from '@/components/ui/Button'
+import WhiteButton from '@/components/ui/Buttons/WhiteButton'
+import { CURRENCIES } from '@/constants'
 import { CalendarX } from 'lucide-react'
 import { useState } from 'react'
-import { createPortal } from 'react-dom'
-import { CURRENCIES } from '../../constants'
-import { AMENITY_METADATA, DEFAULT_AMENITY_METADATA } from '../../data/amenityMetadata'
-import { DoubleBedIcon, SingleBedIcon } from '../icons/Icons'
-import ImageGrid from '../ImageGrid/ImageGrid'
-import { Modal } from '../ui'
-import WhiteButton from '../ui/Buttons/WhiteButton'
-import CancellationRulesModal from './CancellationRulesModal'
-import FacilitiesCard from './FacilitiesCard'
+import { Image, Text, View } from 'react-native'
 
 interface RoomCardProps {
   room: {
@@ -87,59 +84,76 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
   const freeCancellationBefore = cancellationPenalties?.free_cancellation_before || null
 
   return (
-    <View className="border-gradient-gray rounded-[24px] h-full flex flex-col font-geist">
-      <View className="!p-1 rounded-[23px] bg-gradient-1213 h-full flex flex-col">
-        <View className="@container relative rounded-[19px] bg-black !py-7 !px-6 @sm:!p-4 flex flex-col h-full">
+    <View className="border border-stone-700 rounded-[24px] flex flex-col font-geist">
+      <View className="!p-1 rounded-[23px] bg-[linear-gradient(to_bottom_right,_#121212,_#131313)] flex flex-col">
+        <View className="@container relative rounded-[19px] bg-black !py-7 !px-6 @sm:!p-4 flex flex-col">
           {/* Main content: image + price side by side */}
-          <View className="grid grid-cols-2 gap-6 min-h-[90.45px]">
-            {/* Image */}
-            {room.images[0] && (
-              <View className="w-full cursor-pointer shrink-0" onClick={() => setIsGalleryOpen(true)}>
-                <Image
-                  src={room.images[0].replace('{size}', '640x640')}
-                  alt="Room main view"
-                  className="object-cover w-full h-full rounded-xl !aspect-[3/2]"
-                />
+          <View className="flex flex-row gap-6 min-h-[90.45px]">
+            <View className="flex flex-row flex-1">
+              {/* Image */}
+              {room.images[0] && (
+                <View
+                  className="w-full cursor-pointer shrink-0 !aspect-[3/2]"
+                  onTouchStart={() => setIsGalleryOpen(true)}
+                >
+                  <Image
+                    src={room.images[0].replace('{size}', '640x640')}
+                    alt="Room main view"
+                    className="object-cover w-full h-full rounded-xl !aspect-[3/2]"
+                  />
+                </View>
+              )}
+            </View>
+            <View className="flex flex-1 flex-row">
+              {/* Price and nights */}
+              <View className="flex flex-col justify-center">
+                <View>
+                  <Text className="text-[15px] text-[#CCCCCC]">
+                    {nights} night{nights > 1 ? 's' : ''}
+                  </Text>
+                </View>
+                <View>
+                  <Text className="text-4xl font-semibold text-white">
+                    {currencyChar}
+                    {totalAmount.toLocaleString(undefined, {
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 2,
+                    })}
+                  </Text>
+                </View>
+                <View>
+                  <Text className="mt-1 text-sm text-[#CCCCCC]">including taxes and fees</Text>
+                </View>
               </View>
-            )}
-            {/* Price and nights */}
-            <View className="flex flex-col justify-center">
-              <View className="text-[11px] text-[#CCCCCC]">
-                {nights} night{nights > 1 ? 's' : ''}
-              </View>
-              <View className="text-3xl font-semibold text-white">
-                {currencyChar}
-                {totalAmount.toLocaleString(undefined, {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 2,
-                })}
-              </View>
-              <View className="mt-1 text-xs text-[#CCCCCC]">including taxes and fees</View>
             </View>
           </View>
 
           <View className="h-px mt-5 bg-[#323232]" />
 
           {/* Room name, bed */}
-          <View className="px-0 pt-0 mb-2 text-white">
-            <View className="my-6 mb-1 text-2xl font-semibold">{room.name}</View>
-            {room?.nameStruct?.beddingType && (
-              <View className="flex items-center gap-2 my-6 text-base">
+          <View className="px-0 pt-0 mb-2">
+            <View>
+              <Text className="my-6 mb-1 text-2xl font-semibold text-white">{room.name}</Text>
+            </View>
+            {!!room?.nameStruct?.beddingType && (
+              <View className="flex flex-row items-center gap-2 my-6 text-base">
                 {room?.nameStruct?.beddingType?.includes('single') && (
-                  <Text className="flex items-center gap-1.5 text-sm">
-                    <Text>{room.nameStruct.beddingType}</Text> <SingleBedIcon className="h-3.5" />
-                  </Text>
+                  <View className="flex flex-row items-center gap-1.5  border border-red-500">
+                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>{' '}
+                    <SingleBedIcon height={14} color="white" />
+                  </View>
                 )}
                 {room?.nameStruct?.beddingType?.includes('twin') && (
-                  <Text className="flex items-center gap-1.5 text-sm">
-                    <Text>{room.nameStruct.beddingType}</Text> <SingleBedIcon className="h-3.5" />{' '}
-                    <SingleBedIcon className="h-3.5" />
-                  </Text>
+                  <View className="flex flex-row items-center gap-1.5 text-sm  border border-red-500">
+                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>{' '}
+                    <SingleBedIcon height={14} color="white" /> <SingleBedIcon height={14} />
+                  </View>
                 )}
                 {room?.nameStruct?.beddingType?.includes('double') && (
-                  <Text className="flex items-center gap-1.5 text-sm">
-                    <Text>{room.nameStruct.beddingType}</Text> <DoubleBedIcon className="h-3.5" />
-                  </Text>
+                  <View className="flex flex-row items-center gap-1.5 text-sm border border-red-500">
+                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>{' '}
+                    <DoubleBedIcon height={14} color="white" />
+                  </View>
                 )}
               </View>
             )}
@@ -148,7 +162,9 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
           {/* Breakfast Included */}
           {mealData.has_breakfast && (
             <View className="bg-[#121212] px-6 py-3 rounded-[14px] mx-0 mb-4 flex flex-col gap-1 border border-[#242424]">
-              <Text className="flex items-center gap-2 text-sm font-medium text-white">🍳 Breakfast Included</Text>
+              <Text className="flex flex-row items-center gap-2 text-sm font-medium text-white">
+                🍳 Breakfast Included
+              </Text>
               <Text className="text-xs text-[#D0D0D0]">Breakfast options available during your stay.</Text>
             </View>
           )}
@@ -157,8 +173,8 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
             (type) => type.cancellation_penalties.free_cancellation_before,
           ) && (
             <View className="bg-[#121212] px-6 py-3 rounded-[14px] mx-0 mb-4 flex flex-col gap-1 border border-[#242424]">
-              <Text className="flex items-center gap-2 text-sm font-medium text-white">
-                <CalendarX className="size-4" /> Free Cancellation Available
+              <Text className="flex flex-row items-center gap-2 text-sm font-medium text-white">
+                <CalendarX width={16} height={16} /> Free Cancellation Available
               </Text>
               <Text className="text-xs text-[#D0D0D0]">
                 You will be able cancel your order before{' '}
@@ -184,25 +200,30 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
           <View className="flex-1 min-h-6" />
 
           {/* Cancellation Rules and Book Now - always at the bottom */}
-          <View className="grid grid-cols-2 px-0 mt-2">
-            <Button
-              type="button"
-              onClick={() => setIsCancellationOpen(true)}
-              className="text-sm underline text-[#D0D0D0] content-center text-left"
-            >
-              Cancellation Rules
-            </Button>
-            <WhiteButton
-              className={`!mt-0 disabled:opacity-75`}
-              onClick={() => onBookNow(room, rate, rate?.book_hash || '')}
-              disabled={!isAvailable}
-            >
-              book now
-            </WhiteButton>
+          <View className="flex flex-row items-center px-0 mt-2">
+            <View className="flex flex-row flex-1 items-center">
+              <Button
+                onClick={() => setIsCancellationOpen(true)}
+                disabled={!isAvailable}
+                className="!bg-ransparent flex items-center justify-center"
+              >
+                <Text className="text-sm underline text-[#D0D0D0] content-center text-left">Cancellation Rules</Text>
+              </Button>
+            </View>
+            <View className="flex flex-row flex-1 items-center">
+              <WhiteButton
+                className={`w-full flex items-center justify-center py-2 px-3 mt-0 text-black bg-gradient-to-b from-white via-white to-[#E0E0E0] rounded-full 
+                  focus:outline-none ring-2 ring-white/10 focus:ring-opacity-50 shadow-inner-bottom bg-white ${isAvailable ? `opacity-75` : ``}`}
+                onClick={() => onBookNow(room, rate, rate?.book_hash || '')}
+                disabled={!isAvailable}
+              >
+                <Text className="text-black">book now</Text>
+              </WhiteButton>
+            </View>
           </View>
 
           {/* Gallery Modal */}
-          {isGalleryOpen &&
+          {/* {isGalleryOpen &&
             createPortal(
               <Modal isOpen={isGalleryOpen} onClose={() => setIsGalleryOpen(false)} className="z-50">
                 <View className="w-[90vw] h-[90dvh] bg-[#151515] rounded-xl p-6 overflow-y-auto">
@@ -216,10 +237,10 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
                 </View>
               </Modal>,
               document.body,
-            )}
+            )} */}
 
           {/* Facilities Modal */}
-          {isFacilitiesOpen &&
+          {/* {isFacilitiesOpen &&
             createPortal(
               <Modal isOpen={isFacilitiesOpen} onClose={() => setIsFacilitiesOpen(false)}>
                 <View className="max-w-[800px] max-h-[90dvh] bg-[#121212] rounded-2xl overflow-y-auto no-scrollbar border border-[#313131]">
@@ -253,16 +274,16 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
                 </View>
               </Modal>,
               document.body,
-            )}
+            )} */}
 
           {/* Cancellation Rules Modal */}
-          <CancellationRulesModal
+          {/* <CancellationRulesModal
             isOpen={isCancellationOpen}
             onClose={() => setIsCancellationOpen(false)}
             freeCancellationBefore={freeCancellationBefore}
             cancellationPenalties={cancellationPenalties}
             currencyChar={currencyChar}
-          />
+          /> */}
         </View>
       </View>
     </View>

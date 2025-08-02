@@ -243,7 +243,7 @@ export default function LocationInput({
         {!isLoading && suggestions.map((suggestion) => (
           <View
             key={`${suggestion.searchEntityType}-${suggestion.id}`}
-            className="flex items-center px-4 py-2 space-x-3 cursor-pointer hover:bg-[#444444]"
+            className="flex items-center px-4 py-2 gap-x-3 cursor-pointer hover:bg-[#444444]"
             onClick={() => handleSuggestionSelect(suggestion)}
           >
             <View className='!w-4'>

@@ -14,7 +14,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, className = '' }) => {
       href={event.url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`flex space-x-3 p-1 bg-black rounded-2xl ${className}`}
+      className={`flex gap-x-3 p-1 bg-black rounded-2xl ${className}`}
     >
       <Image src={getStorageUrl(event.banner)} alt={event.name} className="object-cover size-20 rounded-xl" />
       <View className="flex flex-col justify-between w-full pb-1 pr-1 overflow-hidden">

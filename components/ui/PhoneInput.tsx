@@ -75,7 +75,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({ label, value, onChange, classNa
   }
 
   return (
-    <View className={`space-y-2.5 ${className}`}>
+    <View className={`gap-y-2.5 ${className}`}>
       <label className="block text-[#CDCDCD] text-[13.41px]/[15.07px] text-normal">{label}</label>
       <View className="flex relative">
         <Button

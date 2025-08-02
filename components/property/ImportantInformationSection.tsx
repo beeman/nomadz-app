@@ -40,7 +40,7 @@ export default function ImportantInformationSection({ property }: ImportantInfor
   } as HouseRules
 
   return (
-    <View className="flex flex-col space-y-8">
+    <View className="flex flex-col gap-y-8">
       <Text className="text-2xl text-left text-white mb-6 font-primary-medium">important information</Text>
       <View className="border border-[#313131] rounded-xl bg-[#151515] px-6 py-8 gap-y-8">
         {/* House Rules */}

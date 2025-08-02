@@ -17,7 +17,7 @@ const Navbar: React.FC<NavbarProps> = ({ tabs }) => {
   return (
     <>
       <nav className="px-8">
-        <View className="flex space-x-8 sm:space-x-12 max-sm:justify-center max-sm:py-2">
+        <View className="flex gap-x-8 sm:gap-x-12 max-sm:justify-center max-sm:py-2">
           {tabs.map((tab) => (
             <Link
               key={tab.id}

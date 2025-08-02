@@ -1,6 +1,7 @@
 import { format, parseISO } from 'date-fns'
 import { Text, View } from 'react-native'
 import { XMarkIcon } from '../icons/Icons'
+import Modal from '@/components/ui/Modal'
 
 interface Policy {
   start_at: string | null

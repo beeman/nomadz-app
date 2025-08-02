@@ -198,7 +198,7 @@ export default function FilterMenu({ priceDistribution }: { priceDistribution: R
             className="w-full flex items-center py-2 px-4 bg-[#1B1B1B] rounded-full border border-[#ffffff80] text-xs text-white"
             onClick={() => setIsSortOpen(!isSortOpen)}
           >
-            <View className="w-full flex items-center justify-center space-x-1.5">
+            <View className="w-full flex items-center justify-center gap-x-1.5">
               <ArrowsUpDownIcon />
               <Text>sort by: {SORT_OPTIONS[filterParams.sort ?? GetApartmentsSort.MostRelevant]}</Text>
             </View>

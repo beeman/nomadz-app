@@ -1,8 +1,15 @@
 import { useAuth } from '@/components/auth/auth-provider'
+import { LoadingIcon } from '@/components/icons/Icons'
+import FacilitiesCardMobile from '@/components/property/FacilitiesCardMobile'
 import ImageGallery from '@/components/property/ImageGallery'
 import MobileImageGallery from '@/components/property/MobileImageGallery'
+import RoomCard from '@/components/property/RoomCard'
+import StatsBar from '@/components/property/StatsBar'
+import EmptyState from '@/components/stays/EmptyState'
+import Button from '@/components/ui/Button'
 import { DateRange } from '@/components/ui/DatePicker'
 import Modal from '@/components/ui/Modal'
+import { useRates } from '@/hooks'
 import { ApartmentInfo, GuestDetails } from '@/types/booking.types'
 import { formatDateToISOString } from '@/utils/date.utils'
 import toastNotifications from '@/utils/toastNotifications.utils'
@@ -54,10 +61,7 @@ export default function PropertyInfo({
   })
   const amenities = property.amenityGroups.find((group) => group.name === 'General')?.amenities
 
-  const [{ selectedApartmentRates, isApartmentRatesLoading }] = useState<any>({
-    selectedApartmentRates: [],
-    isApartmentRatesLoading: false,
-  })
+  const { selectedApartmentRates, isApartmentRatesLoading } = useRates()
   const [selectedRate, setSelectedRate] = useState<any>(null)
   const [availableRooms, setAvailableRooms] = useState<any>([])
   const [paymentInfo, setPaymentInfo] = useState({
@@ -202,65 +206,28 @@ export default function PropertyInfo({
           <MobileImageGallery property={property} onGalleryOpen={() => setIsGalleryOpen(true)} />
 
           {/* Property Info */}
-          {/* <View className="flex text-white md:space-x-12 max-md:flex-col">
-            <View> */}
-          {/* Header */}
-          {/* <Text className="mb-4 text-xl font-medium text-left md:hidden sm:text-2xl">{property.name}</Text>
-              <View className="flex items-center mb-4 space-x-8 max-md:hidden">
-                <View className="flex items-center gap-1.5">
-                  <Text className="text-[#FFBF75]">★</Text>
-                  {property.rating ? (
-                    <Text>{property.rating}</Text>
-                  ) : (
-                    <Text className="text-[#A9A9A9]">No rating yet</Text>
-                  )}
-                  {totalReviews > 0 && (
-                    <Text>
-                      ({totalReviews} {totalReviews === 1 ? 'review' : 'reviews'})
-                    </Text>
-                  )}
-                </View>
-                <View
-                  className={`${!property.region?.name && !property.region?.countryCode ? 'text-[#A9A9A9]' : ''} flex items-center gap-1.5`}
-                >
-                  <MapPinFilledIcon className="mb-1 h-4" />
-                  <Text>{formatPropertyRegion([property.region?.name, property.region?.countryCode])}</Text>
-                </View>
-              </View>
+          <View className="flex text-white">
+            <View className="flex flex-col">
+              {/* Header */}
+              <Text className="mb-4 text-xl font-primary-medium text-left text-white">{property.name}</Text>
 
-              <StatsBar property={property} /> */}
+              <StatsBar property={property} />
+            </View>
 
-          {/* <View className="space-y-4 max-md:hidden"> */}
-          {/* Description */}
-          {/* <View className="md:mb-10 text-sm 2xl:text-base 3xl:text-lg text-[#A9A9A9] xl:w-3/4">
-                  {property.descriptionStruct?.[0]?.paragraphs[0]}
-                </View> */}
-
-          {/* Facilities - single room */}
-          {/* {property.roomGroups.length === 1 && (
-                  <FacilitiesCard
-                    amenities={amenities || []}
-                    onShowAll={() => setIsFacilitiesOpen(true)}
-                    className="w-fit h-min"
-                  />
-                )} */}
-          {/* </View>
-            </View> */}
-
-          {/* Price Details */}
-          {/* <FiltersSingleRoom
+            {/* Price Details */}
+            {/* <FiltersSingleRoom
               dateRange={dateRange}
               guests={guests}
               onDateRangeChange={handleDateRangeChange}
               onGuestsChange={handleGuestsChange}
-              isAuthenticated={!!authenticatedUser}
+              isAuthenticated={!!user}
               isLoading={isLoading}
               selectedRate={selectedRate}
               onBookNow={() => handleBookNow(undefined, selectedRate, selectedRate?.book_hash || '')}
               isBookingEnabled={!isLoading && !!selectedRate}
               showBookingDetails={property.roomGroups.length === 1}
-            />
-          </View> */}
+            /> */}
+          </View>
         </View>
 
         {/* Room filters */}
@@ -394,17 +361,17 @@ export default function PropertyInfo({
         {/* </View> */}
 
         {/* Room Cards */}
-        {/* <>
+        <>
           {property.roomGroups.length > 1 && (availableRooms.length || isApartmentRatesLoading) && (
-            <View className="max-md:mb-10">
+            <View className="mb-10">
               <Text className="mt-8 text-2xl text-white font-secondary">available rooms</Text>
 
               {isApartmentRatesLoading ? (
-                <View className="flex justify-center items-center mt-6">
-                  <LoadingIcon className="animate-spin size-12" />
+                <View className="flex flex-row justify-center items-center mt-6">
+                  <LoadingIcon className="animate-spin" width={48} height={48} />
                 </View>
               ) : (
-                <View className="mt-6 space-y-12">
+                <View className="mt-6 gap-y-12">
                   <View className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {availableRooms.slice(0, visibleCount).map((room: any, index: number) => {
                       return (
@@ -420,7 +387,7 @@ export default function PropertyInfo({
                           }}
                           rate={room.rates[0]}
                           onBookNow={handleBookNow}
-                          isAvailable={!!authenticatedUser}
+                          isAvailable={!!user}
                         />
                       )
                     })}
@@ -428,21 +395,21 @@ export default function PropertyInfo({
 
                   {availableRooms.length > 3 &&
                     (availableRooms.length > visibleCount ? (
-                      <View className="flex justify-center mt-4">
+                      <View className="flex flex-row justify-center mt-4">
                         <Button
-                          className="px-6 py-2 text-white bg-[#292929] transition-colors rounded-xl hover:bg-[#313131]"
+                          className="px-6 py-2 bg-[#292929] transition-colors rounded-xl hover:bg-[#313131]"
                           onClick={handleShowMore}
                         >
-                          load more
+                          <Text className="text-white">load more</Text>
                         </Button>
                       </View>
                     ) : (
-                      <View className="flex justify-center mt-4">
+                      <View className="flex flex-row justify-center mt-4">
                         <Button
-                          className="px-6 py-2 text-white bg-[#292929] transition-colors rounded-xl hover:bg-[#313131]"
+                          className="px-6 py-2 bg-[#292929] transition-colors rounded-xl hover:bg-[#313131]"
                           onClick={handleShowLess}
                         >
-                          show less
+                          <Text className="text-white">show less</Text>
                         </Button>
                       </View>
                     ))}
@@ -456,22 +423,20 @@ export default function PropertyInfo({
               <EmptyState
                 title="no rooms available"
                 description="try selecting other dates."
-                className={`my-6 md:mt-12 ${isLoading ? 'opacity-0' : ''}`}
+                className={`my-6 ${isLoading ? 'opacity-0' : ''}`}
               />
             )}
-        </> */}
+        </>
 
-        {/* <View className="space-y-4 text-white md:hidden"> */}
-        {/* Description */}
-        {/* <View className="md:mb-10 text-sm 2xl:text-base 3xl:text-lg text-[#A9A9A9]">
-            {property.descriptionStruct?.[0]?.paragraphs[0]}
-          </View> */}
+        <View className="gap-y-4 text-white">
+          {/* Description */}
+          <Text className="text-[#A9A9A9] text-sm">{property.descriptionStruct?.[0]?.paragraphs[0]}</Text>
 
-        {/* Facilities - single room */}
-        {/* {property.roomGroups.length === 1 && (
+          {/* Facilities - single room */}
+          {property.roomGroups.length === 1 && (
             <FacilitiesCardMobile amenities={amenities || []} onShowAll={() => setIsFacilitiesOpen(true)} />
           )}
-        </View> */}
+        </View>
       </View>
 
       {/* Gallery Modal */}

@@ -1,4 +1,5 @@
 import { FC, ReactNode } from 'react'
+import { View } from 'react-native'
 
 interface WhiteButtonProps {
   size?: 'sm' | 'md' | 'lg'
@@ -25,16 +26,18 @@ const WhiteButton: FC<WhiteButtonProps> = ({
   }
 
   return (
-    <Button
-      type={type}
-      onClick={onClick}
+    <View
+      onTouchStart={() => {
+        if (!disabled) {
+          onClick?.()
+        }
+      }}
       className={`w-full flex items-center justify-center py-2 px-3 mt-6 text-black bg-gradient-to-b from-white via-white to-[#E0E0E0] rounded-full 
                   focus:outline-none ring-2 ring-white/10 focus:ring-opacity-50 shadow-inner-bottom
                   ${sizeClasses[size]} relative ${className}`}
-      disabled={disabled}
     >
       {children}
-    </Button>
+    </View>
   )
 }
 

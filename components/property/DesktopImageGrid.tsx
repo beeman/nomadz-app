@@ -33,7 +33,7 @@ export default function DesktopImageGrid({ property, onGalleryOpen }: DesktopIma
         </View>
 
         {/* Bottom row - 3 equal images, 40% height */}
-        <View className="relative flex space-x-2">
+        <View className="relative flex gap-x-2">
           {property.images.slice(2, 5).map((image, index) => (
             <>
               <View
@@ -52,7 +52,7 @@ export default function DesktopImageGrid({ property, onGalleryOpen }: DesktopIma
                   e.stopPropagation()
                   onGalleryOpen()
                 }}
-                className="absolute bottom-3 right-3 flex items-center space-x-2 bg-[#FCFCFC] rounded-full text-black px-3 py-2"
+                className="absolute bottom-3 right-3 flex items-center gap-x-2 bg-[#FCFCFC] rounded-full text-black px-3 py-2"
               >
                 <RectangleGroupFourIcon className="size-4" />
                 <Text className="text-xs whitespace-nowrap">show all photos</Text>

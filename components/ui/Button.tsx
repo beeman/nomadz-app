@@ -1,4 +1,5 @@
 import { FC, ReactNode } from 'react'
+import { Text, View } from 'react-native'
 
 interface ButtonProps {
   size?: 'sm' | 'md' | 'lg'
@@ -26,17 +27,17 @@ const Button: FC<ButtonProps> = ({
   }
 
   return (
-    <Button
-      type={type}
-      onClick={onClick}
-      className={`w-full py-2 px-3 !mt-6 text-black bg-white rounded-full hover:bg-gray-200 
-                  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 
-                  ${sizeClasses[size]} relative ${className}`}
-      disabled={disabled}
+    <View
+      onTouchStart={() => {
+        if (!disabled) {
+          onClick?.()
+        }
+      }}
+      className={`${sizeClasses[size]} relative ${className}`}
     >
       {prefixIcon && <View className="absolute -translate-y-1/2 left-3 top-1/2">{prefixIcon}</View>}
       <Text className="w-full text-center">{children}</Text>
-    </Button>
+    </View>
   )
 }
 

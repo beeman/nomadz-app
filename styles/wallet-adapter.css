@@ -23,7 +23,7 @@
 }
 
 .wallet-adapter-modal-list {
-  @apply space-y-4 !mb-0;
+  @apply gap-y-4 !mb-0;
 }
 
 /* Custom title and subtitle */
@@ -41,7 +41,7 @@
 /* use ::before as custom title */
 .wallet-adapter-modal-title::before {
   @apply font-primary font-medium;
-  content: "wallet connection";
+  content: 'wallet connection';
   display: block;
   visibility: visible !important;
   font-size: 22px !important;
@@ -50,12 +50,12 @@
 
 /* use ::after as custom subtitle */
 .wallet-adapter-modal-title::after {
-  content: "connect a wallet on Solana to continue";
+  content: 'connect a wallet on Solana to continue';
   @apply block text-sm font-geist mt-1;
   visibility: visible !important;
   font-size: 16px !important;
   line-height: 125% !important;
-  color: #D0D0D0;
+  color: #d0d0d0;
   white-space: nowrap;
 }
 

@@ -8,7 +8,7 @@ interface LocationSectionProps {
 
 export default function LocationSection({ property }: LocationSectionProps) {
   return (
-    <View className="flex flex-1 flex-col space-y-6 box-bordermb-[10px]">
+    <View className="flex flex-1 flex-col gap-y-6 box-bordermb-[10px]">
       <Text className="text-2xl text-left text-white mb-6 font-primary-medium">location</Text>
       <View className="border border-[#313131] box-border rounded-xl bg-[#151515] overflow-hidden">
         <View className="h-[350px]">

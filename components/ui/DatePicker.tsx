@@ -1,11 +1,5 @@
 import React, { ReactNode, useState } from 'react'
 import ReactDatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import '../../styles/custom-datepicker.css'
-import toastNotifications from '../../utils/toastNotifications.utils'
-import CustomButton from '../SearchBar/SearchBarButton'
-import Dropdown from './Dropdown'
-
 export interface DateRange {
   dates: [Date | null, Date | null]
   range: string
@@ -106,7 +100,7 @@ const DatePickerWithRange: React.FC<DatePickerWithRangeProps> = ({
         className={`left-1/2 -translate-x-1/2 ${dropdownClassName}`}
         zIndex={zIndex}
       >
-        <View className="bg-[#1B1B1B] rounded-2xl p-6 space-y-4">
+        <View className="bg-[#1B1B1B] rounded-2xl p-6 gap-y-4">
           <ReactDatePicker
             selected={value.dates[0]}
             onChange={handleDateChange}

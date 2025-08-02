@@ -15,7 +15,7 @@ export function SearchFeatureIndex() {
       data={items}
       ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
       renderItem={({ item }) => (
-        <Link asChild key={item.id} href={`/search/7489082`}>
+        <Link asChild key={item.id} href={`/search/8747850?checkin=&checkout=&guests%5Badults%5D=1`}>
           <Card>
             <Card.Title title={item.name} subtitle={item.region?.countryName ?? 'Unknown'} />
             <Card.Cover

@@ -15,7 +15,7 @@ import Svg, {
   SvgProps,
 } from 'react-native-svg'
 
-interface IconProps extends SvgProps {
+export interface IconProps extends SvgProps {
   className?: string
   color?: string
 }
