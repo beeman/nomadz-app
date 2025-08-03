@@ -36,13 +36,20 @@ export function SearchFeatureDetails() {
 
   const formatDateToISO = (dateString: string) => {
     if (!dateString) return null
+    
+    // If already in yyyy-mm-dd format, return as is
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+      return dateString
+    }
+    
+    // If in mm-dd-yyyy format, convert to yyyy-mm-dd
     const [month, day, year] = dateString.split('-')
     return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
   }
 
   const initialDates: DateRange = {
-    checkin: parsedParams.checkin ? formatDateToISO(parsedParams.checkin as string) : tomorrow.toISOString().split('T')[0],
-    checkout: parsedParams.checkout ? formatDateToISO(parsedParams.checkout as string) : dayAfterTomorrow.toISOString().split('T')[0],
+    checkin: parsedParams.checkin ? formatDateToISO(parsedParams.checkin as string) : tomorrow.toISOString().slice(0, 10),
+    checkout: parsedParams.checkout ? formatDateToISO(parsedParams.checkout as string) : dayAfterTomorrow.toISOString().slice(0, 10),
     range: 'exact',
   }
 
