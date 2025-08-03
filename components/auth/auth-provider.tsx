@@ -1,13 +1,14 @@
-import { createContext, type PropsWithChildren, use, useMemo } from 'react'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { PrivyUser, usePrivy } from '@privy-io/expo'
-import { useLogin } from '@privy-io/expo/ui'
 import { AppConfig } from '@/constants/app-config'
 import { api } from '@/utils/api'
+import { PrivyUser, usePrivy } from '@privy-io/expo'
+import { useLogin } from '@privy-io/expo/ui'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { HttpStatusCode } from 'axios'
+import { createContext, type PropsWithChildren, use, useMemo } from 'react'
 
 export interface AuthUserProfile {
   id: string
+  userId: string
   username: string
   email: string
   firstName: string
@@ -79,6 +80,7 @@ function useGetUserQuery() {
 
               return {
                 ...profile,
+                userId: response.data.id,
                 image,
               } as AuthUserProfile
             }
