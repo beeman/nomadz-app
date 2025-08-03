@@ -1,9 +1,10 @@
 import { LoadingIcon } from '@/components/icons/Icons'
-import DatePicker, { DateRange } from '@/components/ui/DatePicker'
-import GuestNumberInput from '@/components/ui/SearchBar/GuestsInput'
 import { Link } from 'expo-router'
 import React from 'react'
 import { Text, View } from 'react-native'
+import { DatePickerComponent, DateRange } from '../search/date-picker'
+import { GuestsInput } from '../search/guests-input'
+import { useAppThemeSpacing } from '../use-app-theme-spacing'
 
 interface FiltersSingleRoomProps {
   dateRange: DateRange
@@ -33,24 +34,57 @@ export default function FiltersSingleRoom({
   isBookingEnabled,
   showBookingDetails,
 }: FiltersSingleRoomProps) {
+  const spacing = useAppThemeSpacing()
+
+  // Convert guests to internal format for GuestsInput
+  const parseGuestsFromParams = (guests: any) => {    
+    // Handle already parsed guests object
+    const adults = Number(guests.adults) || 1
+    const children = Array.isArray(guests.children) ? guests.children : []
+    
+    // Convert to internal format for GuestsInput
+    const internalChildren = children.filter((age: number) => age >= 2) // Only children 2+ years
+    const infants = children.filter((age: number) => age === 1).length // Count infants (age 1)
+
+    return {
+      adults,
+      children: internalChildren,
+      infants,
+    }
+  }
+
+  // Convert external guests format to internal format for GuestsInput
+  const internalGuests = parseGuestsFromParams(guests)
+
+  // Convert internal guests format back to external format
+  const handleInternalGuestsChange = (internalGuests: { adults: number; children: number[]; infants: number }) => {
+    const children = [
+      ...internalGuests.children.map(() => 12), // Default children age 12
+      ...Array(internalGuests.infants).fill(1), // Infants age 1
+    ]
+    onGuestsChange({
+      adults: internalGuests.adults,
+      children,
+    })
+  }
+
   return (
-    <View className={`flex-1 rounded-xl ${showBookingDetails ? 'p-6 bg-[#161616]' : ''}`}>
-      <View className="grid md:flex grid-cols-3 min-[400px]:gap-x-4 px-7 py-7 max-md:px-4 max-[400px]:py-4 items-center mb-6 rounded-2xl bg-[#1F1F1F] relative border border-[#323232]">
-        <DatePicker
-          value={dateRange}
-          minDate={new Date()}
-          onChange={onDateRangeChange}
-          className="w-full col-span-full min-[400px]:col-span-2"
-          buttonClassName="w-full rounded-xl flex justify-center"
-          dropdownClassName="sm:-right-[152px] md:right-0 md:-left-[216px] sm:w-[522px] w-[284px]"
-          zIndex={20}
-        />
-        <View className="flex max-[400px]:col-span-full max-[400px]:mt-2">
-          <View className="max-[400px]:hidden !w-[1px] !h-[38px] bg-[#4A4A4A] !mr-8"></View>
-          <GuestNumberInput
-            className="w-full !static min-[400px]:[&>button]:justify-center max-[400px]:w-fit max-[400px]:mx-auto"
-            guests={guests}
-            onGuestsChange={onGuestsChange}
+    <View style={{ flex: 1, borderRadius: 12, padding: showBookingDetails ? 24 : 0, backgroundColor: showBookingDetails ? '#161616' : 'transparent' }}>
+      <View style={{
+        flexDirection: 'row',
+        gap: spacing.sm,
+        alignItems: 'center',
+      }}>
+        <View style={{ flex: 2 }}>
+          <DatePickerComponent
+            value={dateRange}
+            onChange={onDateRangeChange}
+          />
+        </View>
+        <View style={{ flex: 1 }}>
+          <GuestsInput
+            guests={internalGuests}
+            onGuestsChange={handleInternalGuestsChange}
           />
         </View>
       </View>
@@ -58,11 +92,11 @@ export default function FiltersSingleRoom({
       {showBookingDetails && (
         <>
           {!isAuthenticated ? (
-            <View className="py-4 text-center">
-              <Text className="text-[#A9A9A9] mb-2">please, log in to book this property</Text>
+            <View style={{ paddingVertical: 16, alignItems: 'center' }}>
+              <Text style={{ color: '#A9A9A9', marginBottom: 8 }}>please, log in to book this property</Text>
               <Link
                 href={`/sign-in?redirect_to=${encodeURIComponent(window.location.href)}`}
-                className="text-white underline hover:text-white/80"
+                style={{ color: '#FFFFFF', textDecorationLine: 'underline' }}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -76,39 +110,53 @@ export default function FiltersSingleRoom({
                   onBookNow()
                 }
               }}
-              className={`w-full transition-colors rounded-[14px] text-lg font-medium ${isLoading || !selectedRate ? 'border-2 border-white/40 cursor-default py-1.5' : '!py-2 border-gradient-primary before:rounded-[14px]'}`}
+              style={{
+                width: '100%',
+                borderRadius: 14,
+                paddingVertical: 8,
+                alignItems: 'center',
+                borderWidth: isLoading || !selectedRate ? 2 : 0,
+                borderColor: isLoading || !selectedRate ? 'rgba(255, 255, 255, 0.4)' : 'transparent',
+                backgroundColor: isLoading || !selectedRate ? 'transparent' : '#404040',
+              }}
             >
-              <Text className={`${isBookingEnabled ? `text-white` : `text-white/40`}`}>book now</Text>
+              <Text style={{ 
+                color: isBookingEnabled ? '#FFFFFF' : 'rgba(255, 255, 255, 0.4)', 
+                fontSize: 18, 
+                fontWeight: '500' 
+              }}>
+                book now
+              </Text>
             </View>
           )}
 
           {isLoading ? (
-            <View className="flex justify-center items-center py-4">
+            <View style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 16 }}>
               <LoadingIcon className="animate-spin" width={32} height={32} />
             </View>
           ) : selectedRate ? (
-            <View className="mt-6 gap-y-2">
-              <View className="overflow-y-auto gap-y-2 max-h-32 no-scrollbar">
-                <View className="flex justify-between">
-                  <Text className="text-[#A9A9A9]">base price</Text>
-                  <Text>
+            <View style={{ marginTop: 24, gap: 8 }}>
+              <View style={{ maxHeight: 128, gap: 8 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{ color: '#A9A9A9' }}>base price</Text>
+                  <Text style={{ color: '#FFFFFF' }}>
                     {selectedRate.payment_options?.payment_types?.[0]?.show_amount_with_commission ||
                       selectedRate.payment_options?.payment_types?.[0]?.show_amount}{' '}
                     {selectedRate.payment_options?.payment_types?.[0]?.show_currency_code}
                   </Text>
                 </View>
                 {[...(selectedRate.payment_options?.payment_types?.[0]?.tax_data?.taxes || [])].map((tax, index) => (
-                  <View key={index} className="flex justify-between">
-                    <Text className="text-[#A9A9A9]">{tax.name.replace('_', ' ')}</Text>
-                    <Text>
+                  <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text style={{ color: '#A9A9A9' }}>{tax.name.replace('_', ' ')}</Text>
+                    <Text style={{ color: '#FFFFFF' }}>
                       {tax.amount} {tax.currency_code}
                     </Text>
                   </View>
                 ))}
               </View>
-              <View className="flex justify-between font-semibold">
-                <Text>total price</Text>
-                <Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>total price</Text>
+                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>
                   {(
                     selectedRate.payment_options?.payment_types?.[0]?.show_amount_with_commission ||
                     selectedRate.payment_options?.payment_types?.[0]?.show_amount
@@ -118,9 +166,14 @@ export default function FiltersSingleRoom({
               </View>
             </View>
           ) : (
-            <Text className="text-xs text-center text-[#A9A9A9] mt-4">
-              The price information for these dates is not available.
-              {'\n'}
+            <Text style={{ 
+              fontSize: 12, 
+              textAlign: 'center', 
+              color: '#A9A9A9', 
+              marginTop: 16,
+              lineHeight: 16
+            }}>
+              The price information for these dates is not available.{'\n'}
               Try selecting other dates.
             </Text>
           )}

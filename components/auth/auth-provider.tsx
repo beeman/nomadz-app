@@ -10,6 +10,7 @@ import { createContext, type PropsWithChildren, use, useMemo } from 'react'
 
 export interface AuthUserProfile {
   id: string
+  userId: string
   username: string
   email: string
   firstName: string
@@ -92,6 +93,7 @@ function useGetUserQuery() {
 
               return {
                 ...profile,
+                userId: response.data.id,
                 image,
               } as AuthUserProfile
             }

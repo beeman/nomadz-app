@@ -3,11 +3,10 @@ import ImportantInformationSection from '@/components/property/ImportantInformat
 import LocationSection from '@/components/property/LocationSection'
 import PropertyInfo from '@/components/property/PropertyInfo'
 import ReviewsSection from '@/components/property/ReviewsSection'
-import { DateRange } from '@/components/ui/DatePicker'
+import { DateRange } from '@/components/search/date-picker'
 import Spinner from '@/components/ui/Spinner'
 import { useApartments, useRates } from '@/hooks'
 import { RootStackParamList, Routes } from '@/navigation/navigation.config'
-import { formatDateToISOString } from '@/utils/date.utils'
 import { RouteProp, useRoute } from '@react-navigation/native'
 import debounce from 'lodash/debounce'
 import { useEffect } from 'react'
@@ -36,18 +35,52 @@ export function SearchFeatureDetails() {
   const dayAfterTomorrow = new Date()
   dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2)
 
+  const formatDateToISO = (dateString: string) => {
+    if (!dateString) return null
+
+    // If already in yyyy-mm-dd format, return as is
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+      return dateString
+    }
+
+    // If in mm-dd-yyyy format, convert to yyyy-mm-dd
+    const [month, day, year] = dateString.split('-')
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+  }
+
   const initialDates: DateRange = {
-    dates: [
-      parsedParams.checkin ? new Date(parsedParams.checkin as string) : tomorrow,
-      parsedParams.checkout ? new Date(parsedParams.checkout as string) : dayAfterTomorrow,
-    ],
+    checkin: parsedParams.checkin
+      ? formatDateToISO(parsedParams.checkin as string)
+      : tomorrow.toISOString().slice(0, 10),
+    checkout: parsedParams.checkout
+      ? formatDateToISO(parsedParams.checkout as string)
+      : dayAfterTomorrow.toISOString().slice(0, 10),
     range: 'exact',
   }
 
-  const initialGuests = {
-    adults: Number(parsedParams?.guests?.adults) || 1,
-    children: Array.isArray(parsedParams?.guests?.children) ? parsedParams.guests.children : [],
+  // Parse guests from URL parameters
+  const parseGuestsFromParams = (params: any) => {
+    // Handle flat URL parameters with bracket notation
+    const adults = Number(params['guests[adults]']) || 1
+
+    // Parse children from flat parameters
+    let children: number[] = []
+    const childrenKeys = Object.keys(params).filter((key) => key.startsWith('guests[children]['))
+
+    if (childrenKeys.length > 0) {
+      children = childrenKeys
+        .map((key) => {
+          const value = params[key]
+          return Number(value) || 12
+        })
+        .filter((age) => age > 0)
+        .sort((a, b) => a - b) // Sort by age
+    }
+
+    return { adults, children }
   }
+
+  const initialGuests = parseGuestsFromParams(parsedParams)
 
   const debouncedFetchRates = debounce(
     (params: {
@@ -58,29 +91,6 @@ export function SearchFeatureDetails() {
         guests: { adults: number; children: number[] }
       }
     }) => {
-      const searchParams = new URLSearchParams(window.location.search)
-
-      // Update basic params
-      searchParams.set('checkin', params.params.checkin)
-      searchParams.set('checkout', params.params.checkout)
-      searchParams.set('guests[adults]', params.params.guests.adults.toString())
-
-      // Clear all existing children params
-      const paramsToDelete: string[] = []
-      searchParams.forEach((_, key) => {
-        if (key.startsWith('guests[children]')) {
-          paramsToDelete.push(key)
-        }
-      })
-      paramsToDelete.forEach((param) => searchParams.delete(param))
-
-      // Add new children params if any exist
-      params.params.guests.children.forEach((age, index) => {
-        searchParams.set(`guests[children][${index}]`, age.toString())
-      })
-
-      window.history.replaceState(null, '', `?${searchParams.toString()}`)
-
       // Make API call
       fetchApartmentRates(params as any)
     },
@@ -89,13 +99,12 @@ export function SearchFeatureDetails() {
 
   useEffect(() => {
     // Format dates for the initial fetch
-    const [start, end] = initialDates.dates
-    if (start && end) {
+    if (initialDates.checkin && initialDates.checkout) {
       fetchApartmentRates({
         hid: route.params.id,
         params: {
-          checkin: formatDateToISOString(start),
-          checkout: formatDateToISOString(end),
+          checkin: initialDates.checkin,
+          checkout: initialDates.checkout,
           guests: initialGuests,
         },
       })

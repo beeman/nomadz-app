@@ -2,23 +2,23 @@ import { useAuth } from '@/components/auth/auth-provider'
 import { LoadingIcon } from '@/components/icons/Icons'
 import FacilitiesCardMobile from '@/components/property/FacilitiesCardMobile'
 import FacilitiesModal from '@/components/property/FacilitiesModal'
+import FiltersSingleRoom from '@/components/property/FiltersSingleRoom'
 import ImageGallery from '@/components/property/ImageGallery'
 import MobileImageGallery from '@/components/property/MobileImageGallery'
 import RoomCard from '@/components/property/RoomCard'
 import StatsBar from '@/components/property/StatsBar'
 import EmptyState from '@/components/stays/EmptyState'
 import Button from '@/components/ui/Button'
-import { DateRange } from '@/components/ui/DatePicker'
 import Modal from '@/components/ui/Modal'
 import CryptoPayment from '@/components/ui/Payment/CryptoPayment'
 import GuestsModal from '@/components/ui/Payment/GuestsModal'
 import Spinner from '@/components/ui/Spinner'
 import { useRates } from '@/hooks'
 import { ApartmentInfo, GuestDetails } from '@/types/booking.types'
-import { formatDateToISOString } from '@/utils/date.utils'
 import toastNotifications from '@/utils/toastNotifications.utils'
 import { useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
+import { DateRange } from '../search/date-picker'
 
 interface PropertyInfoProps {
   property: ApartmentInfo
@@ -190,11 +190,10 @@ export default function PropertyInfo({
 
   const notifyChange = (dates: DateRange, currentGuests: typeof guests) => {
     if (onChange) {
-      const [start, end] = dates.dates
       onChange({
         guests: currentGuests,
-        checkin: start ? formatDateToISOString(start) : null,
-        checkout: end ? formatDateToISOString(end) : null,
+        checkin: dates.checkin,
+        checkout: dates.checkout,
       })
     }
   }
@@ -219,7 +218,7 @@ export default function PropertyInfo({
             </View>
 
             {/* Price Details */}
-            {/* <FiltersSingleRoom
+            <FiltersSingleRoom
               dateRange={dateRange}
               guests={guests}
               onDateRangeChange={handleDateRangeChange}
@@ -230,7 +229,7 @@ export default function PropertyInfo({
               onBookNow={() => handleBookNow(undefined, selectedRate, selectedRate?.book_hash || '')}
               isBookingEnabled={!isLoading && !!selectedRate}
               showBookingDetails={property.roomGroups.length === 1}
-            /> */}
+            />
           </View>
         </View>
 
@@ -505,8 +504,8 @@ export default function PropertyInfo({
           bookHash={paymentInfo.bookHash}
           currencyCode={'USDC'}
           dates={
-            dateRange.dates[0] && dateRange.dates[1]
-              ? `${dateRange.dates[0].toLocaleDateString('en-GB')} - ${dateRange.dates[1].toLocaleDateString('en-GB')}`
+            dateRange.checkin && dateRange.checkout
+              ? `${new Date(dateRange.checkin).toLocaleDateString('en-GB')} - ${new Date(dateRange.checkout).toLocaleDateString('en-GB')}`
               : ''
           }
           beddingType={selectedRate?.room_data_trans?.main_name || ''}
