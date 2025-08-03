@@ -75,7 +75,7 @@ function useGetUserQuery() {
               const profile = profileResponse.data.userProfile as AuthUserProfile
               const image = profile.image
                 ? `${AppConfig.imageBase}${profile.image}`
-                : `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${profile.username}`
+                : require('@/assets/svgs/default-avatar.svg')
 
               return {
                 ...profile,
