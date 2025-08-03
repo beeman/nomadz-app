@@ -21,6 +21,7 @@ const MAPPING = {
   'wallet.pass.fill': 'wallet',
   magnifyingglass: 'search',
   map: 'map',
+  person: 'person',
 } as UiIconMapping
 
 /**
