@@ -53,10 +53,29 @@ export function SearchFeatureDetails() {
     range: 'exact',
   }
 
-  const initialGuests = {
-    adults: Number(parsedParams?.guests?.adults) || 1,
-    children: Array.isArray(parsedParams?.guests?.children) ? parsedParams.guests.children : [],
+  // Parse guests from URL parameters
+  const parseGuestsFromParams = (params: any) => {
+    // Handle flat URL parameters with bracket notation
+    const adults = Number(params['guests[adults]']) || 1
+    
+    // Parse children from flat parameters
+    let children: number[] = []
+    const childrenKeys = Object.keys(params).filter(key => key.startsWith('guests[children]['))
+    
+    if (childrenKeys.length > 0) {
+      children = childrenKeys
+        .map(key => {
+          const value = params[key]
+          return Number(value) || 12
+        })
+        .filter(age => age > 0)
+        .sort((a, b) => a - b) // Sort by age
+    }
+
+    return { adults, children }
   }
+
+  const initialGuests = parseGuestsFromParams(parsedParams)
 
   const debouncedFetchRates = debounce(
     (params: {

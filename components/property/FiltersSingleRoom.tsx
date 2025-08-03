@@ -36,12 +36,25 @@ export default function FiltersSingleRoom({
 }: FiltersSingleRoomProps) {
   const spacing = useAppThemeSpacing()
 
-  // Convert external guests format to internal format for GuestsInput
-  const internalGuests = {
-    adults: guests.adults,
-    children: guests.children.filter(age => age >= 2), // Only children 2+ years
-    infants: guests.children.filter(age => age === 1).length, // Count infants (age 1)
+  // Convert guests to internal format for GuestsInput
+  const parseGuestsFromParams = (guests: any) => {    
+    // Handle already parsed guests object
+    const adults = Number(guests.adults) || 1
+    const children = Array.isArray(guests.children) ? guests.children : []
+    
+    // Convert to internal format for GuestsInput
+    const internalChildren = children.filter((age: number) => age >= 2) // Only children 2+ years
+    const infants = children.filter((age: number) => age === 1).length // Count infants (age 1)
+
+    return {
+      adults,
+      children: internalChildren,
+      infants,
+    }
   }
+
+  // Convert external guests format to internal format for GuestsInput
+  const internalGuests = parseGuestsFromParams(guests)
 
   // Convert internal guests format back to external format
   const handleInternalGuestsChange = (internalGuests: { adults: number; children: number[]; infants: number }) => {
