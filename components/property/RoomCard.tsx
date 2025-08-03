@@ -1,11 +1,14 @@
 import { DoubleBedIcon, SingleBedIcon } from '@/components/icons/Icons'
+import CancellationRulesModal from '@/components/property/CancellationRulesModal'
 import FacilitiesCard from '@/components/property/FacilitiesCard'
 import Button from '@/components/ui/Button'
 import WhiteButton from '@/components/ui/Buttons/WhiteButton'
+import Modal from '@/components/ui/Modal'
 import { CURRENCIES } from '@/constants'
+import { AMENITY_METADATA, DEFAULT_AMENITY_METADATA } from '@/data/amenityMetadata'
 import { CalendarX } from 'lucide-react'
 import { useState } from 'react'
-import { Image, Text, View } from 'react-native'
+import { Image, ScrollView, Text, View } from 'react-native'
 
 interface RoomCardProps {
   room: {
@@ -223,67 +226,65 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
           </View>
 
           {/* Gallery Modal */}
-          {/* {isGalleryOpen &&
-            createPortal(
-              <Modal isOpen={isGalleryOpen} onClose={() => setIsGalleryOpen(false)} className="z-50">
-                <View className="w-[90vw] h-[90dvh] bg-[#151515] rounded-xl p-6 overflow-y-auto">
-                  <View className="flex items-center justify-between mb-6">
-                    <Text className="text-xl font-medium text-white">Gallery</Text>
-                    <Button onClick={() => setIsGalleryOpen(false)} className="text-white/60 hover:text-white">
-                      close
-                    </Button>
+          {isGalleryOpen && (
+            <Modal isOpen={isGalleryOpen} onClose={() => setIsGalleryOpen(false)} className="z-50 px-6">
+              <View className="w-full bg-[#151515] rounded-xl p-6 overflow-y-auto">
+                <View className="flex flex-row w-full items-center justify-between mb-6">
+                  <Text className="text-xl font-primary-medium text-white">Gallery</Text>
+                  <View onTouchStart={() => setIsGalleryOpen(false)}>
+                    <Text className="text-white/60 hover:text-white">close</Text>
                   </View>
-                  <ImageGrid images={room.images} name={room.name} />
                 </View>
-              </Modal>,
-              document.body,
-            )} */}
+                <ScrollView className="max-h-[600px] flex flex-col gap-y-5">
+                  {room.images.map((image, index) => (
+                    <View
+                      key={index}
+                      className="w-full rounded-lg overflow-hidden relative"
+                      style={{ marginBottom: index === room.images.length - 1 ? 0 : 16 }}
+                    >
+                      <Image src={image.replace('{size}', '640x640')} className="object-cover w-full aspect-[3/2]" />
+                    </View>
+                  ))}
+                </ScrollView>
+              </View>
+            </Modal>
+          )}
 
           {/* Facilities Modal */}
-          {/* {isFacilitiesOpen &&
-            createPortal(
-              <Modal isOpen={isFacilitiesOpen} onClose={() => setIsFacilitiesOpen(false)}>
-                <View className="max-w-[800px] max-h-[90dvh] bg-[#121212] rounded-2xl overflow-y-auto no-scrollbar border border-[#313131]">
-                  <View className="p-8">
-                    <View className="grid gap-4 md:grid-cols-2">
-                      {room.amenities.map((amenity, index) => {
-                        const metadata = AMENITY_METADATA[amenity] || DEFAULT_AMENITY_METADATA
-                        const IconComponent = metadata.icon
-                        return (
-                          <View key={index} className="p-6 rounded-lg bg-[#1A1A1A] border border-[#292929] text-white">
-                            <View className="flex items-center gap-3 mb-2">
-                              <Text
-                                style={{
-                                  display: 'inline-flex',
-                                  width: 24,
-                                  height: 24,
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                }}
-                              >
-                                <IconComponent />
-                              </Text>
-                              <Text className="font-medium text-left sm:text-lg">{amenity}</Text>
-                            </View>
-                            <Text className="text-xs sm:text-sm">{metadata.description}</Text>
+          {isFacilitiesOpen && (
+            <Modal isOpen={isFacilitiesOpen} onClose={() => setIsFacilitiesOpen(false)} className="px-6">
+              <ScrollView className="max-w-[800px] max-h-[600px] bg-[#121212] rounded-2xl overflow-y-auto no-scrollbar border border-[#313131]">
+                <View className="p-8">
+                  <View className="flex flex-col gap-4">
+                    {room.amenities.map((amenity, index) => {
+                      const metadata = AMENITY_METADATA[amenity] || DEFAULT_AMENITY_METADATA
+                      const IconComponent = metadata.icon as any
+                      return (
+                        <View key={index} className="p-6 rounded-lg bg-[#1A1A1A] border border-[#292929] text-white">
+                          <View className="flex flex-row items-center gap-3 mb-2">
+                            <Text className="inline-flex flex-row items-center justify-center">
+                              <IconComponent width={16} height={16} color="white" />
+                            </Text>
+                            <Text className="font-primary-medium text-left text-white">{amenity}</Text>
                           </View>
-                        )
-                      })}
-                    </View>
+                          <Text className="text-xs text-white">{metadata.description}</Text>
+                        </View>
+                      )
+                    })}
                   </View>
                 </View>
-              </Modal>,
-              document.body,
-            )} */}
+              </ScrollView>
+            </Modal>
+          )}
 
           {/* Cancellation Rules Modal */}
-          {/* <CancellationRulesModal
+          <CancellationRulesModal
             isOpen={isCancellationOpen}
             onClose={() => setIsCancellationOpen(false)}
             freeCancellationBefore={freeCancellationBefore}
             cancellationPenalties={cancellationPenalties}
             currencyChar={currencyChar}
-          /> */}
+          />
         </View>
       </View>
     </View>

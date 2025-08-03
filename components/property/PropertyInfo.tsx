@@ -1,6 +1,7 @@
 import { useAuth } from '@/components/auth/auth-provider'
 import { LoadingIcon } from '@/components/icons/Icons'
 import FacilitiesCardMobile from '@/components/property/FacilitiesCardMobile'
+import FacilitiesModal from '@/components/property/FacilitiesModal'
 import ImageGallery from '@/components/property/ImageGallery'
 import MobileImageGallery from '@/components/property/MobileImageGallery'
 import RoomCard from '@/components/property/RoomCard'
@@ -464,11 +465,11 @@ export default function PropertyInfo({
       </Modal>
 
       {/* Facilities Modal */}
-      {/* <FacilitiesModal
+      <FacilitiesModal
         isOpen={isFacilitiesOpen}
         onClose={() => setIsFacilitiesOpen(false)}
         amenities={amenities || []}
-      /> */}
+      />
 
       {/* Add Guests Modal */}
       {/* <Modal
