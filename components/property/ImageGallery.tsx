@@ -67,8 +67,6 @@ export default function ImageGallery({ images, roomGroups }: ImageGalleryProps) 
     </View>
   ))
 
-  console.log('allImages', allImages[1])
-
   return (
     <ScrollView className="flex flex-col max-h-[600px]">
       <View className="relative overflow-auto w-full aspect-[3/2]">

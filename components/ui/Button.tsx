@@ -28,7 +28,7 @@ const Button: FC<ButtonProps> = ({
 
   return (
     <View
-      onTouchStart={() => {
+      onTouchEnd={() => {
         if (!disabled) {
           onClick?.()
         }

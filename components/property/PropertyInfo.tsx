@@ -10,6 +10,9 @@ import EmptyState from '@/components/stays/EmptyState'
 import Button from '@/components/ui/Button'
 import { DateRange } from '@/components/ui/DatePicker'
 import Modal from '@/components/ui/Modal'
+import CryptoPayment from '@/components/ui/Payment/CryptoPayment'
+import GuestsModal from '@/components/ui/Payment/GuestsModal'
+import Spinner from '@/components/ui/Spinner'
 import { useRates } from '@/hooks'
 import { ApartmentInfo, GuestDetails } from '@/types/booking.types'
 import { formatDateToISOString } from '@/utils/date.utils'
@@ -368,8 +371,10 @@ export default function PropertyInfo({
               <Text className="mt-8 text-2xl text-white font-secondary">available rooms</Text>
 
               {isApartmentRatesLoading ? (
-                <View className="flex flex-row justify-center items-center mt-6">
-                  <LoadingIcon className="animate-spin" width={48} height={48} />
+                <View className="flex flex-row min-h-[200px] justify-center items-center mt-6">
+                  <Spinner duration={500}>
+                    <LoadingIcon className="animate-spin" width={48} height={48} />
+                  </Spinner>
                 </View>
               ) : (
                 <View className="mt-6 gap-y-12">
@@ -472,8 +477,8 @@ export default function PropertyInfo({
       />
 
       {/* Add Guests Modal */}
-      {/* <Modal
-        className="max-h-[95%] overflow-auto bg-transparent"
+      <Modal
+        className="overflow-auto bg-transparent"
         isOpen={isGuestsModalOpen}
         onClose={() => setIsGuestsModalOpen(false)}
       >
@@ -482,11 +487,11 @@ export default function PropertyInfo({
           onCancel={() => setIsGuestsModalOpen(false)}
           onConfirm={handleGuestsModalConfirm}
         />
-      </Modal> */}
+      </Modal>
 
       {/* Add Payment Modal */}
-      {/* <Modal
-        className="max-h-[95%] overflow-auto bg-transparent"
+      <Modal
+        className="overflow-auto bg-transparent px-6 w-full"
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
       >
@@ -509,7 +514,7 @@ export default function PropertyInfo({
           onCancel={() => setIsPaymentModalOpen(false)}
           selectedRate={selectedRate}
         />
-      </Modal> */}
+      </Modal>
     </View>
   )
 }

@@ -1,5 +1,7 @@
 import { AppThemeProvider } from '@/components/app-theme-provider'
 import { AuthProvider } from '@/components/auth/auth-provider'
+import { ClusterProvider } from '@/components/cluster/cluster-provider'
+import { SolanaProvider } from '@/components/solana/solana-provider'
 import { AppConfig } from '@/constants/app-config'
 import { ToastProvider } from '@/utils/toastNotifications.utils'
 import { PrivyProvider } from '@privy-io/expo'
@@ -14,7 +16,11 @@ export function AppProviders({ children }: PropsWithChildren) {
       <AppThemeProvider>
         <QueryClientProvider client={queryClient}>
           <ToastProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <ClusterProvider>
+              <SolanaProvider>
+                <AuthProvider>{children}</AuthProvider>
+              </SolanaProvider>
+            </ClusterProvider>
           </ToastProvider>
         </QueryClientProvider>
       </AppThemeProvider>

@@ -27,7 +27,7 @@ const WhiteButton: FC<WhiteButtonProps> = ({
 
   return (
     <View
-      onTouchStart={() => {
+      onTouchEnd={() => {
         if (!disabled) {
           onClick?.()
         }

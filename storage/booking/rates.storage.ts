@@ -65,7 +65,6 @@ export const fetchApartmentRatesAtom = atom(
       // Add commission to rates for display purposes
       const ratesWithCommission = addCommissionToRates(response.data);
       set(selectedApartmentRatesAtom, ratesWithCommission);
-      console.log('ratesWithCommission', ratesWithCommission)
     }
     catch {
       set(selectedApartmentRatesAtom, null)

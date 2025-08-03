@@ -6,7 +6,7 @@ import WhiteButton from '@/components/ui/Buttons/WhiteButton'
 import Modal from '@/components/ui/Modal'
 import { CURRENCIES } from '@/constants'
 import { AMENITY_METADATA, DEFAULT_AMENITY_METADATA } from '@/data/amenityMetadata'
-import { CalendarX } from 'lucide-react'
+import { CalendarX } from 'lucide-react-native'
 import { useState } from 'react'
 import { Image, ScrollView, Text, View } from 'react-native'
 
@@ -94,13 +94,13 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
           <View className="flex flex-row gap-6 min-h-[90.45px]">
             <View className="flex flex-row flex-1">
               {/* Image */}
-              {room.images[0] && (
+              {room.images?.[0] && (
                 <View
                   className="w-full cursor-pointer shrink-0 !aspect-[3/2]"
-                  onTouchStart={() => setIsGalleryOpen(true)}
+                  onTouchEnd={() => setIsGalleryOpen(true)}
                 >
                   <Image
-                    src={room.images[0].replace('{size}', '640x640')}
+                    src={room.images?.[0].replace('{size}', '640x640') || ''}
                     alt="Room main view"
                     className="object-cover w-full h-full rounded-xl !aspect-[3/2]"
                   />
@@ -141,20 +141,20 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
             {!!room?.nameStruct?.beddingType && (
               <View className="flex flex-row items-center gap-2 my-6 text-base">
                 {room?.nameStruct?.beddingType?.includes('single') && (
-                  <View className="flex flex-row items-center gap-1.5  border border-red-500">
-                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>{' '}
+                  <View className="flex flex-row items-center gap-1.5">
+                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>
                     <SingleBedIcon height={14} color="white" />
                   </View>
                 )}
                 {room?.nameStruct?.beddingType?.includes('twin') && (
-                  <View className="flex flex-row items-center gap-1.5 text-sm  border border-red-500">
-                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>{' '}
+                  <View className="flex flex-row items-center gap-1.5 text-sm">
+                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>
                     <SingleBedIcon height={14} color="white" /> <SingleBedIcon height={14} />
                   </View>
                 )}
                 {room?.nameStruct?.beddingType?.includes('double') && (
-                  <View className="flex flex-row items-center gap-1.5 text-sm border border-red-500">
-                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>{' '}
+                  <View className="flex flex-row items-center gap-1.5 text-sm">
+                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>
                     <DoubleBedIcon height={14} color="white" />
                   </View>
                 )}
@@ -176,12 +176,13 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
             (type) => type.cancellation_penalties.free_cancellation_before,
           ) && (
             <View className="bg-[#121212] px-6 py-3 rounded-[14px] mx-0 mb-4 flex flex-col gap-1 border border-[#242424]">
-              <Text className="flex flex-row items-center gap-2 text-sm font-medium text-white">
-                <CalendarX width={16} height={16} /> Free Cancellation Available
-              </Text>
+              <View className="flex flex-row items-center gap-2 ">
+                <Text className="text-sm font-primary-medium text-white">
+                  <CalendarX width={16} height={16} color="white" /> Free Cancellation Available
+                </Text>
+              </View>
               <Text className="text-xs text-[#D0D0D0]">
-                You will be able cancel your order before{' '}
-                {new Intl.DateTimeFormat('en-US', {
+                {`You will be able cancel your order before ${new Intl.DateTimeFormat('en-US', {
                   dateStyle: 'short',
                   timeStyle: 'short',
                 }).format(
@@ -190,8 +191,7 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
                       (type) => type.cancellation_penalties.free_cancellation_before,
                     )!.cancellation_penalties.free_cancellation_before,
                   ),
-                )}{' '}
-                for no cost
+                )} for no cost`}
               </Text>
             </View>
           )}
@@ -215,12 +215,12 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
             </View>
             <View className="flex flex-row flex-1 items-center">
               <WhiteButton
-                className={`w-full flex items-center justify-center py-2 px-3 mt-0 text-black bg-gradient-to-b from-white via-white to-[#E0E0E0] rounded-full 
-                  focus:outline-none ring-2 ring-white/10 focus:ring-opacity-50 shadow-inner-bottom bg-white ${isAvailable ? `opacity-75` : ``}`}
+                className={`w-full flex items-center justify-center py-2 px-3 !mt-0 text-black bg-gradient-to-b from-white via-white to-[#E0E0E0] rounded-full 
+                  focus:outline-none ring-2 ring-white/10 focus:ring-opacity-50 shadow-inner-bottom bg-white ${!isAvailable ? `opacity-75` : ``}`}
                 onClick={() => onBookNow(room, rate, rate?.book_hash || '')}
                 disabled={!isAvailable}
               >
-                <Text className="text-black">book now</Text>
+                <Text className="text-black font-semibold">book now</Text>
               </WhiteButton>
             </View>
           </View>

@@ -1,9 +1,10 @@
-import Loading from '@/components/Loading'
+import { LoadingIcon } from '@/components/icons/Icons'
 import ImportantInformationSection from '@/components/property/ImportantInformationSection'
 import LocationSection from '@/components/property/LocationSection'
 import PropertyInfo from '@/components/property/PropertyInfo'
 import ReviewsSection from '@/components/property/ReviewsSection'
 import { DateRange } from '@/components/ui/DatePicker'
+import Spinner from '@/components/ui/Spinner'
 import { useApartments, useRates } from '@/hooks'
 import { RootStackParamList, Routes } from '@/navigation/navigation.config'
 import { formatDateToISOString } from '@/utils/date.utils'
@@ -131,8 +132,10 @@ export function SearchFeatureDetails() {
 
   if (!selectedApartment) {
     return (
-      <View className="h-screen">
-        <Loading />
+      <View className="h-screen flex flex-row justify-center items-center bg-[#000000]">
+        <Spinner duration={500}>
+          <LoadingIcon width={64} height={64} color="white" />
+        </Spinner>
       </View>
     )
   }

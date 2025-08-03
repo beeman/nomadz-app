@@ -1,7 +1,8 @@
-import React, { InputHTMLAttributes } from 'react'
-import { InfoCircleIcon } from '../icons/Icons'
+import { InfoCircleIcon } from '@/components/icons/Icons'
+import React, { useEffect, useState } from 'react'
+import { Text, TextInput, TextInputProps, View } from 'react-native'
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
+interface InputProps extends TextInputProps {
   label?: string
   labelClassName?: string
   multiline?: boolean
@@ -9,6 +10,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement | HTMLTextArea
   prefix?: string
   maxLength?: number
   showCounter?: boolean
+  className?: string
 }
 
 const Input: React.FC<InputProps> = ({
@@ -16,121 +18,66 @@ const Input: React.FC<InputProps> = ({
   multiline = false,
   rows = 4,
   prefix,
-  className = '',
-  labelClassName = '',
   maxLength,
   showCounter = false,
+  className = '',
+  labelClassName = '',
+  value: propValue,
+  onChangeText,
   ...props
 }) => {
-  const inputClasses =
-    'w-full bg-[#1B1B1B] border-[0.8px] border-[#2F2F2F] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-white/60'
-  const [value, setValue] = React.useState<string>(String(props.value ?? ''))
+  const [value, setValue] = useState(String(propValue ?? ''))
 
-  React.useEffect(() => {
-    setValue(String(props.value ?? ''))
-  }, [props.value])
+  useEffect(() => {
+    setValue(String(propValue ?? ''))
+  }, [propValue])
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (maxLength && e.target.value.length > maxLength) {
-      setValue(e.target.value.slice(0, maxLength))
-      if (props.onChange) {
-        const event = { ...e, target: { ...e.target, value: e.target.value.slice(0, maxLength) } }
-        props.onChange(event as any)
-      }
-      return
+  const handleChange = (text: string) => {
+    let newValue = text
+    if (maxLength && text.length > maxLength) {
+      newValue = text.slice(0, maxLength)
     }
-    setValue(e.target.value)
-    if (props.onChange) props.onChange(e)
+    setValue(newValue)
+    onChangeText?.(newValue)
   }
 
-  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
-    if (maxLength) {
-      const paste = e.clipboardData.getData('text')
-      const newValue = value + paste
-      if (newValue.length > maxLength) {
-        e.preventDefault()
-        const allowed = maxLength - value.length
-        const toPaste = paste.slice(0, allowed)
-        setValue(value + toPaste)
-        if (props.onChange) {
-          const event = { ...e, target: { ...e.target, value: value + toPaste } }
-          props.onChange(event as any)
-        }
-      }
-    }
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (maxLength && e.target.value.length > maxLength) {
-      setValue(e.target.value.slice(0, maxLength))
-      if (props.onChange) {
-        const event = { ...e, target: { ...e.target, value: e.target.value.slice(0, maxLength) } }
-        props.onChange(event as any)
-      }
-      return
-    }
-    setValue(e.target.value)
-    if (props.onChange) props.onChange(e)
-  }
-
-  const handleInputPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    if (maxLength) {
-      const paste = e.clipboardData.getData('text')
-      const newValue = value + paste
-      if (newValue.length > maxLength) {
-        e.preventDefault()
-        const allowed = maxLength - value.length
-        const toPaste = paste.slice(0, allowed)
-        setValue(value + toPaste)
-        if (props.onChange) {
-          const event = { ...e, target: { ...e.target, value: value + toPaste } }
-          props.onChange(event as any)
-        }
-      }
-    }
-  }
+  const inputStyles = `w-full bg-[#1B1B1B] border border-[#2F2F2F] rounded-lg px-4 py-2 text-white text-base`
 
   return (
     <View className="gap-y-2.5">
-      {label && <label className={`block text-[#CDCDCD] text-sm ${labelClassName}`}>{label}</label>}
+      {label ? <Text className={`text-[#CDCDCD] text-sm ${labelClassName}`}>{label}</Text> : null}
 
-      {multiline ? (
-        <View className="relative">
-          <textarea
-            {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
-            rows={rows}
-            maxLength={maxLength}
-            value={value}
-            onChange={handleChange}
-            onPaste={handlePaste}
-            className={`py-3 resize-none ${maxLength && value.length >= maxLength ? '!pb-5' : ''} ${inputClasses} ${className}`}
-          />
-          {maxLength &&
-            showCounter &&
-            (value.length >= maxLength ? (
-              <Text className="flex absolute right-2 bottom-3 gap-1 items-center text-xs pointer-events-none select-none text-alert-red">
-                <InfoCircleIcon className="w-4 h-4" />
+      <View className="relative">
+        {prefix && <Text className="absolute left-4 top-1/2 -translate-y-1/2 text-white z-10">{prefix}</Text>}
+
+        <TextInput
+          {...props}
+          multiline={multiline}
+          numberOfLines={rows}
+          maxLength={maxLength}
+          onChangeText={handleChange}
+          value={value}
+          style={{ paddingTop: multiline ? 12 : 8, paddingBottom: 8 }}
+          className={`${inputStyles} ${prefix ? 'pl-10' : ''} ${className}`}
+        />
+
+        {maxLength && showCounter ? (
+          <Text
+            className={`absolute right-2 text-xs select-none ${
+              value.length >= maxLength ? 'bottom-3 text-alert-red flex-row items-center' : 'bottom-2 text-[#CDCDCD]'
+            }`}
+          >
+            {value.length >= maxLength ? (
+              <>
+                <InfoCircleIcon className="mr-1" width={16} height={16} />
                 Max {maxLength} characters
-              </Text>
+              </>
             ) : (
-              <Text className="absolute right-2 bottom-2 text-xs text-[#CDCDCD] select-none pointer-events-none">
-                {maxLength - value.length}
-              </Text>
-            ))}
-        </View>
-      ) : (
-        <View className="relative">
-          {prefix && <Text className="absolute left-4 top-1/2 text-white -translate-y-1/2">{prefix}</Text>}
-          <input
-            {...(props as InputHTMLAttributes<HTMLInputElement>)}
-            maxLength={maxLength}
-            value={value}
-            onChange={handleInputChange}
-            onPaste={handleInputPaste}
-            className={`${inputClasses} ${prefix ? 'pl-10' : ''} ${className}`}
-          />
-        </View>
-      )}
+              `${maxLength - value.length}`
+            )}
+          </Text>
+        ) : null}
+      </View>
     </View>
   )
 }
