@@ -70,7 +70,7 @@ export interface SearchParams {
   checkout?: string
   guests: {
     adults: number
-    children: number[]
+    children: number[] // Array of ages (default 12 for children, 1 for infants)
     infants: number
   }
   sort?: string
@@ -169,8 +169,30 @@ function useSearchProperties() {
       // Guests parameter - this is required
       if (params.guests) {
         queryParams.append('guests[0][adults]', params.guests.adults.toString())
+        
+        // Combine children and infants into a single children array
+        const allChildren: number[] = []
+        
+        // Add children (default age 12)
         if (params.guests.children && params.guests.children.length > 0) {
-          params.guests.children.forEach((childAge, index) => {
+          allChildren.push(...params.guests.children)
+        } else {
+          // If no specific ages provided, use default age 12 for children count
+          const childrenCount = params.guests.children?.length || 0
+          for (let i = 0; i < childrenCount; i++) {
+            allChildren.push(12)
+          }
+        }
+        
+        // Add infants (age 1)
+        const infantsCount = params.guests.infants || 0
+        for (let i = 0; i < infantsCount; i++) {
+          allChildren.push(1)
+        }
+        
+        // Add all children to query params
+        if (allChildren.length > 0) {
+          allChildren.forEach((childAge, index) => {
             queryParams.append(`guests[0][children][${index}]`, childAge.toString())
           })
         }
