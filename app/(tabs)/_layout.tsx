@@ -1,13 +1,32 @@
-import { Tabs } from 'expo-router'
-import React from 'react'
+import { useAuth } from '@/components/auth/auth-provider'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { Image } from 'expo-image'
-import { useAuth } from '@/components/auth/auth-provider'
+import { Tabs } from 'expo-router'
+import React from 'react'
 
 export default function TabLayout() {
   const { user } = useAuth()
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs 
+      screenOptions={{ 
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: '#000000',
+          borderTopWidth: 0,
+          elevation: 0,
+          shadowOpacity: 0,
+          height: 72,
+          paddingBottom: 20,
+          paddingTop: 8,
+        },
+        tabBarActiveTintColor: '#FFFFFF',
+        tabBarInactiveTintColor: '#9CA3AF',
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '500',
+        },
+      }}
+    >
       {/* The index redirects to the account screen */}
       <Tabs.Screen name="index" options={{ tabBarItemStyle: { display: 'none' } }} />
       <Tabs.Screen
