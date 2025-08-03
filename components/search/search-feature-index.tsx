@@ -1,31 +1,77 @@
 import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
-import { Link } from 'expo-router'
-import * as React from 'react'
-import { FlatList, View } from 'react-native'
-import { Card } from 'react-native-paper'
+import { useRouter } from 'expo-router'
+import React from 'react'
+import { FlatList, Text, View } from 'react-native'
+import { ApartmentCard } from './apartment-card'
+import { SearchBar } from './search-bar'
+import { SearchModal } from './search-modal'
 import { useSearch } from './search-provider'
+import { SearchResults } from './search-results'
 
 export function SearchFeatureIndex() {
-  const { random: items } = useSearch()
+  const { random, searchResults, isLoading, searchError, isLoadMoreLoading } = useSearch()
   const spacing = useAppThemeSpacing()
+  const router = useRouter()
+
+  const renderRandomItem = ({ item }: { item: any }) => (
+    <ApartmentCard
+      apartment={item}
+      onPress={() => router.navigate(`/search/${item.hid}?checkin=&checkout=&guests%5Badults%5D=1`)}
+      showRegion={true}
+    />
+  )
+
+  // Only show loading screen for initial load, not for load more
+  if (isLoading && !isLoadMoreLoading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#000000',
+          padding: spacing.md,
+        }}
+      >
+        <Text style={{ color: '#FFFFFF', fontSize: 16 }}>Loading properties...</Text>
+      </View>
+    )
+  }
+
+  if (searchError) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#000000',
+          padding: spacing.md,
+        }}
+      >
+        <Text style={{ color: '#FF6B6B', fontSize: 16, textAlign: 'center' }}>{searchError}</Text>
+      </View>
+    )
+  }
 
   return (
-    <FlatList
-      style={{ padding: spacing.md }}
-      data={items}
-      ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
-      renderItem={({ item }) => (
-        <Link asChild key={item.id} href={`/search/${item.hid}?checkin=&checkout=&guests%5Badults%5D=1`}>
-          <Card>
-            <Card.Title title={item.name} subtitle={item.region?.countryName ?? 'Unknown'} />
-            <Card.Cover
-              resizeMode="cover"
-              source={{ uri: item?.images?.[0]?.url?.replace('{size}', '1024x768') || '' }}
-            />
-          </Card>
-        </Link>
+    <View style={{ flex: 1, backgroundColor: '#000000' }}>
+      <SearchBar />
+      <SearchModal />
+
+      {searchResults ? (
+        <SearchResults />
+      ) : (
+        <View style={{ flex: 1 }}>
+          <FlatList
+            data={random}
+            renderItem={renderRandomItem}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ padding: spacing.lg }}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
       )}
-      keyExtractor={(item) => item.id}
-    />
+    </View>
   )
 }
