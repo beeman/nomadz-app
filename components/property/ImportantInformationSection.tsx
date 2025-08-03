@@ -1,5 +1,5 @@
-import { Text, View } from 'react-native'
-// import sanitizeHtml from 'sanitize-html'
+import { Text, View, useWindowDimensions } from 'react-native'
+import RenderHtml from 'react-native-render-html'
 
 interface HouseRules {
   checkIn: string
@@ -10,7 +10,7 @@ interface ImportantInformationSectionProps {
   property: any // Update type when available
 }
 
-function renderPolicyParagraphs(paragraphs: string[]) {
+function renderPolicyParagraphs(paragraphs: string[], contentWidth: number) {
   const formatRichText = (text: string): string => {
     return text
       .replace(/\*\*\*(.*?)\*\*\*/g, '<b><i>$1</i></b>') // bold italic
@@ -23,17 +23,26 @@ function renderPolicyParagraphs(paragraphs: string[]) {
     const htmlContent = isHtml ? paragraph : formatRichText(paragraph)
 
     return (
-      <Text
-        key={index}
-        className="text-[#A9A9A9] text-sm font-primary-light [&_b]:font-primary-bold [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-1"
-      >
-        {htmlContent}
-      </Text>
+      <View key={index} style={{ marginBottom: 8 }}>
+        <RenderHtml
+          contentWidth={contentWidth}
+          source={{ html: htmlContent }}
+          baseStyle={{
+            color: '#A9A9A9',
+            fontSize: 14,
+            fontFamily: 'System',
+          }}
+          tagsStyles={{ b: { fontWeight: 'bold' }, i: { fontStyle: 'italic' }, ul: { marginLeft: 16 }, li: { marginBottom: 4 },
+          }}
+        />
+      </View>
     )
   })
 }
 
 export default function ImportantInformationSection({ property }: ImportantInformationSectionProps) {
+  const { width } = useWindowDimensions()
+  
   const houseRules = {
     checkIn: property.checkInTime?.slice(0, 5) || '',
     checkOut: property.checkOutTime?.slice(0, 5) || '',
@@ -41,7 +50,7 @@ export default function ImportantInformationSection({ property }: ImportantInfor
 
   return (
     <View className="flex flex-col gap-y-8">
-      <Text className="text-2xl text-left text-white mb-6 font-primary-medium">important information</Text>
+      <Text className="text-2xl text-left text-white font-primary-medium mt-4">important information</Text>
       <View className="border border-[#313131] rounded-xl bg-[#151515] px-6 py-8 gap-y-8">
         {/* House Rules */}
         <View>
@@ -61,7 +70,7 @@ export default function ImportantInformationSection({ property }: ImportantInfor
           <View key={index}>
             <Text className="mb-4 text-xl/[26px] font-primary-medium text-white">{policy.title}</Text>
             <View className="text-[#A9A9A9] text-sm font-light [&_b]:font-primary-bold [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-1">
-              {renderPolicyParagraphs(policy.paragraphs)}
+              {renderPolicyParagraphs(policy.paragraphs, width - 48)}
             </View>
           </View>
         ))}
