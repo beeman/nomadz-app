@@ -21,7 +21,7 @@ export default function TabLayout() {
         name="trips"
         options={{
           title: 'Trips',
-          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="bed.double.fill" color={color} />,
+          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="map" color={color} />,
         }}
       />
       <Tabs.Screen
