@@ -91,7 +91,7 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
           <View className="flex flex-row gap-6 min-h-[90.45px]">
             <View className="flex flex-row flex-1">
               {/* Image */}
-              {room.images[0] && (
+              {!!room.images[0] && (
                 <View
                   className="w-full cursor-pointer shrink-0 !aspect-[3/2]"
                   onTouchStart={() => setIsGalleryOpen(true)}
@@ -139,19 +139,23 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
               <View className="flex flex-row items-center gap-2 my-6 text-base">
                 {room?.nameStruct?.beddingType?.includes('single') && (
                   <View className="flex flex-row items-center gap-1.5  border border-red-500">
-                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>{' '}
+                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>
+                    <Text className="text-white text-sm"> </Text>
                     <SingleBedIcon height={14} color="white" />
                   </View>
                 )}
                 {room?.nameStruct?.beddingType?.includes('twin') && (
                   <View className="flex flex-row items-center gap-1.5 text-sm  border border-red-500">
-                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>{' '}
-                    <SingleBedIcon height={14} color="white" /> <SingleBedIcon height={14} />
+                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>
+                    <Text className="text-white text-sm"> </Text>
+                    <SingleBedIcon height={14} color="white" /> 
+                    <SingleBedIcon height={14} />
                   </View>
                 )}
                 {room?.nameStruct?.beddingType?.includes('double') && (
                   <View className="flex flex-row items-center gap-1.5 text-sm border border-red-500">
-                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>{' '}
+                    <Text className="text-white text-sm">{room.nameStruct.beddingType}</Text>
+                    <Text className="text-white text-sm"> </Text>
                     <DoubleBedIcon height={14} color="white" />
                   </View>
                 )}
@@ -160,7 +164,7 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
           </View>
 
           {/* Breakfast Included */}
-          {mealData.has_breakfast && (
+          {!!mealData.has_breakfast && (
             <View className="bg-[#121212] px-6 py-3 rounded-[14px] mx-0 mb-4 flex flex-col gap-1 border border-[#242424]">
               <Text className="flex flex-row items-center gap-2 text-sm font-medium text-white">
                 🍳 Breakfast Included
@@ -177,17 +181,19 @@ export default function RoomCard({ room, rate, onBookNow, isAvailable }: RoomCar
                 <CalendarX width={16} height={16} /> Free Cancellation Available
               </Text>
               <Text className="text-xs text-[#D0D0D0]">
-                You will be able cancel your order before{' '}
-                {new Intl.DateTimeFormat('en-US', {
-                  dateStyle: 'short',
-                  timeStyle: 'short',
-                }).format(
-                  new Date(
-                    rate?.payment_options?.payment_types?.find(
-                      (type) => type.cancellation_penalties.free_cancellation_before,
-                    )!.cancellation_penalties.free_cancellation_before,
-                  ),
-                )}{' '}
+                You will be able cancel your order before
+                <Text className="text-xs text-[#D0D0D0]">
+                  {new Intl.DateTimeFormat('en-US', {
+                    dateStyle: 'short',
+                    timeStyle: 'short',
+                  }).format(
+                    new Date(
+                      rate?.payment_options?.payment_types?.find(
+                        (type) => type.cancellation_penalties.free_cancellation_before,
+                      )!.cancellation_penalties.free_cancellation_before,
+                    ),
+                  )}
+                </Text>
                 for no cost
               </Text>
             </View>
