@@ -34,9 +34,15 @@ export function SearchFeatureDetails() {
   const dayAfterTomorrow = new Date()
   dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2)
 
+  const formatDateToISO = (dateString: string) => {
+    if (!dateString) return null
+    const [month, day, year] = dateString.split('-')
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+  }
+
   const initialDates: DateRange = {
-    checkin: parsedParams.checkin ? parsedParams.checkin as string : tomorrow.toISOString().split('T')[0],
-    checkout: parsedParams.checkout ? parsedParams.checkout as string : dayAfterTomorrow.toISOString().split('T')[0],
+    checkin: parsedParams.checkin ? formatDateToISO(parsedParams.checkin as string) : tomorrow.toISOString().split('T')[0],
+    checkout: parsedParams.checkout ? formatDateToISO(parsedParams.checkout as string) : dayAfterTomorrow.toISOString().split('T')[0],
     range: 'exact',
   }
 
