@@ -1,10 +1,10 @@
+import { createHeaderConfig } from '@/components/app-header-config'
 import { Stack } from 'expo-router'
 import React from 'react'
-import { AppView } from '@/components/app-view'
 
 export default function ProfileLayout() {
   return (
-    <Stack screenOptions={{ headerTitle: 'Profile', headerRight: () => <AppView /> }}>
+    <Stack screenOptions={createHeaderConfig('Profile')}>
       <Stack.Screen name="index" />
     </Stack>
   )
