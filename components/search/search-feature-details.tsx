@@ -3,14 +3,13 @@ import ImportantInformationSection from '@/components/property/ImportantInformat
 import LocationSection from '@/components/property/LocationSection'
 import PropertyInfo from '@/components/property/PropertyInfo'
 import ReviewsSection from '@/components/property/ReviewsSection'
-import { DateRange } from '@/components/ui/DatePicker'
 import { useApartments, useRates } from '@/hooks'
 import { RootStackParamList, Routes } from '@/navigation/navigation.config'
-import { formatDateToISOString } from '@/utils/date.utils'
 import { RouteProp, useRoute } from '@react-navigation/native'
 import debounce from 'lodash/debounce'
 import { useEffect } from 'react'
 import { ScrollView, View } from 'react-native'
+import { DateRange } from './date-picker'
 
 type ApartmentDetailsParamsRouteProp = RouteProp<RootStackParamList, Routes.ApartmentDetails>
 
@@ -36,10 +35,8 @@ export function SearchFeatureDetails() {
   dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2)
 
   const initialDates: DateRange = {
-    dates: [
-      parsedParams.checkin ? new Date(parsedParams.checkin as string) : tomorrow,
-      parsedParams.checkout ? new Date(parsedParams.checkout as string) : dayAfterTomorrow,
-    ],
+    checkin: parsedParams.checkin ? parsedParams.checkin as string : tomorrow.toISOString().split('T')[0],
+    checkout: parsedParams.checkout ? parsedParams.checkout as string : dayAfterTomorrow.toISOString().split('T')[0],
     range: 'exact',
   }
 
@@ -57,29 +54,6 @@ export function SearchFeatureDetails() {
         guests: { adults: number; children: number[] }
       }
     }) => {
-      const searchParams = new URLSearchParams(window.location.search)
-
-      // Update basic params
-      searchParams.set('checkin', params.params.checkin)
-      searchParams.set('checkout', params.params.checkout)
-      searchParams.set('guests[adults]', params.params.guests.adults.toString())
-
-      // Clear all existing children params
-      const paramsToDelete: string[] = []
-      searchParams.forEach((_, key) => {
-        if (key.startsWith('guests[children]')) {
-          paramsToDelete.push(key)
-        }
-      })
-      paramsToDelete.forEach((param) => searchParams.delete(param))
-
-      // Add new children params if any exist
-      params.params.guests.children.forEach((age, index) => {
-        searchParams.set(`guests[children][${index}]`, age.toString())
-      })
-
-      window.history.replaceState(null, '', `?${searchParams.toString()}`)
-
       // Make API call
       fetchApartmentRates(params as any)
     },
@@ -88,13 +62,12 @@ export function SearchFeatureDetails() {
 
   useEffect(() => {
     // Format dates for the initial fetch
-    const [start, end] = initialDates.dates
-    if (start && end) {
+    if (initialDates.checkin && initialDates.checkout) {
       fetchApartmentRates({
         hid: route.params.id,
         params: {
-          checkin: formatDateToISOString(start),
-          checkout: formatDateToISOString(end),
+          checkin: initialDates.checkin,
+          checkout: initialDates.checkout,
           guests: initialGuests,
         },
       })
