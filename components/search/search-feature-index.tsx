@@ -1,4 +1,5 @@
 import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
+import { useRouter } from 'expo-router'
 import React from 'react'
 import { FlatList, Text, View } from 'react-native'
 import { ApartmentCard } from './apartment-card'
@@ -10,40 +11,45 @@ import { SearchResults } from './search-results'
 export function SearchFeatureIndex() {
   const { random, searchResults, isLoading, searchError, isLoadMoreLoading } = useSearch()
   const spacing = useAppThemeSpacing()
+  const router = useRouter()
 
   const renderRandomItem = ({ item }: { item: any }) => (
-    <ApartmentCard apartment={item} showRegion={true} />
+    <ApartmentCard
+      apartment={item}
+      onPress={() => router.navigate(`/search/${item.hid}?checkin=&checkout=&guests%5Badults%5D=1`)}
+      showRegion={true}
+    />
   )
 
   // Only show loading screen for initial load, not for load more
   if (isLoading && !isLoadMoreLoading) {
     return (
-      <View style={{ 
-        flex: 1, 
-        justifyContent: 'center', 
-        alignItems: 'center',
-        backgroundColor: '#000000',
-        padding: spacing.md 
-      }}>
-        <Text style={{ color: '#FFFFFF', fontSize: 16 }}>
-          Loading properties...
-        </Text>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#000000',
+          padding: spacing.md,
+        }}
+      >
+        <Text style={{ color: '#FFFFFF', fontSize: 16 }}>Loading properties...</Text>
       </View>
     )
   }
 
   if (searchError) {
     return (
-      <View style={{ 
-        flex: 1, 
-        justifyContent: 'center', 
-        alignItems: 'center',
-        backgroundColor: '#000000',
-        padding: spacing.md 
-      }}>
-        <Text style={{ color: '#FF6B6B', fontSize: 16, textAlign: 'center' }}>
-          {searchError}
-        </Text>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#000000',
+          padding: spacing.md,
+        }}
+      >
+        <Text style={{ color: '#FF6B6B', fontSize: 16, textAlign: 'center' }}>{searchError}</Text>
       </View>
     )
   }
@@ -52,7 +58,7 @@ export function SearchFeatureIndex() {
     <View style={{ flex: 1, backgroundColor: '#000000' }}>
       <SearchBar />
       <SearchModal />
-      
+
       {searchResults ? (
         <SearchResults />
       ) : (

@@ -1,14 +1,37 @@
-import { useFonts } from 'expo-font'
-import { Stack } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
-import 'react-native-reanimated'
 import { AppProviders } from '@/components/app-providers'
-import { useCallback } from 'react'
-import * as SplashScreen from 'expo-splash-screen'
-import { View } from 'react-native'
-import { useTrackLocations } from '@/hooks/use-track-locations'
 import { AppSplashController } from '@/components/app-splash-controller'
 import { useAuth } from '@/components/auth/auth-provider'
+import { useTrackLocations } from '@/hooks/use-track-locations'
+import {
+  Epilogue_100Thin,
+  Epilogue_200ExtraLight,
+  Epilogue_300Light,
+  Epilogue_400Regular,
+  Epilogue_500Medium,
+  Epilogue_600SemiBold,
+  Epilogue_700Bold,
+  Epilogue_800ExtraBold,
+  Epilogue_900Black,
+} from '@expo-google-fonts/epilogue'
+import {
+  Geist_100Thin,
+  Geist_200ExtraLight,
+  Geist_300Light,
+  Geist_400Regular,
+  Geist_500Medium,
+  Geist_600SemiBold,
+  Geist_700Bold,
+  Geist_800ExtraBold,
+  Geist_900Black,
+} from '@expo-google-fonts/geist'
+import { useFonts } from 'expo-font'
+import { Stack } from 'expo-router'
+import * as SplashScreen from 'expo-splash-screen'
+import { StatusBar } from 'expo-status-bar'
+import React, { useCallback } from 'react'
+import { View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import 'react-native-reanimated'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -18,8 +41,27 @@ export default function RootLayout() {
   useTrackLocations((pathname, params) => {
     console.log(`Track ${pathname}`, { params })
   })
+
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Epilogue_100Thin,
+    Epilogue_200ExtraLight,
+    Epilogue_300Light,
+    Epilogue_400Regular,
+    Epilogue_500Medium,
+    Epilogue_600SemiBold,
+    Epilogue_700Bold,
+    Epilogue_800ExtraBold,
+    Epilogue_900Black,
+    Geist_100Thin,
+    Geist_200ExtraLight,
+    Geist_300Light,
+    Geist_400Regular,
+    Geist_500Medium,
+    Geist_600SemiBold,
+    Geist_700Bold,
+    Geist_800ExtraBold,
+    Geist_900Black,
   })
 
   const onLayoutRootView = useCallback(async () => {
@@ -41,13 +83,15 @@ export default function RootLayout() {
   }
 
   return (
-    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <AppProviders>
-        <AppSplashController />
-        <RootNavigator />
-        <StatusBar style="auto" />
-      </AppProviders>
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+        <AppProviders>
+          <AppSplashController />
+          <RootNavigator />
+          <StatusBar style="auto" />
+        </AppProviders>
+      </View>
+    </GestureHandlerRootView>
   )
 }
 
@@ -56,7 +100,7 @@ function RootNavigator() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Protected guard={isAuthenticated}>
-        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack.Protected>
       <Stack.Protected guard={!isAuthenticated}>

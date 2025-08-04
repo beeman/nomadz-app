@@ -1,0 +1,79 @@
+@import "@chatscope/chat-ui-kit-styles/themes/default/variables";
+
+// Override variables here
+$color-text: #FFFFFF;
+$message-content-incoming-bg-color: #2D2D2D;
+$message-content-outgoing-bg-color: #1A1A1A;
+$message-input-bg-color: #1C1C1C;
+$message-input-placeholder-color: #FFFFFF99;
+$button-attachment-color: #FFFFFF;
+$button-send-color: #FFFFFF;
+$typing-indicator-text-color: #FFFFFF91;
+$typing-indicator-dot-bg-color: #FFFFFF91;
+
+// Ensure the message text is white
+$message-content-incoming-color: #FFFFFF;
+$message-content-outgoing-color: #FFFFFF;
+
+// Update background colors
+$chat-container-bg-color: #000000; // Set the chat container background
+$message-list-bg-color: #000000; // Set the message list background
+
+// Remove borders and adjust input
+$message-input-border-top: none;
+$message-input-border-right: none;
+$message-input-border-bottom: none;
+$message-input-border-left: none;
+$message-input-content-editor-wrapper-bg-color: #1C1C1C;
+$message-input-content-editor-bg-color: #1C1C1C;
+$message-input-content-editor-color: #FFFFFF;
+$message-input-content-editor-border-radius: 18px;
+
+// Icon colors
+$button-attachment-bg-color: #1C1C1C;
+$button-send-bg-color: #1C1C1C;
+
+// Import the main styles
+@import "@chatscope/chat-ui-kit-styles/themes/default/main";
+
+// Custom CSS for specific classes
+.cs-message-input__content-editor-wrapper {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  border-radius: 9999px !important;
+}
+
+.cs-message-input {
+  background-color: transparent !important;
+  border-top-width: 0px !important;
+  padding: 0 !important;
+}
+
+.cs-typing-indicator {
+  background-color: transparent !important;
+}
+
+.cs-main-container {
+  border-width: 0px;
+}
+
+.cs-button--attachment {
+  background-color: transparent !important;
+}
+
+.cs-message {
+  margin-top: 16px !important;
+}
+
+.cs-message__content {
+  @apply w-fit rounded-xl p-1;
+  border-radius: 14px !important;
+}
+
+.cs-message-input__content-editor {
+  text-wrap: wrap !important;
+}
+
+.cs-message__html-content {
+  @apply px-3 py-2.5;
+}

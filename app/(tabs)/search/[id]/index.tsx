@@ -1,11 +1,6 @@
-import React from 'react'
-import { AppPage } from '@/components/app-page'
 import { SearchFeatureDetails } from '@/components/search/search-feature-details'
+import React from 'react'
 
-export default function TabSearchDetails() {
-  return (
-    <AppPage>
-      <SearchFeatureDetails />
-    </AppPage>
-  )
+export default function ApartmentScreen() {
+  return <SearchFeatureDetails />
 }

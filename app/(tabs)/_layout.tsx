@@ -6,6 +6,7 @@ import React from 'react'
 
 export default function TabLayout() {
   const { user } = useAuth()
+  
   return (
     <Tabs 
       screenOptions={{ 
@@ -41,18 +42,6 @@ export default function TabLayout() {
         options={{
           title: 'Trips',
           tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="map" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }) =>
-            user?.image ? (
-              <Image style={{ height: 28, width: 28, borderRadius: 100 }} source={user.image} />
-            ) : (
-              <UiIconSymbol size={28} name="person.wave.2.fill" color={color} />
-            ),
         }}
       />
     </Tabs>

@@ -1,3 +1,5 @@
+import { Account } from '@/components/solana/use-authorization'
+import { useMobileWallet } from '@/components/solana/use-mobile-wallet'
 import { AppConfig } from '@/constants/app-config'
 import { api } from '@/utils/api'
 import { PrivyUser, usePrivy } from '@privy-io/expo'
@@ -29,6 +31,8 @@ export interface AuthState {
   isLoading: boolean
   signIn: () => Promise<PrivyUser>
   signOut: () => Promise<void>
+  connectWallet: () => Promise<Account>
+  disconnectWallet: () => Promise<void>
   user?: AuthUserProfile
 }
 
@@ -45,6 +49,7 @@ export function useAuth() {
 
 function useSignInMutation() {
   const { login } = useLogin()
+
   return useMutation({
     mutationFn: async () =>
       await login({
@@ -56,6 +61,14 @@ function useSignInMutation() {
           console.log(JSON.stringify(err.error) as string)
           throw err
         }),
+  })
+}
+
+function useSignInWithWalletMutation() {
+  const { connect } = useMobileWallet()
+
+  return useMutation({
+    mutationFn: async () => await connect(),
   })
 }
 
@@ -93,18 +106,22 @@ function useGetUserQuery() {
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const { isReady, user, logout } = usePrivy()
+  const { disconnect } = useMobileWallet()
+  const signInWithWalletMutation = useSignInWithWalletMutation()
   const signInMutation = useSignInMutation()
   const getUserQuery = useGetUserQuery()
 
   const value: AuthState = useMemo(() => {
     return {
       signIn: async () => signInMutation.mutateAsync(),
+      connectWallet: async () => signInWithWalletMutation.mutateAsync(),
       signOut: async () => await logout(),
+      disconnectWallet: async () => await disconnect(),
       isAuthenticated: !!user,
       isLoading: !isReady || signInMutation.isPending,
       user: getUserQuery.data,
     }
-  }, [user, isReady, signInMutation, getUserQuery.data, logout])
+  }, [user, isReady, signInMutation, signInWithWalletMutation, getUserQuery.data, disconnect, logout])
 
   return <Context value={value}>{children}</Context>
 }

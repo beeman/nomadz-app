@@ -1,4 +1,7 @@
 import { useAppThemeSpacing } from '@/components/use-app-theme-spacing'
+import { useRoute } from '@react-navigation/native'
+import { useRouter } from 'expo-router'
+import qs from 'qs'
 import React from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { ApartmentCard } from './apartment-card'
@@ -7,13 +10,19 @@ import { useSearch } from './search-provider'
 export function SearchResults() {
   const { searchResults, clearSearch, hasMore, loadMore, isLoadMoreLoading } = useSearch()
   const spacing = useAppThemeSpacing()
+  const router = useRouter()
+  const route = useRoute()
+  const { searchParams } = useSearch()
 
   if (!searchResults?.length) {
     return null
   }
 
   const renderItem = ({ item }: { item: any }) => (
-    <ApartmentCard apartment={item} />
+    <ApartmentCard
+      onPress={() => router.navigate(`/search/${item.hid}?${qs.stringify(searchParams)}`)}
+      apartment={item}
+    />
   )
 
   const renderFooter = () => {
@@ -53,4 +62,4 @@ export function SearchResults() {
       />
     </View>
   )
-} 
+}
