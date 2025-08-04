@@ -1,10 +1,10 @@
+import { createHeaderConfig } from '@/components/app-header-config'
 import { Stack } from 'expo-router'
 import React from 'react'
-import { AppView } from '@/components/app-view'
 
 export default function SearchLayout() {
   return (
-    <Stack screenOptions={{ headerTitle: 'Search', headerRight: () => <AppView /> }}>
+    <Stack screenOptions={createHeaderConfig('Search')}>
       <Stack.Screen name="index" />
     </Stack>
   )
