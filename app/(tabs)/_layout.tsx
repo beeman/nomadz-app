@@ -1,5 +1,6 @@
 import { useAuth } from '@/components/auth/auth-provider'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
+import { Image } from 'expo-image'
 import { Tabs } from 'expo-router'
 import React from 'react'
 
@@ -7,7 +8,26 @@ export default function TabLayout() {
   const { user } = useAuth()
   
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs 
+      screenOptions={{ 
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: '#000000',
+          borderTopWidth: 0,
+          elevation: 0,
+          shadowOpacity: 0,
+          height: 72,
+          paddingBottom: 20,
+          paddingTop: 8,
+        },
+        tabBarActiveTintColor: '#FFFFFF',
+        tabBarInactiveTintColor: '#9CA3AF',
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '500',
+        },
+      }}
+    >
       {/* The index redirects to the account screen */}
       <Tabs.Screen name="index" options={{ tabBarItemStyle: { display: 'none' } }} />
       <Tabs.Screen
@@ -21,14 +41,7 @@ export default function TabLayout() {
         name="trips"
         options={{
           title: 'Trips',
-          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="bed.double.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="gearshape.fill" color={color} />,
+          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="map" color={color} />,
         }}
       />
     </Tabs>

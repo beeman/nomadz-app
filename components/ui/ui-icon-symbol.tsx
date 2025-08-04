@@ -20,6 +20,7 @@ const MAPPING = {
   'person.wave.2.fill': 'person',
   'wallet.pass.fill': 'wallet',
   magnifyingglass: 'search',
+  map: 'map',
 } as UiIconMapping
 
 /**
