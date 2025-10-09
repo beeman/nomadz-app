@@ -3,6 +3,7 @@ export type Country = {
   name: string;
   flag: string;
   phoneCode: string;
+  abbreviation?: string;
 };
 
 export const COUNTRIES: Country[] = [
@@ -47,7 +48,7 @@ export const COUNTRIES: Country[] = [
   { code: 'cd', name: 'Congo (DRC)', flag: '🇨🇩', phoneCode: '+243' },
   { code: 'cg', name: 'Congo (Republic)', flag: '🇨🇬', phoneCode: '+242' },
   { code: 'cr', name: 'Costa Rica', flag: '🇨🇷', phoneCode: '+506' },
-  { code: 'ci', name: 'Côte d’Ivoire', flag: '🇨🇮', phoneCode: '+225' },
+  { code: 'ci', name: 'Côte d\'Ivoire', flag: '🇨🇮', phoneCode: '+225' },
   { code: 'hr', name: 'Croatia', flag: '🇭🇷', phoneCode: '+385' },
   { code: 'cu', name: 'Cuba', flag: '🇨🇺', phoneCode: '+53' },
   { code: 'cy', name: 'Cyprus', flag: '🇨🇾', phoneCode: '+357' },
@@ -56,7 +57,7 @@ export const COUNTRIES: Country[] = [
   { code: 'dj', name: 'Djibouti', flag: '🇩🇯', phoneCode: '+253' },
   { code: 'dm', name: 'Dominica', flag: '🇩🇲', phoneCode: '+1-767' },
   { code: 'do', name: 'Dominican Republic', flag: '🇩🇴', phoneCode: '+1-809' },
-  { code: 'ec', name: 'Ecuador', flag: '🇪🇨', phoneCode: '+593' },  
+  { code: 'ec', name: 'Ecuador', flag: '🇪🇨', phoneCode: '+593' },
   { code: 'eg', name: 'Egypt', flag: '🇪🇬', phoneCode: '+20' },
   { code: 'sv', name: 'El Salvador', flag: '🇸🇻', phoneCode: '+503' },
   { code: 'gq', name: 'Equatorial Guinea', flag: '🇬🇶', phoneCode: '+240' },
@@ -149,7 +150,6 @@ export const COUNTRIES: Country[] = [
   { code: 'pt', name: 'Portugal', flag: '🇵🇹', phoneCode: '+351' },
   { code: 'qa', name: 'Qatar', flag: '🇶🇦', phoneCode: '+974' },
   { code: 'ro', name: 'Romania', flag: '🇷🇴', phoneCode: '+40' },
-  { code: 'ru', name: 'Russia', flag: '🇷🇺', phoneCode: '+7' },
   { code: 'rw', name: 'Rwanda', flag: '🇷🇼', phoneCode: '+250' },
   { code: 'kn', name: 'Saint Kitts and Nevis', flag: '🇰🇳', phoneCode: '+1-869' },
   { code: 'lc', name: 'Saint Lucia', flag: '🇱🇨', phoneCode: '+1-758' },
@@ -189,9 +189,9 @@ export const COUNTRIES: Country[] = [
   { code: 'tv', name: 'Tuvalu', flag: '🇹🇻', phoneCode: '+688' },
   { code: 'ug', name: 'Uganda', flag: '🇺🇬', phoneCode: '+256' },
   { code: 'ua', name: 'Ukraine', flag: '🇺🇦', phoneCode: '+380' },
-  { code: 'ae', name: 'United Arab Emirates', flag: '🇦🇪', phoneCode: '+971' },
-  { code: 'gb', name: 'United Kingdom', flag: '🇬🇧', phoneCode: '+44' },
-  { code: 'us', name: 'United States', flag: '🇺🇸', phoneCode: '+1' },
+  { code: 'ae', name: 'United Arab Emirates', flag: '🇦🇪', phoneCode: '+971', abbreviation: 'UAE' },
+  { code: 'gb', name: 'United Kingdom', flag: '🇬🇧', phoneCode: '+44', abbreviation: 'UK' },
+  { code: 'us', name: 'United States', flag: '🇺🇸', phoneCode: '+1', abbreviation: 'USA' },
   { code: 'uy', name: 'Uruguay', flag: '🇺🇾', phoneCode: '+598' },
   { code: 'uz', name: 'Uzbekistan', flag: '🇺🇿', phoneCode: '+998' },
   { code: 'vu', name: 'Vanuatu', flag: '🇻🇺', phoneCode: '+678' },

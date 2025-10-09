@@ -38,3 +38,5 @@ export function AppDropdown({
     </Menu>
   )
 }
+
+AppDropdown.displayName = 'AppDropdown'

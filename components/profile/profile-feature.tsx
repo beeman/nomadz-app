@@ -1,6 +1,7 @@
 import { AppText } from '@/components/app-text'
 import { useAuth } from '@/components/auth/auth-provider'
 import { ProfileUiHeader } from '@/components/profile/profile-ui-header'
+import { router } from 'expo-router'
 import {
   BookmarkSimple,
   CaretRight,
@@ -57,7 +58,7 @@ export function ProfileFeature() {
         <MenuItem
           icon={<Gear size={24} color="white" weight="regular" />}
           title="profile settings"
-          onPress={() => console.log('Profile settings')}
+          onPress={() => router.push('/settings')}
         />
         
         <MenuItem

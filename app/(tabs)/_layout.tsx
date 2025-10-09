@@ -1,6 +1,5 @@
 import { useAuth } from '@/components/auth/auth-provider'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
-import { Image } from 'expo-image'
 import { Tabs } from 'expo-router'
 import React from 'react'
 
@@ -42,6 +41,13 @@ export default function TabLayout() {
         options={{
           title: 'Trips',
           tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="map" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="person" color={color} />,
         }}
       />
     </Tabs>

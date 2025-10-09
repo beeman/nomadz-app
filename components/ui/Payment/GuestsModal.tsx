@@ -1,10 +1,10 @@
-const logoNomadz = require('@/assets/pngs/icons/logo-white.png')
-
+import { Input } from '@/components/app-input'
 import WhiteButton from '@/components/ui/Buttons/WhiteButton'
-import Input from '@/components/ui/Input'
 import { GuestDetails } from '@/types/booking.types'
 import React, { useState } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
+
+const logoNomadz = require('@/assets/pngs/icons/logo-white.png')
 
 interface GuestsModalProps {
   guests: {
