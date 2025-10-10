@@ -101,7 +101,7 @@ function RootNavigator() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Protected guard={isAuthenticated}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="settings" options={{ headerShown: false }} />
+        <Stack.Screen name="settings/index" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack.Protected>
       <Stack.Protected guard={!isAuthenticated}>
