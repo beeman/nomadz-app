@@ -1,6 +1,7 @@
 import { AppThemeProvider } from '@/components/app-theme-provider'
 import { AuthProvider } from '@/components/auth/auth-provider'
 import { ClusterProvider } from '@/components/cluster/cluster-provider'
+import { ProfileProvider } from '@/components/profile/profile-provider'
 import { SolanaProvider } from '@/components/solana/solana-provider'
 import { AppConfig } from '@/constants/app-config'
 import { ToastProvider } from '@/utils/toastNotifications.utils'
@@ -18,7 +19,9 @@ export function AppProviders({ children }: PropsWithChildren) {
           <ToastProvider>
             <ClusterProvider>
               <SolanaProvider>
-                <AuthProvider>{children}</AuthProvider>
+                <AuthProvider>
+                  <ProfileProvider>{children}</ProfileProvider>
+                </AuthProvider>
               </SolanaProvider>
             </ClusterProvider>
           </ToastProvider>

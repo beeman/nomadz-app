@@ -1,6 +1,7 @@
 import { Input } from '@/components/app-input'
 import { AppText } from '@/components/app-text'
 import { useAuth } from '@/components/auth/auth-provider'
+import { useProfileSettings } from '@/components/profile/profile-provider'
 import { AvatarUpload } from '@/components/ui/avatar-upload'
 import { PhoneInput } from '@/components/ui/phone-input'
 import { ResidencyInput } from '@/components/ui/residency-input'
@@ -9,6 +10,7 @@ import { Alert, ScrollView, TouchableOpacity, View } from 'react-native'
 
 export function ProfileSettingsDetails() {
   const { user } = useAuth()
+  const { updateUser, isLoading, error } = useProfileSettings()
   
   const [formData, setFormData] = useState({
     firstName: '',
@@ -77,8 +79,19 @@ export function ProfileSettingsDetails() {
       return
     }
 
-    // TODO: Implement actual user update API call
-    Alert.alert('Success', 'Profile updated successfully.')
+    try {
+      await updateUser({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        username: formData.username,
+        phone: formData.phone,
+        bio: formData.bio,
+        residency: formData.residency,
+      })
+    } catch (error) {
+      // Error is handled by the provider
+      console.error('Profile update failed:', error)
+    }
   }
 
   if (!user) {
@@ -161,20 +174,30 @@ export function ProfileSettingsDetails() {
           />
         </View>
 
+        {/* Error Message */}
+        {error && (
+          <View style={{ marginTop: 16 }}>
+            <AppText style={{ color: '#FF5858', fontSize: 14, textAlign: 'center' }}>
+              {error}
+            </AppText>
+          </View>
+        )}
+
         {/* Action Buttons */}
         <View style={{ flexDirection: 'row', gap: 16, marginTop: 32 }}>
           <TouchableOpacity
             onPress={handleSubmit}
+            disabled={isLoading}
             style={{
               flex: 1,
-              backgroundColor: 'white',
+              backgroundColor: isLoading ? '#666' : 'white',
               borderRadius: 25,
               paddingVertical: 12,
               alignItems: 'center',
             }}
           >
-            <AppText style={{ color: 'black', fontSize: 16, fontWeight: '500' }}>
-              save
+            <AppText style={{ color: isLoading ? '#999999' : 'black', fontSize: 16, fontWeight: '500' }}>
+              {isLoading ? 'saving...' : 'save'}
             </AppText>
           </TouchableOpacity>
           
