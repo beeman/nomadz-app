@@ -53,6 +53,7 @@ export function Input({
           fontSize: 16,
           opacity: disabled ? 0.6 : 1,
           textAlignVertical: multiline ? 'top' : 'center',
+          minHeight: multiline ? numberOfLines * 20 + 24 : undefined,
         }}
       />
     </View>
