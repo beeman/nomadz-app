@@ -1,6 +1,6 @@
 import { useAuth } from '@/components/auth/auth-provider'
 import { api } from '@/utils/api'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import React, { ReactNode, useCallback, useState } from 'react'
 
 export interface ProfileUpdateData {
@@ -10,15 +10,20 @@ export interface ProfileUpdateData {
   phone: string
   bio: string
   residency: string
+  image?: string | null
 }
 
 export interface ProfileProviderContext {
   updateUser: (data: ProfileUpdateData) => Promise<void>
+  uploadImage: (imageUri: string) => Promise<void>
   isLoading: boolean
+  isImageUploading: boolean
   error: string | null
   success: boolean
   clearError: () => void
   clearSuccess: () => void
+  localImageUri: string | null
+  setLocalImageUri: (uri: string | null) => void
 }
 
 const ProfileContext = React.createContext<ProfileProviderContext>({} as ProfileProviderContext)
@@ -26,9 +31,11 @@ const ProfileContext = React.createContext<ProfileProviderContext>({} as Profile
 export function ProfileProvider(props: { children: ReactNode }) {
   const { children } = props
   const { user } = useAuth()
+  const queryClient = useQueryClient()
   
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<boolean>(false)
+  const [localImageUri, setLocalImageUri] = useState<string | null>(null)
 
   const updateUserMutation = useMutation({
     mutationFn: async (data: ProfileUpdateData) => {
@@ -53,6 +60,10 @@ export function ProfileProvider(props: { children: ReactNode }) {
     onSuccess: () => {
       setSuccess(true)
       setError(null)
+      // Invalidate only the user data query, not the login query
+      queryClient.invalidateQueries({ 
+        predicate: (query) => query.queryKey[0] === 'get-user'
+      })
     },
     onError: (error: any) => {
       setError(error.response?.data?.message || error.message || 'Failed to update profile')
@@ -60,9 +71,39 @@ export function ProfileProvider(props: { children: ReactNode }) {
     }
   })
 
+  const uploadImageMutation = useMutation({
+    mutationFn: async (imageUri: string) => {
+      if (!user?.userId) {
+        throw new Error('User not authenticated')
+      }
+
+      const formData = new FormData()
+      formData.append('userProfile[image]', {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: 'profile-image.jpg',
+      } as any)
+
+      const response = await api.putForm(`users/${user.userId}`, formData)
+      return response.data
+    },
+    onSuccess: () => {
+      setSuccess(true)
+      setError(null)
+    },
+    onError: (error: any) => {
+      setError(error.response?.data?.message || error.message || 'Failed to upload image')
+      setSuccess(false)
+    }
+  })
+
   const updateUser = useCallback(async (data: ProfileUpdateData) => {
     await updateUserMutation.mutateAsync(data)
   }, [updateUserMutation])
+
+  const uploadImage = useCallback(async (imageUri: string) => {
+    await uploadImageMutation.mutateAsync(imageUri)
+  }, [uploadImageMutation])
 
   const clearError = useCallback(() => {
     setError(null)
@@ -74,11 +115,15 @@ export function ProfileProvider(props: { children: ReactNode }) {
 
   const value: ProfileProviderContext = {
     updateUser,
+    uploadImage,
     isLoading: updateUserMutation.isPending,
+    isImageUploading: uploadImageMutation.isPending,
     error,
     success,
     clearError,
-    clearSuccess
+    clearSuccess,
+    localImageUri,
+    setLocalImageUri
   }
 
   return <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>

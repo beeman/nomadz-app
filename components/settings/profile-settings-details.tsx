@@ -10,7 +10,7 @@ import { Alert, ScrollView, TouchableOpacity, View } from 'react-native'
 
 export function ProfileSettingsDetails() {
   const { user } = useAuth()
-  const { updateUser, isLoading, error } = useProfileSettings()
+  const { updateUser, uploadImage, isLoading, isImageUploading, error, setLocalImageUri } = useProfileSettings()
   
   const [formData, setFormData] = useState({
     firstName: '',
@@ -44,7 +44,18 @@ export function ProfileSettingsDetails() {
 
   const handleImageChange = async (uri: string) => {
     setFormData(prev => ({ ...prev, image: uri }))
-    // TODO: Implement actual image upload
+    
+    // Set local image URI immediately for UI update
+    setLocalImageUri(uri)
+    
+    // Upload image immediately after selection
+    try {
+      await uploadImage(uri)
+    } catch (error) {
+      console.error('Image upload failed:', error)
+      // Reset local image on upload failure
+      setLocalImageUri(null)
+    }
   }
 
   const handleReset = () => {
@@ -106,9 +117,13 @@ export function ProfileSettingsDetails() {
           <AppText style={{ color: '#4C535F', fontSize: 14, marginBottom: 8 }}>
             your profile pic
           </AppText>
-          <AvatarUpload image={formData.image} onImageChange={handleImageChange} />
+          <AvatarUpload 
+            image={formData.image} 
+            onImageChange={handleImageChange}
+            isUploading={isImageUploading}
+          />
           <AppText style={{ color: 'white', fontSize: 14, textDecorationLine: 'underline' }}>
-            choose photo
+            {isImageUploading ? 'uploading...' : 'choose photo'}
           </AppText>
         </View>
 

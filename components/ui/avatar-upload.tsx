@@ -1,14 +1,16 @@
 import * as ImagePicker from 'expo-image-picker'
-import { Camera, User } from 'phosphor-react-native'
+import { Camera } from 'phosphor-react-native'
 import React from 'react'
-import { Alert, Image, TouchableOpacity, View } from 'react-native'
+import { Alert, TouchableOpacity, View } from 'react-native'
+import { Avatar } from './avatar'
 
 interface AvatarUploadProps {
   image: string | null
   onImageChange: (uri: string) => void
+  isUploading?: boolean
 }
 
-export function AvatarUpload({ image, onImageChange }: AvatarUploadProps) {
+export function AvatarUpload({ image, onImageChange, isUploading = false }: AvatarUploadProps) {
   const requestPermissions = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
     if (status !== 'granted') {
@@ -19,6 +21,8 @@ export function AvatarUpload({ image, onImageChange }: AvatarUploadProps) {
   }
 
   const handleImagePicker = async () => {
+    if (isUploading) return
+    
     const hasPermission = await requestPermissions()
     if (!hasPermission) return
 
@@ -52,19 +56,7 @@ export function AvatarUpload({ image, onImageChange }: AvatarUploadProps) {
         marginBottom: 16,
       }}
     >
-      {image ? (
-        <Image
-          source={{ uri: image }}
-          style={{
-            width: 96,
-            height: 96,
-            borderRadius: 48,
-          }}
-          resizeMode="cover"
-        />
-      ) : (
-        <User size={32} color="#9CA3AF" weight="regular" />
-      )}
+      <Avatar image={image} size={96} />
       <View
         style={{
           position: 'absolute',

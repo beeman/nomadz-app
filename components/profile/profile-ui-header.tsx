@@ -1,9 +1,8 @@
 import { AppText } from '@/components/app-text'
 import { useAuth } from '@/components/auth/auth-provider'
 import { LevelIcon, XIcon, XPIcon } from '@/components/icons/Icons'
-import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
+import { Avatar } from '@/components/ui/avatar'
 import { getUserLevel, levels } from '@/utils/level.utils'
-import { Image } from 'expo-image'
 import { LinearGradient } from 'expo-linear-gradient'
 import * as React from 'react'
 import { View } from 'react-native'
@@ -37,11 +36,7 @@ export function ProfileUiHeader() {
         <View className="flex-row items-center gap-4 mb-4">
           {/* Avatar */}
           <View className="flex-shrink-0">
-            {user?.image && user?.image?.startsWith('http') ? (
-              <Image style={{ height: 64, width: 64, borderRadius: 100 }} source={user.image} />
-            ) : (
-              <UiIconSymbol size={64} name="person.wave.2.fill" color="#E9E9E9" />
-            )}
+            <Avatar image={user?.image} size={64} />
           </View>
 
           {/* Username */}
