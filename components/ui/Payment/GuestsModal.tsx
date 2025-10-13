@@ -1,8 +1,12 @@
 import { Input } from '@/components/app-input'
+import { GuestsList } from '@/components/guests/guests-list'
+import { GuestsProvider } from '@/components/guests/guests-provider'
+import { useSearchContext } from '@/components/search/single-property-search-provider'
 import WhiteButton from '@/components/ui/Buttons/WhiteButton'
 import { GuestDetails } from '@/types/booking.types'
+import { XIcon } from 'phosphor-react-native'
 import React, { useState } from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 const logoNomadz = require('@/assets/pngs/icons/logo-white.png')
 
@@ -45,11 +49,107 @@ const GuestsModal: React.FC<GuestsModalProps> = ({ guests, onCancel, onConfirm }
   const canProceed = guestFields.every((g) => g.first_name.trim() && g.last_name.trim())
 
   return (
-    <View className="bg-[#151515] rounded-2xl px-6 mx-auto p-6 border border-[#323232] shadow-lg">
+    <GuestsProvider>
+      <GuestsModalContent 
+        guests={guests}
+        guestFields={guestFields}
+        onFieldChange={handleFieldChange}
+        onAddGuest={handleAddGuest}
+        onRemoveGuest={handleRemoveGuest}
+        onCancel={onCancel}
+        onConfirm={onConfirm}
+        canProceed={canProceed}
+        totalGuests={totalGuests}
+      />
+    </GuestsProvider>
+  )
+}
+
+interface GuestsModalContentProps {
+  guests: {
+    adults: number
+    children: number[]
+  }
+  guestFields: GuestDetails[]
+  onFieldChange: (idx: number, field: 'first_name' | 'last_name', value: string) => void
+  onAddGuest: () => void
+  onRemoveGuest: (idx: number) => void
+  onCancel: () => void
+  onConfirm: (details: GuestDetails[]) => void
+  canProceed: boolean
+  totalGuests: number
+}
+
+const GuestsModalContent: React.FC<GuestsModalContentProps> = ({ 
+  guests,
+  guestFields,
+  onFieldChange,
+  onAddGuest,
+  onRemoveGuest,
+  onCancel,
+  onConfirm,
+  canProceed,
+  totalGuests
+}) => {
+  const { selectedGuests, selectGuest, unselectGuest } = useSearchContext()
+
+  const handleUseSavedGuest = (savedGuest: any) => {
+    // Check if guest is already selected
+    const isAlreadySelected = selectedGuests.some(selected => selected.id === savedGuest.id);
+    
+    if (isAlreadySelected) {
+      // If already selected, unselect them
+      handleUnselectGuest(savedGuest);
+      return;
+    }
+    
+    // Find the first empty field or create a new one
+    const emptyFieldIndex = guestFields.findIndex(field => !field.first_name.trim() && !field.last_name.trim())
+    
+    let guestWasAdded = false;
+    
+    if (emptyFieldIndex !== -1) {
+      // Fill the empty field
+      onFieldChange(emptyFieldIndex, 'first_name', savedGuest.firstName)
+      onFieldChange(emptyFieldIndex, 'last_name', savedGuest.lastName)
+      guestWasAdded = true;
+    } else if (guestFields.length < totalGuests) {
+      // Add a new field and fill it
+      onAddGuest()
+      setTimeout(() => {
+        onFieldChange(guestFields.length, 'first_name', savedGuest.firstName)
+        onFieldChange(guestFields.length, 'last_name', savedGuest.lastName)
+      }, 0)
+      guestWasAdded = true;
+    }
+    
+    // Only select the guest if we actually added them to a field
+    if (guestWasAdded) {
+      selectGuest(savedGuest)
+    }
+  }
+
+  const handleUnselectGuest = (savedGuest: any) => {
+    // Find and clear the field that matches this guest
+    const fieldIndex = guestFields.findIndex(field => 
+      field.first_name.toLowerCase() === savedGuest.firstName.toLowerCase() &&
+      field.last_name.toLowerCase() === savedGuest.lastName.toLowerCase()
+    )
+    
+    if (fieldIndex !== -1) {
+      onFieldChange(fieldIndex, 'first_name', '')
+      onFieldChange(fieldIndex, 'last_name', '')
+    }
+    
+    unselectGuest(savedGuest)
+  }
+
+  return (
+    <View className="bg-[#151515] rounded-2xl mx-auto p-6 border border-[#323232] shadow-lg">
       {/* Header */}
       <View className="flex flex-row items-center justify-between pb-2">
-        <View className="flex flex-row items-center gap-1 mb-3 border">
-          <View className="w-4 h-4 items-center justify-center bg-black rounded border border-[#4B4B4B]">
+        <View className="flex flex-row items-center gap-1 mb-3">
+          <View className="w-4 h-4 items-center justify-center rounded">
             <Image source={logoNomadz} resizeMode="contain" style={{ height: 10, width: 10, alignSelf: 'center' }} />
           </View>
           <View className="flex-row items-center">
@@ -62,48 +162,54 @@ const GuestsModal: React.FC<GuestsModalProps> = ({ guests, onCancel, onConfirm }
       </View>
 
       {/* Scrollable Content */}
-      <View className="flex flex-col gap-5 pb-4">
+      <View className="flex flex-col pb-4">
         <View className="bg-[#0C1A29] border border-[#364A6C] rounded-2xl p-4 mb-6">
           <Text className="text-xs text-white">
             Please enter guest names exactly as they appear on official documents.
           </Text>
         </View>
 
-        <Text className="mb-6 text-[22px] font-medium text-center text-white">add guests names</Text>
-
-        {guestFields.map((guest, idx) => (
-          <View key={idx} className="mb-6">
-            <Text className="mb-2 text-sm font-medium text-white">guest {idx + 1}</Text>
-            <View className="flex-row gap-2 items-center">
-              <View className="flex-1">
-                <Input
-                  placeholder="first name"
-                  value={guest.first_name}
-                  onChangeText={(val) => handleFieldChange(idx, 'first_name', val)}
-                  className="rounded-xl border border-[#323232] bg-[#151515] placeholder:text-[#CDCDCD80]"
-                />
+        {/* Saved Guests Section */}
+        <GuestsList
+          mode="selection"
+          selectedGuests={selectedGuests}
+          onGuestSelect={handleUseSavedGuest}
+          onGuestUnselect={handleUnselectGuest}
+        />
+        <ScrollView className='max-h-[220px]'>
+          <Text className="mb-6 text-[22px] font-medium text-center text-white">add guests names</Text>
+          {guestFields.map((guest, idx) => (
+            <View key={idx} className="mb-4">
+              <Text className="mb-2 text-sm font-medium text-white">guest {idx + 1}</Text>
+              <View className="flex-row gap-2 items-center justify-center">
+                <View className="flex-1">
+                  <Input
+                    placeholder="first name"
+                    value={guest.first_name}
+                    onChangeText={(val) => onFieldChange(idx, 'first_name', val)}
+                  />
+                </View>
+                <View className="flex-1">
+                  <Input
+                    placeholder="last name"
+                    value={guest.last_name}
+                    onChangeText={(val) => onFieldChange(idx, 'last_name', val)}
+                  />
+                </View>
+                {guestFields.length > 1 && (
+                  <TouchableOpacity onPress={() => onRemoveGuest(idx)}>
+                    <XIcon size={16} color='#CA5555' />
+                  </TouchableOpacity>
+                )}
               </View>
-              <View className="flex-1">
-                <Input
-                  placeholder="last name"
-                  value={guest.last_name}
-                  onChangeText={(val) => handleFieldChange(idx, 'last_name', val)}
-                  className="rounded-xl border border-[#323232] bg-[#151515] placeholder:text-[#CDCDCD80]"
-                />
-              </View>
-              {guestFields.length > 1 && (
-                <TouchableOpacity onPress={() => handleRemoveGuest(idx)}>
-                  <Text className="text-[#CA5555] text-lg px-2">×</Text>
-                </TouchableOpacity>
-              )}
             </View>
-          </View>
-        ))}
+          ))}
+        </ScrollView>
 
         {guestFields.length < totalGuests && (
           <View className="mb-6">
             <TouchableOpacity
-              onPress={handleAddGuest}
+              onPress={onAddGuest}
               className="w-full border border-dashed border-[#444] rounded-xl py-3 items-center"
             >
               <Text className="text-[#B0B0B0]">

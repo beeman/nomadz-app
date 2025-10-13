@@ -1,6 +1,6 @@
 import { AppText } from '@/components/app-text'
 import React from 'react'
-import { TextInput, View } from 'react-native'
+import { TextInput, View, ViewStyle } from 'react-native'
 
 interface InputProps {
   label?: string
@@ -12,6 +12,8 @@ interface InputProps {
   maxLength?: number
   disabled?: boolean
   keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad'
+  className?: string
+  style?: ViewStyle
 }
 
 export function Input({
@@ -24,9 +26,11 @@ export function Input({
   maxLength,
   disabled = false,
   keyboardType = 'default',
+  className,
+  style,
 }: InputProps) {
   return (
-    <View style={{ marginBottom: 16 }}>
+    <View style={style} className={className}>
       {!!label && (
         <AppText style={{ color: '#CDCDCD', fontSize: 14, marginBottom: 8 }}>
           {label}

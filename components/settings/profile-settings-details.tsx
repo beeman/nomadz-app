@@ -139,6 +139,7 @@ export function ProfileSettingsDetails() {
                 value={formData.firstName}
                 onChangeText={(value) => handleChange('firstName', value)}
                 maxLength={50}
+                className="mb-4"
               />
             </View>
             <View style={{ flex: 1 }}>
@@ -147,6 +148,7 @@ export function ProfileSettingsDetails() {
                 value={formData.lastName}
                 onChangeText={(value) => handleChange('lastName', value)}
                 maxLength={50}
+                className="mb-4"
               />
             </View>
           </View>
@@ -157,6 +159,7 @@ export function ProfileSettingsDetails() {
             onChangeText={() => {}} // Disabled
             disabled
             keyboardType="email-address"
+            className="mb-4"
           />
 
           <Input
@@ -164,6 +167,7 @@ export function ProfileSettingsDetails() {
             value={formData.username}
             onChangeText={(value) => handleChange('username', value)}
             maxLength={32}
+            className="mb-4"
           />
 
           <PhoneInput
@@ -186,6 +190,7 @@ export function ProfileSettingsDetails() {
             numberOfLines={4}
             maxLength={140}
             placeholder="Tell us about yourself..."
+            className="mb-4"
           />
         </View>
 
