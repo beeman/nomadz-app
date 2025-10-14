@@ -1,6 +1,7 @@
 import { AppText } from '@/components/app-text'
 import { useAuth } from '@/components/auth/auth-provider'
 import { ProfileUiHeader } from '@/components/profile/profile-ui-header'
+import { useRouter } from 'expo-router'
 import {
   BookmarkSimple,
   CaretRight,
@@ -42,16 +43,21 @@ function MenuItem({ icon, title, onPress, isDestructive = false, className = '' 
 
 export function ProfileFeature() {
   const { user, signOut } = useAuth()
+  const router = useRouter()
   
   if (!user) {
     return null
   }
 
+  const handleProfilePress = () => {
+    router.navigate(`/user/${user.userId}`)
+  }
+
   return (
     <ScrollView className="bg-black p-4 h-full">
-      <View>
-        <ProfileUiHeader />
-      </View>
+      <TouchableOpacity onPress={handleProfilePress} activeOpacity={0.7}>
+        <ProfileUiHeader userProfile={user} />
+      </TouchableOpacity>
       <View className='flex flex-col items-stretch pt-8'>
         {/* Menu Items */}
         <MenuItem

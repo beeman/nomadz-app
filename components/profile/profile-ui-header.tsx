@@ -1,15 +1,19 @@
 import { AppText } from '@/components/app-text'
-import { useAuth } from '@/components/auth/auth-provider'
 import { LevelIcon, XIcon, XPIcon } from '@/components/icons/Icons'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
+import { UserProfile } from '@/types/user.types'
 import { getUserLevel, levels } from '@/utils/level.utils'
 import { Image } from 'expo-image'
 import { LinearGradient } from 'expo-linear-gradient'
 import * as React from 'react'
 import { View } from 'react-native'
+import { AuthUserProfile } from '../auth/auth-provider'
 
-export function ProfileUiHeader() {
-  const { user } = useAuth()
+interface ProfileUiHeaderProps {
+  userProfile?: UserProfile | AuthUserProfile;
+}
+
+export function ProfileUiHeader({ userProfile: user }: ProfileUiHeaderProps = {}) {
   if (!user) {
     return null
   }
