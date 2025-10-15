@@ -1,6 +1,5 @@
 import { useAuth } from '@/components/auth/auth-provider'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
-import { Image } from 'expo-image'
 import { Tabs } from 'expo-router'
 import React from 'react'
 
@@ -31,17 +30,27 @@ export default function TabLayout() {
       {/* The index redirects to the account screen */}
       <Tabs.Screen name="index" options={{ tabBarItemStyle: { display: 'none' } }} />
       <Tabs.Screen
-        name="search"
+        name="(search)"
         options={{
           title: 'Search',
           tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="magnifyingglass" color={color} />,
+          // href: '/(tabs)/(search,profile,trips)/search',
         }}
       />
       <Tabs.Screen
-        name="trips"
+        name="(trips)"
         options={{
           title: 'Trips',
           tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="map" color={color} />,
+          href: '/trips',
+        }}
+      />
+      <Tabs.Screen
+        name="(profile)"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="person" color={color} />,
+          href: '/profile',
         }}
       />
     </Tabs>

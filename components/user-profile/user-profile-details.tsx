@@ -1,7 +1,7 @@
 import { AppText } from '@/components/app-text';
 import { ProfileUiHeader } from '@/components/profile/profile-ui-header';
 import { useUserProfile } from '@/components/user-profile/user-profile-provider';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
 
 export function UserProfileDetails() {
@@ -9,7 +9,17 @@ export function UserProfileDetails() {
     user,
     isLoading,
     userError,
+    communities,
+    achievements,
   } = useUserProfile();
+
+  // Log communities and achievements when data is loaded
+  useEffect(() => {
+    if (!isLoading && communities && achievements) {
+      console.log('User Communities:', communities);
+      console.log('User Achievements:', achievements);
+    }
+  }, [communities, achievements, isLoading]);
 
   if (isLoading) {
     return (

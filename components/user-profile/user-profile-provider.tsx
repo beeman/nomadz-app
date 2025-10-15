@@ -1,6 +1,8 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 import { UserAchievementWithDetails } from '../../types/achievements.types';
 import { Community } from '../../types/community.types';
+import { useUserAchievementsQuery } from '../achievements/use-achievements';
+import { useUserCommunitiesQuery } from '../communities/use-communities';
 import { UserScore, useUserQuery } from '../user/use-user';
 
 interface UserProfileContextType {
@@ -45,19 +47,33 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
     isLoading: userLoading,
     error: userError,
   } = useUserQuery(userId, !!userId);
+
+  // Fetch communities data
+  const {
+    data: communities,
+    isLoading: communitiesLoading,
+    error: communitiesError,
+  } = useUserCommunitiesQuery(userId, !!userId);
+
+  // Fetch achievements data
+  const {
+    data: achievements,
+    isLoading: achievementsLoading,
+    error: achievementsError,
+  } = useUserAchievementsQuery(userId, !!userId);
     
-  const isLoading = userLoading; 
+  const isLoading = userLoading || communitiesLoading || achievementsLoading; 
 
   const value: UserProfileContextType = {
     user,
     userLoading,
     userError,
-    communities: undefined,
-    communitiesLoading: false,
-    communitiesError: null,
-    achievements: undefined,
-    achievementsLoading: false,
-    achievementsError: null,
+    communities,
+    communitiesLoading,
+    communitiesError,
+    achievements,
+    achievementsLoading,
+    achievementsError,
     score: undefined,
     scoreLoading: false,
     scoreError: null,

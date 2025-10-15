@@ -1,4 +1,3 @@
-import { createMinimalHeaderConfig } from '@/components/app-header-config'
 import { AppProviders } from '@/components/app-providers'
 import { AppSplashController } from '@/components/app-splash-controller'
 import { useAuth } from '@/components/auth/auth-provider'
@@ -99,11 +98,9 @@ export default function RootLayout() {
 function RootNavigator() {
   const { isAuthenticated } = useAuth()
   return (
-    <Stack screenOptions={createMinimalHeaderConfig()}>
+    <Stack>
       <Stack.Protected guard={isAuthenticated}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="settings/index" />
-        <Stack.Screen name="user/[id]" />
         <Stack.Screen name="+not-found" />
       </Stack.Protected>
       <Stack.Protected guard={!isAuthenticated}>
