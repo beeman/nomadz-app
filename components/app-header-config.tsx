@@ -13,4 +13,13 @@ export const createHeaderConfig = (title: string): NativeStackNavigationOptions 
     fontSize: 18,
     fontWeight: '600' as const,
   },
+})
+
+export const createMinimalHeaderConfig = (): NativeStackNavigationOptions => ({
+  headerTitle: '',
+  headerStyle: {
+    backgroundColor: '#000000',
+  },
+  headerTintColor: '#FFFFFF',
+  headerBackTitle: '',
 }) 
