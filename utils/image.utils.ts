@@ -1,3 +1,4 @@
+import { AppConfig } from '../constants/app-config';
 import { DEFAULT_AVATAR_PATH } from '../constants/paths';
 
 interface HandleAvatarErrorOptions {
@@ -25,4 +26,14 @@ export const handleAvatarError = (e: React.SyntheticEvent<HTMLImageElement, Even
       img.parentElement?.classList.add('bg-gray-700');
     }
   }
+};
+
+/**
+ * Builds a complete image URL using the AppConfig.imageBase prefix
+ * @param imagePath - The relative image path from storage
+ * @returns Complete image URL
+ */
+export const getImageUrl = (imagePath: string | null | undefined): string | null => {
+  if (!imagePath) return null;
+  return `${AppConfig.imageBase}${imagePath}`;
 }; 

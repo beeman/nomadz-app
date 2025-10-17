@@ -7,7 +7,16 @@ export const useUserAchievementsQuery = (userId: string, enabled: boolean = true
     return useQuery({
         queryKey: ['user-achievements', userId],
         queryFn: async () => {
-            const response = await api.get(resolveUrl(`users/${userId}/achievements`));
+            const response = await api.get(resolveUrl(`users/${userId}/achievements`, {
+                include: {
+                    achievement: {
+                        select: {
+                            badge: true,
+                            type: true,
+                        },
+                    }
+                }
+            }));
             return response.data;
         },
         enabled: enabled && !!userId,

@@ -11,7 +11,7 @@ export interface UserScore {
 
 // React Query hook for fetching user score
 export const useUserScoreQuery = (userId: string, enabled: boolean = true) => {
-    return useQuery<UserScore>({
+    return useQuery<number>({
         queryKey: ['user-score', userId],
         queryFn: async () => {
             const response = await api.get(resolveUrl(`users/${userId}/score`));

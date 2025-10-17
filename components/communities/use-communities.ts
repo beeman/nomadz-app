@@ -7,7 +7,15 @@ export const useUserCommunitiesQuery = (userId: string, enabled: boolean = true)
     return useQuery({
         queryKey: ['user-communities', userId],
         queryFn: async () => {
-            const response = await api.get(resolveUrl(`users/${userId}/communities`));
+            const response = await api.get(resolveUrl(`users/${userId}/communities`, {
+                include: {
+                    community: {
+                        select: {
+                            image: true,
+                        },
+                    }
+                }
+            }));
             return response.data;
         },
         enabled: enabled && !!userId,

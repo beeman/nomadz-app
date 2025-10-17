@@ -1,18 +1,30 @@
+import { User } from '@/types/user.types';
 import React, { createContext, ReactNode, useContext } from 'react';
 import { UserAchievementWithDetails } from '../../types/achievements.types';
-import { Community } from '../../types/community.types';
 import { useUserAchievementsQuery } from '../achievements/use-achievements';
 import { useUserCommunitiesQuery } from '../communities/use-communities';
-import { UserScore, useUserQuery } from '../user/use-user';
+import { useUserQuery, useUserScoreQuery } from '../user/use-user';
+
+// Type for user communities with nested community data
+interface UserCommunity {
+  userId: string;
+  communityId: string;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  community: {
+    image: string;
+  };
+}
 
 interface UserProfileContextType {
   // User data
-  user: any | null;
+  user: User;
   userLoading: boolean;
   userError: any;
   
   // Communities
-  communities: Community[] | undefined;
+  communities: UserCommunity[] | undefined;
   communitiesLoading: boolean;
   communitiesError: any;
   
@@ -22,7 +34,7 @@ interface UserProfileContextType {
   achievementsError: any;
   
   // Score
-  score: UserScore | undefined;
+  score: number | undefined;
   scoreLoading: boolean;
   scoreError: any;
   
@@ -61,8 +73,15 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
     isLoading: achievementsLoading,
     error: achievementsError,
   } = useUserAchievementsQuery(userId, !!userId);
+
+  // Fetch score data
+  const {
+    data: score,
+    isLoading: scoreLoading,
+    error: scoreError,
+  } = useUserScoreQuery(userId, !!userId);
     
-  const isLoading = userLoading || communitiesLoading || achievementsLoading; 
+  const isLoading = userLoading || communitiesLoading || achievementsLoading || scoreLoading; 
 
   const value: UserProfileContextType = {
     user,
@@ -74,9 +93,9 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
     achievements,
     achievementsLoading,
     achievementsError,
-    score: undefined,
-    scoreLoading: false,
-    scoreError: null,
+    score,
+    scoreLoading,
+    scoreError,
     isLoading,
   };
 
