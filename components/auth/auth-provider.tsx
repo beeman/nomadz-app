@@ -30,7 +30,7 @@ export interface AuthState {
   isAuthenticated: boolean
   isLoading: boolean
   signIn: () => Promise<PrivyUser>
-  signOut: () => Promise<void>
+  signOut: (options?: { onSuccess?: () => void; onError?: (error: any) => void }) => Promise<void>
   connectWallet: () => Promise<Account>
   disconnectWallet: () => Promise<void>
   user?: AuthUserProfile
@@ -72,6 +72,18 @@ function useSignInWithWalletMutation() {
   })
 }
 
+function useBackendLogoutMutation() {
+  return useMutation({
+    mutationFn: async () => {
+      const response = await api.post('auth/logout')
+      if (![HttpStatusCode.Ok, HttpStatusCode.Created].includes(response.status)) {
+        throw new Error(`Backend logout failed with status: ${response.status}`)
+      }
+      return response.data
+    },
+  })
+}
+
 function useGetUserQuery() {
   const { getAccessToken, user } = usePrivy()
   return useQuery({
@@ -105,23 +117,38 @@ function useGetUserQuery() {
 }
 
 export function AuthProvider({ children }: PropsWithChildren) {
-  const { isReady, user, logout } = usePrivy()
+  const { isReady, user, logout: privyLogout } = usePrivy()
   const { disconnect } = useMobileWallet()
   const signInWithWalletMutation = useSignInWithWalletMutation()
   const signInMutation = useSignInMutation()
+  const backendLogoutMutation = useBackendLogoutMutation()
   const getUserQuery = useGetUserQuery()
 
   const value: AuthState = useMemo(() => {
     return {
       signIn: async () => signInMutation.mutateAsync(),
       connectWallet: async () => signInWithWalletMutation.mutateAsync(),
-      signOut: async () => await logout(),
+      signOut: async (options?: { onSuccess?: () => void; onError?: (error: any) => void }) => {
+        try {
+          // First logout from Privy
+          await privyLogout()
+          
+          // Then logout from backend
+          await backendLogoutMutation.mutateAsync()
+          
+          options?.onSuccess?.()
+        } catch (error) {
+          console.error('Logout error:', error)
+          options?.onError?.(error)
+          throw error
+        }
+      },
       disconnectWallet: async () => await disconnect(),
       isAuthenticated: !!user,
       isLoading: !isReady || signInMutation.isPending,
       user: getUserQuery.data,
     }
-  }, [user, isReady, signInMutation, signInWithWalletMutation, getUserQuery.data, disconnect, logout])
+  }, [user, isReady, signInMutation, signInWithWalletMutation, backendLogoutMutation, getUserQuery.data, disconnect, privyLogout])
 
   return <Context value={value}>{children}</Context>
 }
