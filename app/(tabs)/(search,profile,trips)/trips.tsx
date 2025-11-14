@@ -1,9 +1,9 @@
-import React from 'react'
 import { AppPage } from '@/components/app-page'
 import { TripsFeatureList } from '@/components/trips/trips-feature-list'
 import { TripsListProvider } from '@/components/trips/trips-list-provider'
+import React from 'react'
 
-export default function TabTripsIndex() {
+export default function TripsTab() {
   return (
     <AppPage>
       <TripsListProvider>

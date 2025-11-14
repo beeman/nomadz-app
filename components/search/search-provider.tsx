@@ -127,7 +127,8 @@ const defaultSearchParams: SearchParams = {
     adults: 1,
     children: [],
     infants: 0
-  }
+  },
+  selectedDestination: undefined
 }
 
 function useSearchRandomProperties() {
